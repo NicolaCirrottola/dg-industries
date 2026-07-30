@@ -8,6 +8,87 @@
   section: section
 %}
 
+{% if block.settings.show_quick_specs %}
+  {% liquid
+    assign quick_specs_product = closest.product
+    assign quick_specs_variant = quick_specs_product.selected_or_first_available_variant
+  %}
+  <product-quick-specs
+    class="quick-specs"
+    data-block-id="{{ block.id }}"
+    data-product-id="{{ quick_specs_product.id }}"
+  >
+    <script
+      src="{{ 'product-quick-specs.js' | asset_url }}"
+      type="module"
+    ></script>
+    <div
+      class="quick-specs__grid"
+      ref="specsContainer"
+    >
+      {%- for product_option in quick_specs_product.options_with_values -%}
+        <div class="quick-specs__row">
+          <span class="quick-specs__label">{{ product_option.name | escape }}</span>
+          <span class="quick-specs__value">{{ quick_specs_variant.options[forloop.index0] }}</span>
+        </div>
+      {%- endfor -%}
+      {%- if block.settings.quick_specs_extra_label_1 != blank -%}
+        <div class="quick-specs__row">
+          <span class="quick-specs__label">{{ block.settings.quick_specs_extra_label_1 | escape }}</span>
+          <span class="quick-specs__value">{{ block.settings.quick_specs_extra_value_1 | escape }}</span>
+        </div>
+      {%- endif -%}
+      {%- if block.settings.quick_specs_extra_label_2 != blank -%}
+        <div class="quick-specs__row">
+          <span class="quick-specs__label">{{ block.settings.quick_specs_extra_label_2 | escape }}</span>
+          <span class="quick-specs__value">{{ block.settings.quick_specs_extra_value_2 | escape }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </product-quick-specs>
+{% endif %}
+
+{% stylesheet %}
+  /* Bordered gallery panel (Pagina-prodotto.html reference design) */
+  .product-information .media-gallery__grid {
+    border: 1px solid #e6e5e2;
+    background: #fafaf9;
+    padding: 36px;
+  }
+
+  .quick-specs {
+    display: block;
+    margin-top: 20px;
+  }
+
+  .quick-specs__grid {
+    border: 1px solid #e6e5e2;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 24px;
+  }
+
+  .quick-specs__row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eeece8;
+    padding-bottom: 6px;
+  }
+
+  .quick-specs__label {
+    font-size: 11px;
+    color: #8a8a86;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .quick-specs__value {
+    font-size: 13px;
+    font-weight: 600;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_media",
@@ -319,6 +400,39 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Quick specs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_specs",
+      "label": "Show quick specs box",
+      "default": false,
+      "info": "Displays a 2-column box below the gallery with each product option (e.g. Diametro, Materiale) and its currently selected value."
+    },
+    {
+      "type": "text",
+      "id": "quick_specs_extra_label_1",
+      "label": "Extra row 1 label",
+      "info": "For facts that aren't modeled as a product option, e.g. PN"
+    },
+    {
+      "type": "text",
+      "id": "quick_specs_extra_value_1",
+      "label": "Extra row 1 value",
+      "info": "e.g. PN10"
+    },
+    {
+      "type": "text",
+      "id": "quick_specs_extra_label_2",
+      "label": "Extra row 2 label"
+    },
+    {
+      "type": "text",
+      "id": "quick_specs_extra_value_2",
+      "label": "Extra row 2 value"
     }
   ],
   "presets": [

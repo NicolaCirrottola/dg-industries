@@ -27,7 +27,8 @@
     can_add_to_cart: can_add_to_cart,
     product: closest.product,
     add_to_cart_text: add_to_cart_text,
-    data_testid: 'standalone-add-to-cart'
+    data_testid: 'standalone-add-to-cart',
+    show_price_suffix: block.settings.show_price_in_button
   %}
 </span>
 
@@ -56,6 +57,13 @@
       ],
       "default": "button-secondary",
       "info": "t:info.edit_button_style_in_theme_settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_in_button",
+      "label": "Show live price in button",
+      "default": false,
+      "info": "Appends — unit price × quantity to the button label, updating as the quantity selector changes."
     },
     {
       "type": "header",

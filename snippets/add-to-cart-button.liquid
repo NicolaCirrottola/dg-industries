@@ -7,6 +7,7 @@
   @param {string} [class] - Additional CSS classes to apply to the button.
   @param {string} [id] - The ID attribute for the button.
   @param {string} [data_testid] - The data-testid attribute for testing.
+  @param {boolean} [show_price_suffix] - Appends a live "unit price × quantity" suffix that updates with the quantity selector.
 {%- enddoc -%}
 
 {%- liquid
@@ -15,13 +16,25 @@
   if product.selected_or_first_available_variant.featured_media.preview_image == blank
     assign product_variant_media = product.featured_media.preview_image | image_url: width: 100
   endif
+  assign unit_price = product.selected_or_first_available_variant.price
 -%}
 
 <add-to-cart-component
   ref="addToCartButtonContainer"
   data-product-variant-media="{{ product_variant_media }}"
   data-add-to-cart-animation="{{ settings.add_to_cart_animation }}"
+  {% if show_price_suffix %}
+    data-unit-price="{{ unit_price }}"
+    data-currency="{{ cart.currency.iso_code }}"
+  {% endif %}
 >
+  {% if show_price_suffix %}
+    <template ref="moneyFormatTemplate">{{ shop.money_format }}</template>
+    <script
+      src="{{ 'add-to-cart-price-suffix.js' | asset_url }}"
+      type="module"
+    ></script>
+  {% endif %}
   <button
     {% if id != blank %}
       id="{{ id }}"
@@ -46,7 +59,10 @@
         {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
       </span>
     {% endif %}
-    {{- add_to_cart_text | default: default_add_to_cart_text -}}
+    <span ref="addToCartButtonLabel">{{- add_to_cart_text | default: default_add_to_cart_text -}}</span>
+    {% if show_price_suffix %}
+      <span ref="addToCartPriceSuffix"> — {{ unit_price | money }}</span>
+    {% endif %}
     {% comment %} checkmark burst markup {% endcomment %}
     <span class="add-to-cart__added">
       <span class="svg-wrapper add-to-cart__added-icon">

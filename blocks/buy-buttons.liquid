@@ -383,6 +383,27 @@
 
 {% render 'buy-buttons-styles' %}
 
+{% stylesheet %}
+  /* Combined stepper + button row (Pagina-prodotto.html reference design) */
+  .buy-buttons-block .product-form-buttons {
+    align-items: stretch;
+  }
+
+  .buy-buttons-block .quantity-selector-wrapper {
+    flex: 0 0 auto;
+  }
+
+  .buy-buttons-block .quantity-selector {
+    height: 48px;
+  }
+
+  .buy-buttons-block .add-to-cart-button {
+    flex: 1;
+    min-width: 12rem;
+    height: 48px;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_buy_buttons",

@@ -43,6 +43,14 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "show_option_details",
+      "label": "Show option description and price delta",
+      "default": false,
+      "info": "For button-style (non-swatch) options: shows a per-value description sourced from the variant metafield custom.option_note, and the price difference versus the currently selected variant.",
+      "visible_if": "{{ block.settings.variant_style == 'buttons' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.appearance"
     },

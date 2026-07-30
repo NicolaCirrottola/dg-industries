@@ -1,0 +1,268 @@
+{% liquid
+  assign block_settings = block.settings
+  assign tabs_product = closest.product
+  assign tabs_variant = tabs_product.selected_or_first_available_variant
+%}
+
+<product-tabs
+  class="product-tabs spacing-style"
+  data-block-id="{{ block.id }}"
+  data-product-id="{{ tabs_product.id }}"
+  {{ block.shopify_attributes }}
+>
+  <script
+    src="{{ 'product-tabs.js' | asset_url }}"
+    type="module"
+  ></script>
+
+  <div
+    class="product-tabs__nav"
+    role="tablist"
+  >
+    <button
+      type="button"
+      class="product-tabs__tab"
+      role="tab"
+      aria-selected="true"
+      data-tab="description"
+      ref="tabButtons[]"
+    >
+      {{ block_settings.description_label | default: 'Descrizione' }}
+    </button>
+    <button
+      type="button"
+      class="product-tabs__tab"
+      role="tab"
+      aria-selected="false"
+      data-tab="specs"
+      ref="tabButtons[]"
+    >
+      {{ block_settings.specs_label | default: 'Specifiche tecniche' }}
+    </button>
+  </div>
+
+  <div
+    class="product-tabs__panel"
+    data-panel="description"
+    ref="panels[]"
+  >
+    {{ tabs_product.description }}
+  </div>
+
+  <div
+    class="product-tabs__panel"
+    data-panel="specs"
+    hidden
+    ref="panels[]"
+  >
+    <table
+      class="product-tabs__specs-table"
+      ref="specsTableContainer"
+    >
+      <tbody>
+        {%- for product_option in tabs_product.options_with_values -%}
+          <tr>
+            <td class="product-tabs__specs-label">{{ product_option.name | escape }}</td>
+            <td class="product-tabs__specs-value">{{ tabs_variant.options[forloop.index0] }}</td>
+          </tr>
+        {%- endfor -%}
+        {%- for i in (1..5) -%}
+          {%- assign label_key = 'spec_row_' | append: i | append: '_label' -%}
+          {%- assign value_key = 'spec_row_' | append: i | append: '_value' -%}
+          {%- assign spec_label = block_settings[label_key] -%}
+          {%- assign spec_value = block_settings[value_key] -%}
+          {%- if spec_label != blank -%}
+            <tr>
+              <td class="product-tabs__specs-label">{{ spec_label | escape }}</td>
+              <td class="product-tabs__specs-value">{{ spec_value | escape }}</td>
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</product-tabs>
+
+{% stylesheet %}
+  .product-tabs__nav {
+    display: flex;
+    gap: 28px;
+    border-bottom: 1px solid #e6e5e2;
+    margin-bottom: 20px;
+  }
+
+  .product-tabs__tab {
+    background: none;
+    border: none;
+    padding: 0 0 14px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #a3a3a0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .product-tabs__tab[aria-selected='true'] {
+    color: #161616;
+    border-bottom-color: #161616;
+  }
+
+  .product-tabs__panel[hidden] {
+    display: none;
+  }
+
+  .product-tabs__panel p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #3c3c3c;
+    margin: 0 0 14px;
+  }
+
+  .product-tabs__panel p:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-tabs__specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .product-tabs__specs-table tr {
+    border-bottom: 1px solid #eeece8;
+  }
+
+  .product-tabs__specs-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .product-tabs__specs-label {
+    padding: 11px 0;
+    color: #8a8a86;
+    width: 46%;
+  }
+
+  .product-tabs__specs-value {
+    padding: 11px 0;
+    font-weight: 600;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product tabs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Descrizione"
+    },
+    {
+      "type": "text",
+      "id": "description_label",
+      "label": "Tab label",
+      "default": "Descrizione"
+    },
+    {
+      "type": "paragraph",
+      "content": "Content comes from the product's own Description field (Admin → Products), so it stays in sync everywhere it's shown."
+    },
+    {
+      "type": "header",
+      "content": "Specifiche tecniche"
+    },
+    {
+      "type": "text",
+      "id": "specs_label",
+      "label": "Tab label",
+      "default": "Specifiche tecniche"
+    },
+    {
+      "type": "paragraph",
+      "content": "Product options (e.g. Diametro nominale, Materiale, Azionamento) are added automatically and stay in sync with the selected variant. Use the rows below for additional fixed technical facts."
+    },
+    {
+      "type": "text",
+      "id": "spec_row_1_label",
+      "label": "Row 1 label"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_1_value",
+      "label": "Row 1 value"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_2_label",
+      "label": "Row 2 label"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_2_value",
+      "label": "Row 2 value"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_3_label",
+      "label": "Row 3 label"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_3_value",
+      "label": "Row 3 value"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_4_label",
+      "label": "Row 4 label"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_4_value",
+      "label": "Row 4 value"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_5_label",
+      "label": "Row 5 label"
+    },
+    {
+      "type": "text",
+      "id": "spec_row_5_value",
+      "label": "Row 5 value"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tabs",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

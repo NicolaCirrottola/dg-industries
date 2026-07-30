@@ -109,161 +109,469 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "menu_8tJbUk": {
-          "type": "menu",
-          "settings": {
-            "menu": "footer",
-            "heading": "Shop",
-            "menu_spacing": 12,
-            "show_as_accordion": false,
-            "accordion_icon": "caret",
-            "accordion_dividers": false,
-            "heading_preset": "h3",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "menu_jRmAQi": {
-          "type": "menu",
-          "settings": {
-            "menu": "",
-            "heading": "Help",
-            "menu_spacing": 12,
-            "show_as_accordion": false,
-            "accordion_icon": "caret",
-            "accordion_dividers": false,
-            "heading_preset": "h3",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "menu_6jWwP4": {
-          "type": "menu",
-          "name": "t:names.menu",
-          "settings": {
-            "menu": "",
-            "heading": "About",
-            "menu_spacing": 12,
-            "show_as_accordion": false,
-            "accordion_icon": "caret",
-            "accordion_dividers": false,
-            "heading_preset": "h3",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "group_hAzkCn": {
+        "group_company_info": {
           "type": "group",
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": false,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 24,
+            "gap": 18,
             "width": "fill",
-            "custom_width": 35,
+            "custom_width": 34,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
-            "height": "fill",
-            "custom_height": 100,
+            "height": "fit",
             "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
             "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
             "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
             "padding-block-start": 0,
-            "padding-block-end": 4,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_jBr8nr": {
+            "logo_dg": {
+              "type": "logo",
+              "settings": {
+                "unit": "pixel",
+                "pixel_height": 34,
+                "padding-block-start": 0,
+                "padding-block-end": 4,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_description": {
               "type": "text",
               "settings": {
-                "text": "<p>Stay Connected</p>",
+                "text": "<p>Specialisti da oltre 60 anni nella realizzazione di soluzioni avanzate per l'industria agroalimentare.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h3",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
-                "line_height": "normal",
+                "font_size": "0.8125rem",
+                "line_height": "loose",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
                 "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 10,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
             },
-            "social_links_JBkCiP": {
-              "type": "social-links",
-              "name": "t:names.social_media_links",
+            "text_address": {
+              "type": "text",
               "settings": {
-                "facebook_url": "https://facebook.com",
-                "instagram_url": "https://instagram.com",
-                "tiktok_url": "https://tiktok.com",
-                "twitter_url": "https://x.com"
+                "text": "<p>Via Archimede, 27/33 – zona PIP<br>70024 – Gravina in Puglia (BA)<br>Tel.: +39 080.326.61.96<br><a href=\"mailto:info@defino-giancaspro.com\">info@defino-giancaspro.com</a><br><a href=\"mailto:defino-giancaspro@pec.it\">defino-giancaspro@pec.it</a></p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.8125rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": ["logo_dg", "text_description", "text_address"]
+        },
+        "group_prodotti": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 22,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "background_media": "none",
+            "border": "none",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading_prodotti": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Prodotti</p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.78125rem",
+                "line_height": "normal",
+                "letter_spacing": "loose",
+                "case": "uppercase",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 6,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_valvole_farfalla": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Valvole a Farfalla</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_valvole_deviatrici": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Valvole Deviatrici</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_tubazioni": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Tubazioni e Curve di Condotta</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_aspirazione": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Sistemi di Aspirazione</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_filtri": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Filtri e Cicloni per Farina/Grano</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_jBr8nr",
-            "social_links_JBkCiP"
+            "heading_prodotti",
+            "link_valvole_farfalla",
+            "link_valvole_deviatrici",
+            "link_tubazioni",
+            "link_aspirazione",
+            "link_filtri"
           ]
+        },
+        "group_azienda": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 22,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "background_media": "none",
+            "border": "none",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading_azienda": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Azienda &amp; Supporto</p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.78125rem",
+                "line_height": "normal",
+                "letter_spacing": "loose",
+                "case": "uppercase",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 6,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_chi_siamo": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Chi Siamo</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_catalogo": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Catalogo B2B (PDF)</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_preventivo": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Richiedi Preventivo Su Misura</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_assistenza": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Assistenza Tecnica</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "link_contatti": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"#\">Contatti</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.84375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_azienda",
+            "link_chi_siamo",
+            "link_catalogo",
+            "link_preventivo",
+            "link_assistenza",
+            "link_contatti"
+          ]
+        },
+        "group_certificazioni": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 0,
+            "width": "fill",
+            "custom_width": 22,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "background_media": "none",
+            "border": "none",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "certification_badges": {
+              "type": "certification-badges",
+              "settings": {
+                "heading": "Certificazioni",
+                "description": "La DG Industries investe ogni giorno in qualità e ambiente attraverso le certificazioni del sistema di gestione.",
+                "show_tuv": true,
+                "tuv_caption": "Certified Company\nUNI EN ISO 9001\nUNI EN ISO 14001",
+                "show_dekra": true,
+                "dekra_caption": "Certified Company\nUNI EN ISO 1090-1\nUNI EN ISO 3834-2",
+                "show_icim": true,
+                "icim_caption": "Materiali a contatto con alimenti",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": ["certification_badges"]
         }
       },
       "block_order": [
-        "menu_8tJbUk",
-        "menu_jRmAQi",
-        "menu_6jWwP4",
-        "group_hAzkCn"
+        "group_company_info",
+        "group_prodotti",
+        "group_azienda",
+        "group_certificazioni"
       ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
-        "gap": 12,
-        "background_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 36,
-        "padding-block-end": 18
+        "gap": 48,
+        "background_color": "#000000",
+        "padding-block-start": 64,
+        "padding-block-end": 0
       }
     },
     "utilities": {
       "type": "footer-utilities",
       "blocks": {
         "copyright": {
-          "type": "footer-copyright",
+          "type": "legal-copyright",
           "settings": {
-            "show_powered_by": true,
+            "company_name": "Defino & Giancaspro S.r.l.",
+            "show_powered_by": false,
             "font_size": "0.75rem",
-            "case": "none"
+            "case": "none",
+            "text_color": "rgba(255,255,255,0.5)"
           },
           "blocks": {}
         },
@@ -272,7 +580,8 @@
           "name": "t:names.policy_list",
           "settings": {
             "font_size": "0.75rem",
-            "case": "none"
+            "case": "none",
+            "text_color": "rgba(255,255,255,0.5)"
           },
           "blocks": {}
         }
@@ -285,9 +594,10 @@
         "section_width": "page-width",
         "gap": 24,
         "divider_thickness": 1,
-        "background_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 20,
-        "padding-block-end": 18
+        "divider_color": "rgba(255,255,255,0.14)",
+        "background_color": "#000000",
+        "padding-block-start": 22,
+        "padding-block-end": 22
       }
     }
   },

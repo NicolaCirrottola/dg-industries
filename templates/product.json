@@ -35,9 +35,9 @@
           "static": true,
           "settings": {
             "media_presentation": "grid",
-            "media_columns": "two",
+            "media_columns": "one",
             "image_gap": 12,
-            "large_first_image": true,
+            "large_first_image": false,
             "icons_style": "chevron",
             "slideshow_controls_style": "dots",
             "slideshow_mobile_controls_style": "dots",
@@ -47,7 +47,7 @@
             "aspect_ratio": "1",
             "constrain_to_viewport": true,
             "media_fit": "cover",
-            "media_radius": 20,
+            "media_radius": 0,
             "extend_media": false,
             "zoom": true,
             "video_loop": false,
@@ -55,7 +55,10 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "show_quick_specs": true,
+            "quick_specs_extra_label_1": "PN",
+            "quick_specs_extra_value_1": "PN10"
           },
           "blocks": {}
         },
@@ -150,7 +153,8 @@
               "type": "variant-picker",
               "settings": {
                 "variant_style": "buttons",
-                "show_swatches": true,
+                "show_swatches": false,
+                "show_option_details": true,
                 "option_label_text_color": "",
                 "variant_style_class": "default",
                 "custom_variant_background": "{{ settings.color_palette.background }}",
@@ -213,6 +217,7 @@
                   "static": true,
                   "settings": {
                     "style_class": "button",
+                    "show_price_in_button": true,
                     "custom_button_background": "{{ settings.color_palette.foreground }}",
                     "custom_button_text": "{{ settings.color_palette.background }}",
                     "custom_button_border": "{{ settings.color_palette.background }}"
@@ -227,32 +232,6 @@
                 }
               },
               "block_order": []
-            },
-            "product_description_LfDYCg": {
-              "type": "product-description",
-              "name": "t:names.product_description",
-              "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
             },
             "group_X39hBc": {
               "type": "group",
@@ -717,110 +696,26 @@
                 "group_e7FkRj"
               ]
             },
-            "accordion_g8EVVp": {
-              "type": "accordion",
-              "name": "t:names.accordion",
+            "product_tabs_g8EVVp": {
+              "type": "product-tabs",
+              "name": "Product tabs",
               "settings": {
-                "icon": "plus",
-                "dividers": true,
-                "divider_color": "{{ settings.color_palette.color4 }}",
-                "type_preset": "h4",
-                "background_color": "",
-                "text_color": "",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "description_label": "Descrizione",
+                "specs_label": "Specifiche tecniche",
+                "spec_row_1_label": "Pressione di esercizio",
+                "spec_row_1_value": "-0,3 ÷ +0,5 bar",
+                "spec_row_2_label": "Range temperatura",
+                "spec_row_2_value": "-20°C ÷ +80°C",
+                "spec_row_3_label": "Materiale guarnizioni",
+                "spec_row_3_value": "EPDM (opz. FKM / Silicone)",
+                "spec_row_4_label": "Standard flange",
+                "spec_row_4_value": "EN 1092-1 PN10 / ASME B16.5",
+                "spec_row_5_label": "Applicazioni tipiche",
+                "spec_row_5_value": "Molitorio, cerealicolo, trasporto pneumatico, aspirazione polveri",
+                "padding-block-start": 44,
+                "padding-block-end": 0
               },
-              "blocks": {
-                "accordion_row_VyFryh": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Details",
-                    "open_by_default": false,
-                    "icon": "none",
-                    "width": 20
-                  },
-                  "blocks": {
-                    "text_McjMWz": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>This product is crafted with quality materials to ensure durability and performance. Designed with your convenience in mind, it seamlessly fits into your everyday life.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "text_color": "",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "text_McjMWz"
-                  ]
-                },
-                "accordion_row_aaFerA": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Shipping & Returns",
-                    "open_by_default": false,
-                    "icon": "none",
-                    "width": 20
-                  },
-                  "blocks": {
-                    "text_DNPAct": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>We strive to process and ship all orders in a timely manner, working diligently to ensure that your items are on their way to you as soon as possible. </p><p>We are committed to ensuring a positive shopping experience for all our customers. If for any reason you wish to return an item, we invite you to reach out to our team for assistance, and we will evaluate every return request with care and consideration.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "text_color": "",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "text_DNPAct"
-                  ]
-                }
-              },
-              "block_order": [
-                "accordion_row_VyFryh",
-                "accordion_row_aaFerA"
-              ]
+              "blocks": {}
             }
           },
           "block_order": [
@@ -829,9 +724,8 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "product_description_LfDYCg",
             "group_X39hBc",
-            "accordion_g8EVVp"
+            "product_tabs_g8EVVp"
           ]
         }
       },
@@ -841,7 +735,7 @@
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
-        "equal_columns": false,
+        "equal_columns": true,
         "limit_details_width": false,
         "gap": 48,
         "enable_sticky_add_to_cart": true,

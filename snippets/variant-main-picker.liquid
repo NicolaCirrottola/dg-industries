@@ -22,6 +22,8 @@
     assign has_custom_variant_buttons = true
   endif
   assign fieldset_index = 0
+  assign show_option_details = block_settings.show_option_details
+  assign current_variant = product_resource.selected_or_first_available_variant
 %}
 
 {% unless product_resource.has_only_default_variant %}
@@ -88,7 +90,7 @@
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           <fieldset
-            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
+            class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}{% if show_option_details and variant_style != 'swatch' %} variant-option--detailed{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
             {{ option_id_attribute }}
@@ -148,6 +150,37 @@
                     variant_image: featured_media,
                     mode: 'unscaled'
                   %}
+                {% elsif show_option_details %}
+                  {% liquid
+                    assign detail_variant = product_option_value.variant
+                    assign option_note = detail_variant.metafields.custom.option_note
+                    if detail_variant and current_variant
+                      assign price_delta = detail_variant.price | minus: current_variant.price
+                    endif
+                  %}
+                  <span
+                    class="variant-option__detail-dot{% if product_option_value.selected %} variant-option__detail-dot--selected{% endif %}"
+                  ></span>
+                  <span class="variant-option__detail-text">
+                    <span
+                      class="variant-option__button-label__text"
+                      data-key="variant-option-text"
+                    >
+                      {{- product_option_value | escape -}}
+                    </span>
+                    {%- if option_note != blank -%}
+                      <span class="variant-option__detail-note">{{ option_note }}</span>
+                    {%- endif -%}
+                  </span>
+                  {%- if price_delta -%}
+                    <span class="variant-option__detail-delta">
+                      {%- if price_delta == 0 -%}
+                        incluso
+                      {%- else -%}
+                        +{{ price_delta | money }}
+                      {%- endif -%}
+                    </span>
+                  {%- endif -%}
                 {% else %}
                   {% if product_option_value.available == true %}
                     <span
@@ -246,3 +279,64 @@
 
 {% render 'swatch-styles' %}
 {% render 'variant-picker-styles' %}
+
+{% stylesheet %}
+  /* Detailed radio rows (Pagina-prodotto.html reference design) */
+  .variant-option--detailed {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .variant-option--detailed .variant-option__button-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid #e6e5e2;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .variant-option--detailed .variant-option__button-label:has(input:checked) {
+    border-color: #54b8ac;
+    background: rgba(84, 184, 172, 0.08);
+  }
+
+  .variant-option__detail-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #c8c8c4;
+    flex: none;
+    margin-top: 2px;
+  }
+
+  .variant-option__detail-dot--selected {
+    border-color: #3e7f78;
+    background: radial-gradient(circle, #3e7f78 40%, transparent 41%);
+  }
+
+  .variant-option__detail-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .variant-option__button-label .variant-option__button-label__text {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .variant-option__detail-note {
+    font-size: 11.5px;
+    color: #8a8a86;
+    margin-top: 1px;
+  }
+
+  .variant-option__detail-delta {
+    margin-left: auto;
+    font-size: 12px;
+    color: #8a8a86;
+    white-space: nowrap;
+  }
+{% endstylesheet %}
