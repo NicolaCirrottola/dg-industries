@@ -52,7 +52,9 @@ header-component .header-menu__inner {
     0 2px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
     inset 0 -14px 22px -10px rgba(255, 255, 255, 0.5);
-  padding-inline: var(--padding-2xs, 10px);
+  padding-inline: 24px;
+  min-height: 68px;
+  max-width: 680px;
 }
 
 header-component .header-menu__inner::before {
@@ -68,12 +70,24 @@ header-component .header-menu__inner::before {
   filter: blur(2px);
 }
 
+/* ==========================================================================
+   3. Dynamic contrast: menu links + action icons auto-invert against
+   whatever is behind the transparent header (mix-blend-mode: difference —
+   white source blended against a light backdrop reads as dark, and against
+   a dark backdrop reads as white, with no scroll listeners required).
+   ========================================================================== */
+header-component .menu-list__link,
+header-component .header-actions__action,
+header-component .action__cart {
+  color: #ffffff;
+  mix-blend-mode: difference;
+}
+
 header-component .menu-list__link {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 500;
-  color: #1a1a1a;
-  padding: 10px 28px;
+  padding: 14px 32px;
   border-radius: 999px;
   position: relative;
 }
@@ -88,20 +102,19 @@ header-component .menu-list__link--active::after {
   height: 3px;
   border-radius: 2px;
   background: #54b8ac;
+  mix-blend-mode: normal;
 }
 
 /* ==========================================================================
-   3. Right-side icons: account, search, cart only (localization is disabled
+   4. Right-side icons: account, search, cart only (localization is disabled
    via header-group.json settings, not just hidden with CSS).
    ========================================================================== */
 header-component .header-actions__action,
 header-component .action__cart {
-  color: #1a1a1a;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 header-component .header-actions__action:hover,
 header-component .action__cart:hover {
-  color: #54b8ac;
   transform: scale(1.12);
 }

@@ -11,35 +11,6 @@
   "type": "header",
   "name": "t:names.header",
   "sections": {
-    "header_announcements_WbCTVz": {
-      "type": "header-announcements",
-      "blocks": {
-        "announcement_mxxhta": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Uplevel your office with new decor",
-            "link": "shopify://collections/all",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "announcement_mxxhta"
-      ],
-      "name": "t:names.announcement_bar",
-      "settings": {
-        "speed": 5,
-        "section_width": "full-width",
-        "background_color": "{{ settings.color_palette.color3 }}",
-        "divider_width": 0,
-        "padding-block-start": 15,
-        "padding-block-end": 15
-      }
-    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -117,7 +88,6 @@
     }
   },
   "order": [
-    "header_announcements_WbCTVz",
     "header_section"
   ]
 }
