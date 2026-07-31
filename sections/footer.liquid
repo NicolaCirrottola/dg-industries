@@ -98,20 +98,9 @@
     }
   }
 
-  /* Dark footer restyle (Pagina-prodotto.html reference design) */
-  .footer-content a {
-    color: rgba(255, 255, 255, 0.62);
-    text-decoration: none;
-  }
-
-  .footer-content a:hover {
-    color: #54b8ac;
-  }
-
-  .footer-content .logo-block__image {
-    filter: brightness(0) invert(1);
-  }
 {% endstylesheet %}
+
+{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
 
 {% schema %}
 {
