@@ -1,0 +1,99 @@
+{% liquid
+  assign block_settings = block.settings
+%}
+
+<div
+  class="brand-logo spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %} --brand-logo-height: {{ block_settings.pixel_height }}px;"
+  {{ block.shopify_attributes }}
+>
+  <img
+    src="{{ 'dg-logo.png' | asset_url }}"
+    alt="{{ shop.name | escape }}"
+    class="brand-logo__image"
+    loading="lazy"
+    width="66"
+    height="57"
+  >
+</div>
+
+{% stylesheet %}
+  .brand-logo {
+    display: flex;
+  }
+
+  .brand-logo__image {
+    height: var(--brand-logo-height, 34px);
+    width: auto;
+    object-fit: contain;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Brand logo (dg-logo.png)",
+  "tag": null,
+  "settings": [
+    {
+      "type": "range",
+      "id": "pixel_height",
+      "label": "Height",
+      "min": 16,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand logo",
+      "category": "t:categories.footer"
+    }
+  ]
+}
+{% endschema %}

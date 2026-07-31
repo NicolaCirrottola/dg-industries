@@ -132,10 +132,9 @@
           },
           "blocks": {
             "logo_dg": {
-              "type": "logo",
+              "type": "brand-logo",
               "settings": {
-                "unit": "pixel",
-                "pixel_height": 32,
+                "pixel_height": 34,
                 "padding-block-start": 0,
                 "padding-block-end": 4,
                 "padding-inline-start": 0,

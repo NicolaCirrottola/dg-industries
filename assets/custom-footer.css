@@ -1,0 +1,19 @@
+/*
+ * Dark footer restyle (Pagina-prodotto.html reference design).
+ * Scoped entirely to the existing footer markup — no DOM changes.
+ */
+
+.footer-content a {
+  color: rgba(255, 255, 255, 0.62);
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  color: #54b8ac;
+}
+
+/* Brand mark in the first footer column: same dg-logo.png as the header,
+   inverted to white for legibility on the black footer background. */
+.footer-content .brand-logo__image {
+  filter: brightness(0) invert(1);
+}
