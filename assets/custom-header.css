@@ -52,9 +52,14 @@ header-component .header-menu__inner {
     0 2px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
     inset 0 -14px 22px -10px rgba(255, 255, 255, 0.5);
-  padding-inline: 24px;
+  padding-inline: 48px;
+  /* min-height only — vertical size is intentionally unchanged */
   min-height: 68px;
-  max-width: 680px;
+  max-width: 920px;
+}
+
+header-component .menu-list__list {
+  gap: 12px;
 }
 
 header-component .header-menu__inner::before {
@@ -71,23 +76,20 @@ header-component .header-menu__inner::before {
 }
 
 /* ==========================================================================
-   3. Dynamic contrast: menu links + action icons auto-invert against
-   whatever is behind the transparent header (mix-blend-mode: difference —
-   white source blended against a light backdrop reads as dark, and against
-   a dark backdrop reads as white, with no scroll listeners required).
+   3. Solid black text + icons — fixed color, no dynamic/blend-mode contrast.
    ========================================================================== */
 header-component .menu-list__link,
 header-component .header-actions__action,
 header-component .action__cart {
-  color: #ffffff;
-  mix-blend-mode: difference;
+  color: #000000 !important;
+  mix-blend-mode: normal;
 }
 
 header-component .menu-list__link {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 500;
-  padding: 14px 32px;
+  padding: 16px 40px;
   border-radius: 999px;
   position: relative;
 }
@@ -117,4 +119,13 @@ header-component .action__cart {
 header-component .header-actions__action:hover,
 header-component .action__cart:hover {
   transform: scale(1.12);
+}
+
+/* ==========================================================================
+   5. Logo size — actual height is driven by settings.logo_height /
+   settings.logo_height_mobile (see config/settings_data.json); this just
+   raises the safety cap so nothing else can constrain it smaller.
+   ========================================================================== */
+header-component .header-logo__image {
+  max-width: 280px;
 }
