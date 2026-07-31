@@ -13,21 +13,21 @@
   <div class="certification-badges__grid">
     {% if block_settings.show_tuv %}
       <div class="certification-badges__item">
-        {{ 'cert-tuv-sud.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--tuv', alt: 'TÜV SÜD', loading: 'lazy' }}
+        {{ 'dg-certification-logo-tuv-sud.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--tuv', alt: 'TÜV SÜD', loading: 'lazy' }}
         <span class="certification-badges__caption">{{ block_settings.tuv_caption | newline_to_br }}</span>
       </div>
     {% endif %}
 
     {% if block_settings.show_dekra %}
       <div class="certification-badges__item">
-        {{ 'cert-dekra.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--dekra', alt: 'DEKRA', loading: 'lazy' }}
+        {{ 'dg-certification-logo-dekra.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--dekra', alt: 'DEKRA', loading: 'lazy' }}
         <span class="certification-badges__caption">{{ block_settings.dekra_caption | newline_to_br }}</span>
       </div>
     {% endif %}
 
     {% if block_settings.show_icim %}
       <div class="certification-badges__item certification-badges__item--full">
-        {{ 'cert-icim-moca.png' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--icim', alt: 'ICIM M.O.C.A.', loading: 'lazy' }}
+        {{ 'dg-certification-logo-moca.png' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--icim', alt: 'ICIM M.O.C.A.', loading: 'lazy' }}
         <span class="certification-badges__caption">{{ block_settings.icim_caption | newline_to_br }}</span>
       </div>
     {% endif %}
