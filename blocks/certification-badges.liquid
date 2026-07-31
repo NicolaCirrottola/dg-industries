@@ -13,21 +13,42 @@
   <div class="certification-badges__grid">
     {% if block_settings.show_tuv %}
       <div class="certification-badges__item">
-        {{ 'dg-certification-logo-tuv-sud.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--tuv', alt: 'TÜV SÜD', loading: 'lazy' }}
+        <img
+          src="{{ 'dg-certification-logo-tuv-sud.svg' | asset_url }}"
+          alt="TÜV SÜD"
+          loading="lazy"
+          width="40"
+          height="40"
+          style="max-height: 40px; width: auto; display: block;"
+        >
         <span class="certification-badges__caption">{{ block_settings.tuv_caption | newline_to_br }}</span>
       </div>
     {% endif %}
 
     {% if block_settings.show_dekra %}
       <div class="certification-badges__item">
-        {{ 'dg-certification-logo-dekra.svg' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--dekra', alt: 'DEKRA', loading: 'lazy' }}
+        <img
+          src="{{ 'dg-certification-logo-dekra.svg' | asset_url }}"
+          alt="DEKRA"
+          loading="lazy"
+          width="96"
+          height="26"
+          style="max-height: 26px; width: auto; display: block; filter: brightness(0) invert(1);"
+        >
         <span class="certification-badges__caption">{{ block_settings.dekra_caption | newline_to_br }}</span>
       </div>
     {% endif %}
 
     {% if block_settings.show_icim %}
       <div class="certification-badges__item certification-badges__item--full">
-        {{ 'dg-certification-logo-moca.png' | asset_url | image_tag: class: 'certification-badges__image certification-badges__image--icim', alt: 'ICIM M.O.C.A.', loading: 'lazy' }}
+        <img
+          src="{{ 'dg-certification-logo-moca.png' | asset_url }}"
+          alt="ICIM M.O.C.A."
+          loading="lazy"
+          width="69"
+          height="52"
+          style="max-height: 52px; width: auto; display: block;"
+        >
         <span class="certification-badges__caption">{{ block_settings.icim_caption | newline_to_br }}</span>
       </div>
     {% endif %}
@@ -67,24 +88,6 @@
 
   .certification-badges__item--full {
     grid-column: 1 / -1;
-  }
-
-  .certification-badges__image {
-    width: auto;
-    object-fit: contain;
-  }
-
-  .certification-badges__image--tuv {
-    height: 40px;
-  }
-
-  .certification-badges__image--dekra {
-    height: 26px;
-    filter: brightness(0) invert(1);
-  }
-
-  .certification-badges__image--icim {
-    height: 52px;
   }
 
   .certification-badges__caption {
