@@ -31,7 +31,7 @@
     {% render 'variant-button-custom-styles', block_settings: block_settings, block_id: block.id %}
   {% endif %}
   <variant-picker
-    class="variant-picker spacing-style variant-picker--{{ block_settings.alignment }}{% if has_custom_variant_buttons %} variant-picker--custom-{{ block.id }}{% endif %}"
+    class="variant-picker spacing-style variant-picker--{{ block_settings.alignment }}{% if has_custom_variant_buttons %} variant-picker--custom-{{ block.id }}{% endif %}{% if show_option_details %} variant-picker--detailed{% endif %}"
     style="
       {% render 'spacing-style', settings: block_settings %}
        {% if block_settings.option_label_text_color != blank %}
@@ -251,6 +251,19 @@
                   >
                     {% if product_option_value.available == false %}
                       {{ product_option_value | escape }} - {{ 'content.unavailable' | t }}
+                    {% elsif show_option_details %}
+                      {% liquid
+                        assign dropdown_detail_variant = product_option_value.variant
+                        if dropdown_detail_variant and current_variant
+                          assign dropdown_price_delta = dropdown_detail_variant.price | minus: current_variant.price
+                        endif
+                      %}
+                      {{ product_option_value | escape }} —
+                      {%- if dropdown_price_delta == 0 -%}
+                        incluso
+                      {%- else -%}
+                        +{{ dropdown_price_delta | money }}
+                      {%- endif -%}
                     {% else %}
                       {{ product_option_value | escape }}
                     {% endif %}
@@ -274,6 +287,15 @@
         {{ product_resource.selected_or_first_available_variant | json }}
       </script>
     </form>
+
+    {% if show_option_details %}
+      <div class="variant-picker__config-summary">
+        <div class="variant-picker__config-summary-label">Configurazione selezionata</div>
+        <div class="variant-picker__config-summary-value">
+          {{ product_resource.selected_or_first_available_variant.options | join: ' · ' }}
+        </div>
+      </div>
+    {% endif %}
   </variant-picker>
 {% endunless %}
 
@@ -338,5 +360,49 @@
     font-size: 12px;
     color: #8a8a86;
     white-space: nowrap;
+  }
+
+  /* Dropdown configurator layout (Valvola Butterfly reference design):
+     2-column grid, with a 3rd option (this product always has exactly 3:
+     Diametro/Materiale/Azionamento) spanning the full width below. */
+  .variant-picker--detailed .variant-picker__form:has(.variant-option--dropdowns) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .variant-picker--detailed .variant-option--dropdowns:last-of-type {
+    grid-column: 1 / -1;
+  }
+
+  .variant-picker--detailed .variant-option--dropdowns > label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #68686a;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .variant-picker__config-summary {
+    margin-bottom: 26px;
+    border: 1px solid #e6e5e2;
+    padding: 16px 18px;
+  }
+
+  .variant-picker__config-summary-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #2e7d32;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .variant-picker__config-summary-value {
+    font-size: 12.5px;
+    color: #3c3c3c;
+    line-height: 1.7;
   }
 {% endstylesheet %}
