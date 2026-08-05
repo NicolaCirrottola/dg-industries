@@ -26,6 +26,10 @@
       class="quick-specs__grid"
       ref="specsContainer"
     >
+      <div class="quick-specs__row quick-specs__row--full">
+        <span class="quick-specs__label">Cod. articolo</span>
+        <span class="quick-specs__value">{{ quick_specs_variant.sku }}</span>
+      </div>
       {%- for product_option in quick_specs_product.options_with_values -%}
         <div class="quick-specs__row">
           <span class="quick-specs__label">{{ product_option.name | escape }}</span>
@@ -49,11 +53,21 @@
 {% endif %}
 
 {% stylesheet %}
-  /* Bordered gallery panel (Pagina-prodotto.html reference design) */
+  /* Constrained square gallery panel (Valvola Butterfly reference design) */
   .product-information .media-gallery__grid {
     border: 1px solid #e6e5e2;
     background: #fafaf9;
-    padding: 36px;
+    padding: 28px;
+    max-width: 420px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-information .media-gallery__grid img {
+    object-fit: contain !important;
   }
 
   .quick-specs {
@@ -76,11 +90,16 @@
     padding-bottom: 6px;
   }
 
+  .quick-specs__row--full {
+    grid-column: 1 / -1;
+  }
+
   .quick-specs__label {
     font-size: 11px;
-    color: #8a8a86;
+    color: #2e7d32;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    font-weight: 700;
   }
 
   .quick-specs__value {

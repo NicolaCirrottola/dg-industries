@@ -235,6 +235,15 @@
             form_obj: form
           %}
         </div>
+
+        <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#8a8a86;">
+          <span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:{% if can_add_to_cart %}#2E7D32{% else %}#c0392b{% endif %};"></span>
+          {%- if can_add_to_cart -%}
+            Disponibile — spedizione in 48h lavorative
+          {%- else -%}
+            Non disponibile
+          {%- endif -%}
+        </div>
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           </span>
         {%- endif -%}
@@ -401,6 +410,11 @@
     flex: 1;
     min-width: 12rem;
     height: 48px;
+  }
+
+  .buy-buttons-block .add-to-cart-button:hover {
+    background: #1b5e20 !important;
+    border-color: #1b5e20 !important;
   }
 {% endstylesheet %}
 
