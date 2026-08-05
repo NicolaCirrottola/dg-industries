@@ -1,0 +1,92 @@
+{% liquid
+  assign block_settings = block.settings
+%}
+
+<div
+  class="product-summary-sticky-header"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  /* Sticky title/price/variant-picker/config-summary block. Only this
+     short header sticks — the taller buy-box/tabs/description below
+     scroll normally, avoiding the earlier bug where the whole (much
+     taller) details column stuck and felt frozen on screen. */
+  .product-summary-sticky-header {
+    position: sticky;
+    top: var(--header-height, 0px);
+    z-index: 10;
+    background: var(--color-background, #ffffff);
+    padding-bottom: 12px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product summary (sticky)",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product summary (sticky)",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
