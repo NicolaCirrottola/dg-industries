@@ -43,23 +43,23 @@ header-component .header-menu__inner {
   position: relative;
   overflow: hidden;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.38) 40%, rgba(255, 255, 255, 0.52) 100%);
-  backdrop-filter: blur(60px) saturate(240%);
-  -webkit-backdrop-filter: blur(60px) saturate(240%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.55) 40%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(75px) saturate(260%);
+  -webkit-backdrop-filter: blur(75px) saturate(260%);
   border: 1px solid rgba(0, 0, 0, 0.16);
   box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
     inset 0 -14px 22px -10px rgba(255, 255, 255, 0.5);
-  padding-inline: 48px;
+  padding-inline: 64px;
   /* min-height only — vertical size is intentionally unchanged */
   min-height: 68px;
-  max-width: 920px;
+  max-width: 1040px;
 }
 
 header-component .menu-list__list {
-  gap: 12px;
+  gap: 4px;
 }
 
 header-component .header-menu__inner::before {
@@ -89,7 +89,7 @@ header-component .menu-list__link {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 500;
-  padding: 16px 40px;
+  padding: 16px 24px;
   border-radius: 999px;
   position: relative;
 }
@@ -110,10 +110,27 @@ header-component .menu-list__link--active::after {
 /* ==========================================================================
    4. Right-side icons: account, search, cart only (localization is disabled
    via header-group.json settings, not just hidden with CSS).
+
+   Bug fix: on templates using the transparent-home color path (--color-
+   transparent-text, currently white for hero legibility), the account
+   icon was inheriting that white via a SEPARATE custom property chain
+   (.account-button__icon { color: var(--color-account-icon) }, which
+   itself resolves to var(--color-foreground) — see header-actions.liquid
+   / header.liquid). The earlier "solid black" fix only set `color` on
+   the .header-actions__action wrapper, which doesn't reach this
+   explicit var()-driven override, so the account icon stayed white on
+   the homepage specifically while cart/search (plain currentColor, no
+   override) already looked correct. Forcing it here directly closes
+   that gap regardless of page/template.
    ========================================================================== */
 header-component .header-actions__action,
 header-component .action__cart {
   transition: transform 0.2s ease;
+}
+
+header-component .account-button__icon,
+header-component .account-button__text {
+  color: #000000 !important;
 }
 
 header-component .header-actions__action:hover,
