@@ -38,7 +38,30 @@
 /* ==========================================================================
    2. Glass pill nav — only the central nav container gets the frosted-glass
    treatment. Logo and action icons sit directly on the transparent bar.
+
+   The pill now STRETCHES to fill the space between logo and icons (up to
+   a cap) instead of just being a wider fixed-width capsule: the header's
+   3-column grid (--header-left/--header-center/--header-right, defined in
+   sections/header.liquid) normally sizes the center track to `auto`
+   (shrink-to-content); widening that track to a minmax(auto, cap) gives
+   the pill real room to grow into, and width:100% at each wrapper level
+   (header__column -> header-menu -> header-menu__inner) carries that
+   growth through to the visible capsule. Horizon's own grid is kept —
+   no display:flex override on .header, which would fight its JS/overflow
+   calculations.
    ========================================================================== */
+header-component .header__columns {
+  --header-center: minmax(auto, 750px);
+}
+
+header-component .header__column:has(.header-menu__inner) {
+  flex: 1 1 auto;
+}
+
+header-component header-menu {
+  width: 100%;
+}
+
 header-component .header-menu__inner {
   position: relative;
   overflow: hidden;
@@ -52,14 +75,33 @@ header-component .header-menu__inner {
     0 2px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
     inset 0 -14px 22px -10px rgba(255, 255, 255, 0.5);
-  padding-inline: 64px;
+  padding-inline: 32px;
   /* min-height only — vertical size is intentionally unchanged */
   min-height: 68px;
-  max-width: 1040px;
+  width: 100%;
 }
 
-header-component .menu-list__list {
-  gap: 4px;
+/* The desktop nav list isn't .menu-list__list (that markup is the mobile
+   drawer variant) — it's rendered inside <overflow-list>'s declarative
+   shadow root (snippets/overflow-list.liquid), as <ul part="list">. Shadow
+   content can't be reached with a plain class selector: --overflow-list-
+   alignment is the component's own inheritable custom-property hook for
+   justify-content, and ::part(list) is the standard way to reach an
+   element explicitly exposed via part="..." for layout properties like
+   width that aren't already exposed as a variable. */
+header-component .menu-list,
+header-component .menu-list > overflow-list,
+header-component overflow-list {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+header-component overflow-list {
+  --overflow-list-alignment: space-around;
+}
+
+header-component overflow-list::part(list) {
+  width: 100%;
 }
 
 header-component .header-menu__inner::before {
