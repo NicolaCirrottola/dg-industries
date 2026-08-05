@@ -405,4 +405,42 @@
     color: #3c3c3c;
     line-height: 1.7;
   }
+
+  /* Modern minimal dropdown restyle (replaces native <select> chrome) */
+  .variant-picker--detailed .variant-option__select-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .variant-picker--detailed .variant-option__select-wrapper:hover {
+    border-color: var(--color-accent, #3cc3b2);
+  }
+
+  .variant-picker--detailed .variant-option__select-wrapper:has(.variant-option__select:focus-visible) {
+    border-color: var(--color-accent, #3cc3b2);
+    box-shadow: 0 0 0 3px rgba(60, 195, 178, 0.18);
+  }
+
+  .variant-picker--detailed .variant-option__select-wrapper .icon {
+    display: none;
+  }
+
+  .variant-picker--detailed .variant-option__select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 44px;
+    padding: 0 40px 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #161616;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233cc3b2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    border: none;
+    cursor: pointer;
+  }
 {% endstylesheet %}

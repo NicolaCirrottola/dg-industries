@@ -188,3 +188,17 @@ header-component .action__cart:hover {
 header-component .header-logo__image {
   max-width: 280px;
 }
+
+/* ==========================================================================
+   6. Rendering performance — hint the compositor for the two properties
+   that actually change every scroll/hover frame (the pill's live backdrop
+   blur, and the icon hover scale), rather than promoting the whole header.
+   ========================================================================== */
+header-component .header-menu__inner {
+  will-change: backdrop-filter;
+}
+
+header-component .header-actions__action,
+header-component .action__cart {
+  will-change: transform;
+}
