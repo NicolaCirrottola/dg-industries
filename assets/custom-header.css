@@ -35,6 +35,20 @@ header-component .menu-list__list-item:has(.menu-list__link[aria-expanded='true'
   transform: translateY(0);
 }
 
+/* menu-list__submenu-inner is shared with the nav's "more" overflow menu,
+   which legitimately needs max-height + overflow-y:auto (a long overflowed
+   link list should scroll). Scope the no-scroll override to submenus that
+   contain our custom mega-menu content specifically, via :has(), so the
+   overflow menu's own scrolling is untouched. */
+header-component .menu-list__submenu-inner:has(.mega-menu-content) {
+  max-height: none;
+  height: auto;
+  overflow: visible;
+  overflow-y: visible;
+  overflow-x: visible;
+  scrollbar-width: none;
+}
+
 header-component .header__row--bottom {
   min-height: 64px;
 }
