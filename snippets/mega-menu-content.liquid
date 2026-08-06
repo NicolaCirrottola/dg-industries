@@ -1,0 +1,316 @@
+{%- doc -%}
+  Custom mega-menu content (dg-homepage.html reference design): Categorie
+  (real child links, native/editable), Famiglie di prodotto + In evidenza
+  highlights (hardcoded per top-level nav position — no native Shopify data
+  model fits curated per-category copy), and a shared Risorse utili /
+  consulenza CTA row.
+
+  @param {object} link - The top-level navigation link (with .links children).
+  @param {number} index - 1-based position of this link among top-level nav items.
+{%- enddoc -%}
+
+{% liquid
+  assign h1_title = ''
+  assign h1_desc = ''
+  assign h2_title = ''
+  assign h2_desc = ''
+  assign h3_title = ''
+  assign h3_desc = ''
+  assign families = ''
+
+  case index
+    when 1
+      assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Alluminio,PVC industriale,Gomma antiabrasione,Rivestimenti speciali'
+      assign h1_title = 'Materiali certificati'
+      assign h1_desc = 'Qualità garantita per ogni applicazione industriale.'
+      assign h2_title = 'Pronta consegna'
+      assign h2_desc = 'Ampia disponibilità a magazzino e spedizioni rapide.'
+      assign h3_title = 'Supporto tecnico'
+      assign h3_desc = 'Il nostro team è a tua disposizione per consulenza e progetti su misura.'
+    when 2
+      assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Alluminio,PVC industriale,Gomma antiabrasione,Rivestimenti speciali'
+      assign h1_title = 'Tenuta alla polvere'
+      assign h1_desc = 'Guarnizioni certificate per ambienti polverulenti.'
+      assign h2_title = 'Certificazione alimentare'
+      assign h2_desc = 'Materiali idonei al contatto con alimenti.'
+      assign h3_title = 'Manutenzione programmata'
+      assign h3_desc = 'Piani di intervento per la continuità di impianto.'
+    when 3
+      assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Rivestimenti speciali'
+      assign h1_title = 'Robustezza e durata'
+      assign h1_desc = 'Componenti dimensionati per cicli continui heavy-duty.'
+      assign h2_title = 'Pronta disponibilità'
+      assign h2_desc = 'Contenuti in aggiornamento — collezione consultabile da subito.'
+      assign h3_title = 'Assistenza tecnica'
+      assign h3_desc = 'Supporto nella scelta di passo, materiale e configurazione.'
+    else
+      assign families = 'Vagli vibranti,Vagli rotativi,Mulini a martelli,Mulini a rulli,Miscelatori a nastro,Dosatori volumetrici,Dosatori ponderali'
+      assign h1_title = 'Progettazione su misura'
+      assign h1_desc = 'Macchine configurate sulle esigenze di impianto.'
+      assign h2_title = 'Automazione e PLC'
+      assign h2_desc = 'Integrazione con sistemi di controllo esistenti.'
+      assign h3_title = 'Assistenza post-vendita'
+      assign h3_desc = 'Interventi e ricambi su tutto il territorio.'
+  endcase
+
+  assign family_list = families | split: ','
+%}
+
+<div class="mega-menu-content">
+  <div class="mega-menu-content__grid">
+    <div>
+      <div class="mega-menu-content__label">Categorie</div>
+      <div class="mega-menu-content__list">
+        {%- for sub in link.links -%}
+          <a href="{{ sub.url }}" class="mega-menu-content__cat-link">
+            <span>{{ sub.title }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div>
+      <div class="mega-menu-content__label">Famiglie di prodotto</div>
+      <div class="mega-menu-content__list">
+        {%- for family in family_list -%}
+          <div class="mega-menu-content__family">{{ family }}</div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div>
+      <div class="mega-menu-content__label">In evidenza</div>
+      <div class="mega-menu-content__highlights">
+        <div class="mega-menu-content__highlight">
+          <div class="mega-menu-content__icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </div>
+          <div>
+            <div class="mega-menu-content__highlight-title">{{ h1_title }}</div>
+            <div class="mega-menu-content__highlight-desc">{{ h1_desc }}</div>
+          </div>
+        </div>
+        <div class="mega-menu-content__highlight">
+          <div class="mega-menu-content__icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 16V7h9v9M12 10h5l4 3v3h-2" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="7.5" cy="18" r="1.6" stroke="currentColor" stroke-width="1.6"></circle><circle cx="17.5" cy="18" r="1.6" stroke="currentColor" stroke-width="1.6"></circle></svg>
+          </div>
+          <div>
+            <div class="mega-menu-content__highlight-title">{{ h2_title }}</div>
+            <div class="mega-menu-content__highlight-desc">{{ h2_desc }}</div>
+          </div>
+        </div>
+        <div class="mega-menu-content__highlight">
+          <div class="mega-menu-content__icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 15c0-4 2-8 8-8s8 4 8 8" stroke="currentColor" stroke-width="1.6"></path><rect x="2.5" y="14" width="4" height="6" rx="1.2" stroke="currentColor" stroke-width="1.6"></rect><rect x="17.5" y="14" width="4" height="6" rx="1.2" stroke="currentColor" stroke-width="1.6"></rect></svg>
+          </div>
+          <div>
+            <div class="mega-menu-content__highlight-title">{{ h3_title }}</div>
+            <div class="mega-menu-content__highlight-desc">{{ h3_desc }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="mega-menu-content__label">Risorse utili</div>
+      <div class="mega-menu-content__resources">
+        <a href="#" class="mega-menu-content__resource-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="1.4" stroke="currentColor" stroke-width="1.6"></rect><line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.6"></line><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.6"></line></svg>
+          Schede tecniche
+        </a>
+        <a href="#" class="mega-menu-content__resource-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 4h9l3 3v13H6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.6"></line><line x1="9" y1="16" x2="15" y2="16" stroke="currentColor" stroke-width="1.6"></line></svg>
+          Cataloghi
+        </a>
+        <a href="#" class="mega-menu-content__resource-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4 17v3h16v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          Download
+        </a>
+        <a href="#" class="mega-menu-content__resource-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"></circle><path d="M10 9l5 3-5 3z" fill="currentColor"></path></svg>
+          Guide e video
+        </a>
+        <a href="#" class="mega-menu-content__resource-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="1.4" stroke="currentColor" stroke-width="1.6"></rect><line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.6"></line><circle cx="8.6" cy="12.6" r="1" fill="currentColor"></circle><circle cx="12" cy="12.6" r="1" fill="currentColor"></circle><circle cx="15.4" cy="12.6" r="1" fill="currentColor"></circle><circle cx="8.6" cy="16" r="1" fill="currentColor"></circle><circle cx="12" cy="16" r="1" fill="currentColor"></circle></svg>
+          Tool di calcolo
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mega-menu-content__cta">
+    <div class="mega-menu-content__cta-inner">
+      <div class="mega-menu-content__cta-left">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        <div>
+          <div class="mega-menu-content__cta-title">Hai un progetto complesso?</div>
+          <div class="mega-menu-content__cta-desc">Parla con i nostri specialisti per una soluzione personalizzata.</div>
+        </div>
+      </div>
+      <a href="#" class="mega-menu-content__cta-button">Richiedi consulenza ↗</a>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .mega-menu-content__grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 36px 40px 28px;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .mega-menu-content__label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #3cc3b2;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .mega-menu-content__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mega-menu-content__cat-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mega-menu-content__cat-link:hover {
+    background: rgba(60, 195, 178, 0.1);
+    color: #3cc3b2;
+  }
+
+  .mega-menu-content__family {
+    padding: 10px 12px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13.5px;
+    cursor: default;
+    border-radius: 6px;
+  }
+
+  .mega-menu-content__highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mega-menu-content__highlight {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .mega-menu-content__icon-box {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(60, 195, 178, 0.35);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    color: #3cc3b2;
+  }
+
+  .mega-menu-content__highlight-title {
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .mega-menu-content__highlight-desc {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .mega-menu-content__resources {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mega-menu-content__resource-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .mega-menu-content__resource-link:hover {
+    color: #3cc3b2;
+    background: rgba(60, 195, 178, 0.06);
+  }
+
+  .mega-menu-content__cta {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mega-menu-content__cta-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .mega-menu-content__cta-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #3cc3b2;
+  }
+
+  .mega-menu-content__cta-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .mega-menu-content__cta-desc {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 12.5px;
+  }
+
+  .mega-menu-content__cta-button {
+    border: 1px solid #3cc3b2;
+    color: #3cc3b2;
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mega-menu-content__cta-button:hover {
+    background: #3cc3b2;
+    color: #000;
+  }
+{% endstylesheet %}

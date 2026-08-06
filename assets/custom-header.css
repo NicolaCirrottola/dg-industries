@@ -1,204 +1,129 @@
 /*
- * Pure transparent floating navigation (Pagina-prodotto.html reference design).
+ * Fixed black header + mega-menu (dg-homepage.html reference design).
  * Scoped entirely to the existing header markup/JS — no DOM changes.
+ * Replaces the previous transparent glass-pill header restyle wholesale —
+ * this design is a solid black bar in every state, not a see-through one,
+ * so none of the old transparency-forcing rules apply anymore.
  */
 
 /* ==========================================================================
-   1. Header bar: always fully transparent, no solid/opaque state on scroll.
-   Horizon's default behavior paints a solid background underlay once the
-   header becomes sticky/active (for legibility over changing hero content).
-   The underlay elements are purely decorative (empty divs) — hiding them
-   removes any possibility of a white/opaque strip appearing, in every state.
+   1. Row backgrounds/heights. Background color itself comes from
+   background_color_top/bottom in header-group.json (native mechanism —
+   the underlay divs paint it, so unlike the old design we do NOT hide
+   .header__underlay here). This just sets row heights to match the
+   120px total (56px logo row + 64px nav row) and the divider between them.
    ========================================================================== */
-#header-component .header__underlay {
-  display: none !important;
+header-component .header__row--top {
+  min-height: 56px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-#header-component,
-#header-component .header__row,
-#header-component .header__columns {
-  background: transparent !important;
-}
-
-/* Keep the header's "unstuck / top of page" text, border and logo treatment
-   permanently active, instead of switching to solid-page colors on sticky
-   scroll or menu hover. */
-#header-component.header[transparent] {
-  --header-logo-display: unset !important;
-  --header-logo-inverse-display: none !important;
-}
-
-#header-component.header[transparent] .header__row {
-  --color-foreground: var(--color-transparent-text) !important;
-  --color-foreground-rgb: var(--color-transparent-text-rgb) !important;
-  --color-border: var(--color-transparent-text) !important;
-  --color-border-rgb: var(--color-transparent-text-rgb) !important;
+header-component .header__row--bottom {
+  min-height: 64px;
 }
 
 /* ==========================================================================
-   2. Glass pill nav — only the central nav container gets the frosted-glass
-   treatment. Logo and action icons sit directly on the transparent bar.
-
-   The pill now STRETCHES to fill the space between logo and icons (up to
-   a cap) instead of just being a wider fixed-width capsule: the header's
-   3-column grid (--header-left/--header-center/--header-right, defined in
-   sections/header.liquid) normally sizes the center track to `auto`
-   (shrink-to-content); widening that track to a minmax(auto, cap) gives
-   the pill real room to grow into, and width:100% at each wrapper level
-   (header__column -> header-menu -> header-menu__inner) carries that
-   growth through to the visible capsule. Horizon's own grid is kept —
-   no display:flex override on .header, which would fight its JS/overflow
-   calculations.
+   2. Logo — actual size is driven by settings.logo_height /
+   settings.logo_height_mobile (config/settings_data.json); no invert
+   filter here (unlike the footer's white version) — the mockup shows the
+   full-color mark directly on black, and it reads fine at this size.
    ========================================================================== */
-header-component .header__columns {
-  --header-center: minmax(auto, 750px);
-}
-
-header-component .header__column:has(.header-menu__inner) {
-  flex: 1 1 auto;
-}
-
-header-component header-menu {
-  width: 100%;
-}
-
-header-component .header-menu__inner {
-  position: relative;
-  overflow: hidden;
-  border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.55) 40%, rgba(255, 255, 255, 0.7) 100%);
-  backdrop-filter: blur(75px) saturate(260%);
-  -webkit-backdrop-filter: blur(75px) saturate(260%);
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.18),
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -14px 22px -10px rgba(255, 255, 255, 0.5);
-  padding-inline: 32px;
-  /* min-height only — vertical size is intentionally unchanged */
-  min-height: 68px;
-  width: 100%;
-}
-
-/* The desktop nav list isn't .menu-list__list (that markup is the mobile
-   drawer variant) — it's rendered inside <overflow-list>'s declarative
-   shadow root (snippets/overflow-list.liquid), as <ul part="list">. Shadow
-   content can't be reached with a plain class selector: --overflow-list-
-   alignment is the component's own inheritable custom-property hook for
-   justify-content, and ::part(list) is the standard way to reach an
-   element explicitly exposed via part="..." for layout properties like
-   width that aren't already exposed as a variable. */
-header-component .menu-list,
-header-component .menu-list > overflow-list,
-header-component overflow-list {
-  width: 100%;
-  flex: 1 1 auto;
-}
-
-header-component overflow-list {
-  --overflow-list-alignment: space-around;
-}
-
-header-component overflow-list::part(list) {
-  width: 100%;
-}
-
-header-component .header-menu__inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -20%;
-  width: 60%;
-  height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
-  border-radius: 999px;
-  pointer-events: none;
-  filter: blur(2px);
+header-component .header-logo__image {
+  max-width: 200px;
 }
 
 /* ==========================================================================
-   3. Solid black text + icons — fixed color, no dynamic/blend-mode contrast.
+   3. Nav links — white by default, teal on hover/open, with an animated
+   underline driven by the existing aria-expanded attribute (already set
+   by header-menu.js on open/close, no extra JS needed here).
    ========================================================================== */
-header-component .menu-list__link,
-header-component .header-actions__action,
-header-component .action__cart {
-  color: #000000 !important;
-  mix-blend-mode: normal;
-}
-
 header-component .menu-list__link {
   font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  padding: 16px 24px;
-  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 10px 16px;
   position: relative;
+  transition: color 0.2s ease;
 }
 
-header-component .menu-list__link--active::after {
+header-component .menu-list__link:hover,
+header-component .menu-list__link[aria-expanded='true'] {
+  color: #3cc3b2;
+}
+
+header-component .menu-list__link::after {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 18px;
+  right: 18px;
   bottom: 2px;
-  transform: translateX(-50%);
-  width: 18px;
-  height: 3px;
+  height: 2px;
   border-radius: 2px;
-  background: #54b8ac;
-  mix-blend-mode: normal;
+  background: #3cc3b2;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+header-component .menu-list__link:hover::after,
+header-component .menu-list__link[aria-expanded='true']::after {
+  transform: scaleX(1);
 }
 
 /* ==========================================================================
-   4. Right-side icons: account, search, cart only (localization is disabled
-   via header-group.json settings, not just hidden with CSS).
-
-   Bug fix: on templates using the transparent-home color path (--color-
-   transparent-text, currently white for hero legibility), the account
-   icon was inheriting that white via a SEPARATE custom property chain
-   (.account-button__icon { color: var(--color-account-icon) }, which
-   itself resolves to var(--color-foreground) — see header-actions.liquid
-   / header.liquid). The earlier "solid black" fix only set `color` on
-   the .header-actions__action wrapper, which doesn't reach this
-   explicit var()-driven override, so the account icon stayed white on
-   the homepage specifically while cart/search (plain currentColor, no
-   override) already looked correct. Forcing it here directly closes
-   that gap regardless of page/template.
+   4. Action icons (search/account/cart) + mobile hamburger — white by
+   default, teal on hover. Native modal-triggered search (this theme has
+   no "always-visible inline search bar" style) rather than the mockup's
+   persistent input box, to avoid fighting the working search-modal
+   component with a bespoke inline input.
    ========================================================================== */
 header-component .header-actions__action,
-header-component .action__cart {
-  transition: transform 0.2s ease;
+header-component .action__cart,
+header-component .header__icon--menu {
+  color: #ffffff;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+header-component .header-actions__action:hover,
+header-component .action__cart:hover,
+header-component .header__icon--menu:hover {
+  color: #3cc3b2;
 }
 
 header-component .account-button__icon,
 header-component .account-button__text {
-  color: #000000 !important;
+  color: #ffffff;
 }
 
-header-component .header-actions__action:hover,
-header-component .action__cart:hover {
-  transform: scale(1.12);
-}
-
-/* ==========================================================================
-   5. Logo size — actual height is driven by settings.logo_height /
-   settings.logo_height_mobile (see config/settings_data.json); this just
-   raises the safety cap so nothing else can constrain it smaller.
-   ========================================================================== */
-header-component .header-logo__image {
-  max-width: 280px;
+header-component .account-button:hover .account-button__icon {
+  color: #3cc3b2;
 }
 
 /* ==========================================================================
-   6. Rendering performance — hint the compositor for the two properties
-   that actually change every scroll/hover frame (the pill's live backdrop
-   blur, and the icon hover scale), rather than promoting the whole header.
+   5. Mobile drawer — scoped to the <header-drawer> element specifically
+   (not the shared settings.drawer_* colors, which the cart drawer also
+   uses) so only the nav drawer goes black-on-black to match the header.
+   Native <details>/<summary> accordion chrome is left untouched.
    ========================================================================== */
-header-component .header-menu__inner {
-  will-change: backdrop-filter;
+header-drawer .menu-drawer {
+  background: #000000;
+  color: #ffffff;
 }
 
-header-component .header-actions__action,
-header-component .action__cart {
-  will-change: transform;
+header-drawer .menu-drawer__menu-item-text,
+header-drawer .menu-drawer__menu-item,
+header-drawer .menu-drawer__utility-links,
+header-drawer .menu-drawer__close-button {
+  color: #ffffff;
+}
+
+header-drawer .menu-drawer__menu-item--active .menu-drawer__menu-item-text,
+header-drawer .menu-drawer__menu-item:hover .menu-drawer__menu-item-text {
+  color: #3cc3b2;
+}
+
+header-drawer .menu-drawer__menu-item,
+header-drawer .menu-drawer__submenu {
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
