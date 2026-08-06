@@ -11,173 +11,134 @@
     "hero_iLBwPd": {
       "type": "hero",
       "blocks": {
-        "group_mATTUY": {
+        "badge_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dal 1963 — Industria Agroalimentare</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.75rem",
+            "line_height": "tight",
+            "letter_spacing": "loose",
+            "case": "uppercase",
+            "wrap": "nowrap",
+            "text_color": "#2E7F76",
+            "background": true,
+            "background_color": "rgba(255,255,255,0.5)",
+            "corner_radius": 50,
+            "padding-block-start": 6,
+            "padding-block-end": 6,
+            "padding-inline-start": 14,
+            "padding-inline-end": 14
+          },
+          "blocks": {}
+        },
+        "heading_text": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi</h1>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2.875rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#161616",
+            "background": false,
+            "padding-block-start": 20,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "subtext_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Progettiamo e produciamo valvole, tubazioni e sistemi di aspirazione per impianti molitori, cerealicoli e di trasporto pneumatico — su misura per ogni linea di produzione.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.97rem",
+            "line_height": "loose",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#54544f",
+            "background": false,
+            "padding-block-start": 12,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_row": {
           "type": "group",
-          "name": "t:names.group",
           "settings": {
             "content_direction": "row",
-            "vertical_on_mobile": true,
+            "vertical_on_mobile": false,
             "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "gap": 14,
+            "width": "fit-content",
             "width_mobile": "fill",
-            "custom_width_mobile": 100,
             "height": "fit",
-            "custom_height": 100,
             "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
             "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
-            "padding-block-start": 0,
+            "padding-block-start": 24,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_U86Qji": {
-              "type": "group",
-              "name": "t:names.group",
+            "cta_primary": {
+              "type": "button",
               "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 0,
-                "width": "custom",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
+                "label": "Esplora il catalogo",
+                "link": "",
                 "open_in_new_tab": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "style_class": "button"
               },
-              "blocks": {
-                "text_nptTQe": {
-                  "type": "text",
-                  "name": "t:names.heading",
-                  "settings": {
-                    "text": "<h2><em>Introducing</em></h2>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-accent--family)",
-                    "font_size": "1.5rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "{{ settings.color_palette.background }}",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "text_m9AcWC": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<h1>Our Newest Arrivals </h1>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h2",
-                    "font": "var(--font-body--family)",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "{{ settings.color_palette.background }}",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_nptTQe",
-                "text_m9AcWC"
-              ]
+              "blocks": {}
             },
-            "text_ebNxhf": {
-              "type": "text",
-              "name": "t:names.text",
+            "cta_secondary": {
+              "type": "button",
               "settings": {
-                "text": "<p>Bring order to the chaos. When all your tech essentials have a dedicated spot on your desk, you don’t have to waste any time searching for them. </p>",
-                "width": "fit-content",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "{{ settings.color_palette.background }}",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "label": "Richiedi consulenza",
+                "link": "",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "group_U86Qji",
-            "text_ebNxhf"
+            "cta_primary",
+            "cta_secondary"
           ]
         }
       },
       "block_order": [
-        "group_mATTUY"
+        "badge_text",
+        "heading_text",
+        "subtext_text",
+        "button_row"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "media_type_2": "image",
+        "media_type_2": "none",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -185,20 +146,20 @@
         "vertical_alignment": "center",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "flex-end",
+        "vertical_alignment_flex_direction_column": "center",
         "gap": 16,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "large",
-        "section_height_custom": 50,
-        "background_color": "{{ settings.color_palette.foreground }}",
-        "toggle_overlay": true,
+        "section_height_custom": 70,
+        "background_color": "#fbfbfa",
+        "toggle_overlay": false,
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 0,
-        "padding-block-end": 31
+        "padding-block-end": 0
       }
     },
     "product_list_EDUBdR": {
@@ -708,10 +669,75 @@
         "padding-block-start": 48,
         "padding-block-end": 64
       }
+    },
+    "catalog_category_grid_main": {
+      "type": "catalog-category-grid",
+      "settings": {
+        "eyebrow": "Catalogo",
+        "heading": "Esplora per categoria",
+        "intro": "Cinque aree tecniche coprono l'intero impianto: dall'aspirazione alla movimentazione pesante, fino ai servizi post-vendita.",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      },
+      "blocks": {
+        "card_aspirazione": {
+          "type": "category-card",
+          "settings": {
+            "size": "big",
+            "title": "Sistemi di Aspirazione",
+            "description": "Ventilatori, filtri e cicloni per la captazione polveri e il deumidificamento impianti.",
+            "link": ""
+          }
+        },
+        "card_caduta": {
+          "type": "category-card",
+          "settings": {
+            "size": "small",
+            "title": "Tubazione di caduta",
+            "description": "Condotte, curve e raccordi per linee ad alta resistenza.",
+            "link": ""
+          }
+        },
+        "card_movimentazione": {
+          "type": "category-card",
+          "settings": {
+            "size": "small",
+            "title": "Movimentazione Pesante",
+            "description": "Catene, coclee e trasportatori heavy-duty.",
+            "link": ""
+          }
+        },
+        "card_macchine": {
+          "type": "category-card",
+          "settings": {
+            "size": "small",
+            "title": "Macchine",
+            "description": "Valvole, dosatori, miscelatori, filtri etc.",
+            "link": ""
+          }
+        },
+        "card_servizi": {
+          "type": "category-card",
+          "settings": {
+            "size": "small",
+            "title": "Servizi",
+            "description": "Consulenza tecnica e assistenza post-vendita.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_aspirazione",
+        "card_caduta",
+        "card_movimentazione",
+        "card_macchine",
+        "card_servizi"
+      ]
     }
   },
   "order": [
     "hero_iLBwPd",
+    "catalog_category_grid_main",
     "product_list_EDUBdR",
     "media_with_content_LfPdEJ",
     "collection_list_xpBxCm"
