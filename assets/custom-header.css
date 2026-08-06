@@ -18,6 +18,23 @@ header-component .header__row--top {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ==========================================================================
+   0. Mega-menu open animation — fade + slide-down on top of the theme's
+   native height/clip-path reveal (header-menu.js sets aria-expanded on the
+   trigger link when it opens; :has() lets the sibling submenu react to it
+   without any extra JS).
+   ========================================================================== */
+header-component .menu-list__submenu {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+header-component .menu-list__list-item:has(.menu-list__link[aria-expanded='true']) .menu-list__submenu {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 header-component .header__row--bottom {
   min-height: 64px;
 }
