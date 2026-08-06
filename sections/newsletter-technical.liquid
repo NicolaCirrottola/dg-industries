@@ -1,0 +1,130 @@
+{% liquid
+  assign s = section.settings
+%}
+
+<div class="newsletter-technical" style="{% render 'spacing-style', settings: s %}">
+  <div class="newsletter-technical__inner">
+    <div class="newsletter-technical__content">
+      {% content_for 'blocks' %}
+    </div>
+
+    <div class="newsletter-technical__image-wrap">
+      <img
+        src="{{ 'dg-newsletter.png' | asset_url }}"
+        alt="Newsletter"
+        loading="lazy"
+        class="newsletter-right-image"
+        width="1916"
+        height="821"
+      >
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .newsletter-technical {
+    background-color: #ffffff;
+    color: #161616;
+  }
+
+  .newsletter-technical__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 64px 48px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .newsletter-technical__content {
+    flex: 1 1 420px;
+    min-width: 0;
+    color: #161616;
+  }
+
+  /* Only force color on plain text elements — not inside the submit
+     button, which has its own dark background and light text. */
+  .newsletter-technical__content :is(h1, h2, h3, h4, p, label) {
+    color: #161616;
+  }
+
+  .newsletter-technical__image-wrap {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .newsletter-right-image {
+    max-width: 100%;
+    max-height: 360px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .newsletter-technical__inner {
+      flex-direction: column;
+      padding: 40px 24px;
+      gap: 28px;
+    }
+
+    .newsletter-technical__image-wrap {
+      order: -1;
+    }
+
+    .newsletter-right-image {
+      max-height: 220px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Newsletter (technical)",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter (technical)"
+    }
+  ]
+}
+{% endschema %}
