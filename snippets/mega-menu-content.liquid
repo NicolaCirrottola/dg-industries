@@ -1,12 +1,10 @@
 {%- doc -%}
-  Custom mega-menu content (dg-homepage.html reference design): Categorie
-  (real child links, native/editable), Famiglie di prodotto + In evidenza
-  highlights (hardcoded per top-level nav position — no native Shopify data
-  model fits curated per-category copy), and a shared Risorse utili /
-  consulenza CTA row.
+  Custom mega-menu content (dg-homepage.html reference design). Fully
+  hardcoded per top-level nav position — Categorie included — since this
+  bespoke 4-category content has no native Shopify data model to hang off
+  (no Admin Navigation menu setup required to see the real design).
 
-  @param {object} link - The top-level navigation link (with .links children).
-  @param {number} index - 1-based position of this link among top-level nav items.
+  @param {number} index - 1-based position of this nav item (1-4).
 {%- enddoc -%}
 
 {% liquid
@@ -17,9 +15,11 @@
   assign h3_title = ''
   assign h3_desc = ''
   assign families = ''
+  assign categories = ''
 
   case index
     when 1
+      assign categories = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori'
       assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Alluminio,PVC industriale,Gomma antiabrasione,Rivestimenti speciali'
       assign h1_title = 'Materiali certificati'
       assign h1_desc = 'Qualità garantita per ogni applicazione industriale.'
@@ -28,6 +28,7 @@
       assign h3_title = 'Supporto tecnico'
       assign h3_desc = 'Il nostro team è a tua disposizione per consulenza e progetti su misura.'
     when 2
+      assign categories = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria'
       assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Alluminio,PVC industriale,Gomma antiabrasione,Rivestimenti speciali'
       assign h1_title = 'Tenuta alla polvere'
       assign h1_desc = 'Guarnizioni certificate per ambienti polverulenti.'
@@ -36,6 +37,7 @@
       assign h3_title = 'Manutenzione programmata'
       assign h3_desc = 'Piani di intervento per la continuità di impianto.'
     when 3
+      assign categories = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori'
       assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Rivestimenti speciali'
       assign h1_title = 'Robustezza e durata'
       assign h1_desc = 'Componenti dimensionati per cicli continui heavy-duty.'
@@ -44,6 +46,7 @@
       assign h3_title = 'Assistenza tecnica'
       assign h3_desc = 'Supporto nella scelta di passo, materiale e configurazione.'
     else
+      assign categories = 'Vagli e Setacciatrici,Mulini e Macinatori,Miscelatori,Dosatori,Bilance e Sistemi di Pesatura,Linee Complete,Servizi e Assistenza'
       assign families = 'Vagli vibranti,Vagli rotativi,Mulini a martelli,Mulini a rulli,Miscelatori a nastro,Dosatori volumetrici,Dosatori ponderali'
       assign h1_title = 'Progettazione su misura'
       assign h1_desc = 'Macchine configurate sulle esigenze di impianto.'
@@ -54,6 +57,7 @@
   endcase
 
   assign family_list = families | split: ','
+  assign category_list = categories | split: ','
 %}
 
 <div class="mega-menu-content">
@@ -61,9 +65,9 @@
     <div>
       <div class="mega-menu-content__label">Categorie</div>
       <div class="mega-menu-content__list">
-        {%- for sub in link.links -%}
-          <a href="{{ sub.url }}" class="mega-menu-content__cat-link">
-            <span>{{ sub.title }}</span>
+        {%- for cat in category_list -%}
+          <a href="#" class="mega-menu-content__cat-link">
+            <span>{{ cat }}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </a>
         {%- endfor -%}

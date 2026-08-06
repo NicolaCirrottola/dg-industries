@@ -19,6 +19,7 @@
           "static": true,
           "settings": {
             "media_type": "image",
+            "custom_image_asset": "dg-newsletter.png",
             "video_loop": true,
             "video_autoplay": false,
             "image_position": "cover",

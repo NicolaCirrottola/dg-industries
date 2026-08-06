@@ -92,42 +92,81 @@
     %}
 
     {% capture children %}
-      {% for link in block_settings.menu.links %}
-        <li
-          role="presentation"
-          class="menu-list__list-item"
-          on:focus="/activate"
-          on:blur="/deactivate"
-          on:pointerenter="/activate"
-          on:pointerleave="/deactivate"
-        >
-          <a
-            href="{{ link.url }}"
-            data-skip-node-update="true"
-            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
-            {%- if link.links != blank -%}
+      {% if block_settings.menu_style == 'custom_columns' %}
+        {%- comment -%}
+          Bespoke 4-category nav (dg-homepage.html reference design). Bypasses
+          block_settings.menu.links entirely — the real Admin Navigation menu
+          would need 4 top-level items with real child links to drive this
+          natively, which isn't set up, so every column (Categorie included)
+          is hardcoded here and in snippets/mega-menu-content.liquid rather
+          than depending on that manual setup step.
+        {%- endcomment -%}
+        {% assign custom_nav_titles = 'Aspirazione,Caduta Pesante,Catene Trasportatori,Macchine' | split: ',' %}
+        {% for nav_title in custom_nav_titles %}
+          <li
+            role="presentation"
+            class="menu-list__list-item"
+            on:focus="/activate"
+            on:blur="/deactivate"
+            on:pointerenter="/activate"
+            on:pointerleave="/deactivate"
+          >
+            <a
+              href="#"
+              data-skip-node-update="true"
+              class="menu-list__link"
               aria-controls="submenu-{{ forloop.index }}"
               aria-haspopup="true"
               aria-expanded="false"
-            {%- endif -%}
-            {% if link.current %}
-              aria-current="page"
-            {% endif %}
-            ref="menuitem"
-          >
-            <span class="menu-list__link-title">{{- link.title -}}</span>
-          </a>
-          {%- if link.links != blank -%}
+              ref="menuitem"
+            >
+              <span class="menu-list__link-title">{{- nav_title -}}</span>
+            </a>
             <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]">
               <div
                 id="submenu-{{ forloop.index }}"
                 class="menu-list__submenu-inner"
                 style="{% render 'submenu-font-styles', settings: block_settings %}"
               >
-                {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
-                {% if block_settings.menu_style == 'custom_columns' %}
-                  {% render 'mega-menu-content', link: link, index: forloop.index %}
-                {% else %}
+                {% render 'mega-menu-content', index: forloop.index %}
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for link in block_settings.menu.links %}
+          <li
+            role="presentation"
+            class="menu-list__list-item"
+            on:focus="/activate"
+            on:blur="/deactivate"
+            on:pointerenter="/activate"
+            on:pointerleave="/deactivate"
+          >
+            <a
+              href="{{ link.url }}"
+              data-skip-node-update="true"
+              class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+              {%- if link.links != blank -%}
+                aria-controls="submenu-{{ forloop.index }}"
+                aria-haspopup="true"
+                aria-expanded="false"
+              {%- endif -%}
+              {% if link.current %}
+                aria-current="page"
+              {% endif %}
+              ref="menuitem"
+            >
+              <span class="menu-list__link-title">{{- link.title -}}</span>
+            </a>
+            {%- if link.links != blank -%}
+              <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]">
+                <div
+                  id="submenu-{{ forloop.index }}"
+                  class="menu-list__submenu-inner"
+                  style="{% render 'submenu-font-styles', settings: block_settings %}"
+                >
+                  {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
                   <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
                     <div
                       class="mega-menu__grid"
@@ -146,12 +185,12 @@
                       %}
                     </div>
                   </div>
-                {% endif %}
+                </div>
               </div>
-            </div>
-          {%- endif -%}
-        </li>
-      {% endfor %}
+            {%- endif -%}
+          </li>
+        {% endfor %}
+      {% endif %}
       <li
         class="menu-list__list-item"
         role="presentation"

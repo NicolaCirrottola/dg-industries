@@ -42,7 +42,17 @@
 >
   {%- if show_image -%}
     {% capture image_tag %}
-      {% if block_settings.image != blank %}
+      {% if block_settings.custom_image_asset != blank %}
+        {{
+          block_settings.custom_image_asset
+          | asset_url
+          | image_tag:
+            class: 'media-block__media border-style',
+            loading: 'lazy',
+            width: block_settings.custom_image_asset_width | default: 1916,
+            height: block_settings.custom_image_asset_height | default: 821
+        }}
+      {% elsif block_settings.image != blank %}
         {% render 'image',
           image: block_settings.image,
           class: 'media-block__media border-style',
