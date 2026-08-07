@@ -105,7 +105,7 @@
         {% for nav_title in custom_nav_titles %}
           <li
             role="presentation"
-            class="menu-list__list-item"
+            class="menu-list__list-item menu-list__list-item--custom-nav"
             on:focus="/activate"
             on:blur="/deactivate"
             on:pointerenter="/activate"
@@ -237,6 +237,7 @@
 
         {% if block_settings.menu_style == 'custom_columns' %}
           {% render 'header-search-bar' %}
+          {% render 'header-contact-button', link: block_settings.contact_link %}
         {% endif %}
       </div>
 
@@ -551,6 +552,19 @@
     flex: none;
   }
 
+  /* Thin vertical divider between the custom black-bar nav's macro-category
+     items only — scoped via the dedicated modifier class so native menu
+     instances elsewhere (different menu_style, the overflow "more" item)
+     are untouched. */
+  .menu-list__list-item--custom-nav:not(:last-child)::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 16px;
+    background-color: rgba(255, 255, 255, 0.4);
+    margin-inline: 8px;
+  }
+
   .menu-list__submenu-inner {
     position: relative;
     display: flex;
@@ -777,52 +791,41 @@
       class extends HTMLElement {
         connectedCallback() {
           this.input = this.querySelector('.header-search-bar__input');
-          this.phrases = this.input?.dataset.typewriterPhrases
-            ? this.input.dataset.typewriterPhrases.split('|')
-            : [];
-          this.phraseIndex = 0;
+          this.phrase = this.input?.dataset.typewriterPhrase || '';
           this.charIndex = 0;
           this.deleting = false;
+          this.pauseUntil = 0;
 
-          if (this.input && this.phrases.length > 1) {
-            this.tick();
+          if (this.input && this.phrase) {
+            this.timer = setInterval(() => this.tick(), 70);
           }
         }
 
         disconnectedCallback() {
-          clearTimeout(this.timer);
+          clearInterval(this.timer);
         }
 
         tick() {
-          if (!this.isConnected) return;
-
-          if (document.activeElement === this.input || this.input.value) {
-            this.timer = setTimeout(() => this.tick(), 400);
-            return;
-          }
-
-          const phrase = this.phrases[this.phraseIndex];
-          let delay = this.deleting ? 35 : 55;
+          if (document.activeElement === this.input || this.input.value) return;
+          if (this.pauseUntil && Date.now() < this.pauseUntil) return;
 
           if (!this.deleting) {
             this.charIndex += 1;
-            this.input.placeholder = phrase.slice(0, this.charIndex);
+            this.input.placeholder = this.phrase.slice(0, this.charIndex);
 
-            if (this.charIndex === phrase.length) {
+            if (this.charIndex >= this.phrase.length) {
               this.deleting = true;
-              delay = 1800;
+              this.pauseUntil = Date.now() + 1400;
             }
           } else {
             this.charIndex -= 1;
-            this.input.placeholder = phrase.slice(0, this.charIndex);
+            this.input.placeholder = this.phrase.slice(0, this.charIndex);
 
-            if (this.charIndex === 0) {
+            if (this.charIndex <= 0) {
               this.deleting = false;
-              this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+              this.pauseUntil = Date.now() + 500;
             }
           }
-
-          this.timer = setTimeout(() => this.tick(), delay);
         }
       }
     );
@@ -984,6 +987,13 @@
         }
       ],
       "default": "collection_images"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact button link",
+      "info": "Only shown with the Custom columns menu style.",
+      "visible_if": "{{ block.settings.menu_style == 'custom_columns' }}"
     },
     {
       "type": "select",
