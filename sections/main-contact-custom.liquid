@@ -1,0 +1,431 @@
+{% liquid
+  assign s = section.settings
+  assign form_id = section.id | prepend: 'ContactFormB2B-'
+%}
+
+<div
+  class="contact-b2b spacing-style"
+  style="{% render 'spacing-style', settings: s %} --contact-b2b-accent: {{ s.accent_color | default: '#3cc3b2' }};"
+>
+  <div class="contact-b2b__container">
+    <div class="contact-b2b__intro">
+      {% if s.heading != blank %}
+        <h1 class="contact-b2b__heading">{{ s.heading | escape }}</h1>
+      {% endif %}
+      {% if s.subheading != blank %}
+        <p class="contact-b2b__subheading">{{ s.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="contact-b2b__form-wrap">
+      {%- form 'contact', id: form_id, class: 'contact-b2b__form' -%}
+        <input
+          type="hidden"
+          name="contact[id]"
+          value="{{ form_id }}"
+        >
+
+        {% liquid
+          assign form_matches = false
+          if form.id == form_id or form.id == blank
+            assign form_matches = true
+          endif
+        %}
+
+        {%- if form.errors and form_matches -%}
+          <div
+            class="contact-b2b__message contact-b2b__message--error"
+            tabindex="-1"
+            autofocus
+          >
+            {{- 'icon-error.svg' | inline_asset_content -}}
+            <span>{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>
+          </div>
+        {%- endif -%}
+
+        {%- if form.posted_successfully? and form_matches -%}
+          <div
+            class="contact-b2b__message contact-b2b__message--success"
+            tabindex="-1"
+            autofocus
+          >
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+            <span>{{ 'blocks.contact_form.post_success' | t }}</span>
+          </div>
+        {%- endif -%}
+
+        <div class="contact-b2b__row">
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-company">
+              Ragione Sociale / Nome Società <span aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="{{ form_id }}-company"
+              name="contact[Ragione Sociale]"
+              autocomplete="organization"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-name">
+              Nome e Cognome referente <span aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="{{ form_id }}-name"
+              name="contact[name]"
+              autocomplete="name"
+              required
+              aria-required="true"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            >
+          </div>
+        </div>
+
+        <div class="contact-b2b__row">
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-email">
+              Email Aziendale <span aria-hidden="true">*</span>
+            </label>
+            <input
+              type="email"
+              id="{{ form_id }}-email"
+              name="contact[email]"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              aria-required="true"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              {% if form.errors contains 'email' and form_matches %}
+                aria-invalid="true"
+                aria-describedby="{{ form_id }}-email-error"
+              {% endif %}
+            >
+          </div>
+
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-phone">Numero di Telefono Aziendale</label>
+            <input
+              type="tel"
+              id="{{ form_id }}-phone"
+              name="contact[phone]"
+              autocomplete="tel"
+              pattern="[0-9\-\+\s]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            >
+          </div>
+        </div>
+
+        <div class="contact-b2b__row">
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-vat">Partita IVA / Codice Fiscale Aziendale</label>
+            <input
+              type="text"
+              id="{{ form_id }}-vat"
+              name="contact[Partita IVA o Codice Fiscale]"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-role">Ruolo / Qualifica Aziendale</label>
+            <input
+              type="text"
+              id="{{ form_id }}-role"
+              name="contact[Ruolo Aziendale]"
+              autocomplete="organization-title"
+              placeholder="Es. Resp. Acquisti, Direttore Tecnico, Progettista"
+            >
+          </div>
+        </div>
+
+        <div class="contact-b2b__row">
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-sector">Settore / Applicazione</label>
+            <select
+              id="{{ form_id }}-sector"
+              name="contact[Settore]"
+            >
+              <option value="">Seleziona...</option>
+              <option value="Molitorio">Molitorio</option>
+              <option value="Mangimistico">Mangimistico</option>
+              <option value="Chimico">Chimico</option>
+              <option value="Plastica/Sili">Plastica/Sili</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+
+          <div class="contact-b2b__field">
+            <label for="{{ form_id }}-request-type">
+              Tipo di Richiesta <span aria-hidden="true">*</span>
+            </label>
+            <select
+              id="{{ form_id }}-request-type"
+              name="contact[Tipo di Richiesta]"
+              required
+              aria-required="true"
+            >
+              <option value="">Seleziona...</option>
+              <option value="Impianto Custom / Commessa">Impianto Custom / Commessa</option>
+              <option value="Componenti a Catalogo">Componenti a Catalogo</option>
+              <option value="Consulenza Tecnica">Consulenza Tecnica</option>
+              <option value="Ricambi/Assistenza">Ricambi/Assistenza</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="contact-b2b__field contact-b2b__field--full">
+          <label for="{{ form_id }}-body">
+            Messaggio / Dettagli del Progetto <span aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="{{ form_id }}-body"
+            name="contact[body]"
+            rows="6"
+            required
+            aria-required="true"
+          >{{- form.body -}}</textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="contact-b2b__submit"
+        >
+          Invia richiesta
+        </button>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .contact-b2b {
+    background: #fbfbfa;
+  }
+
+  .contact-b2b__container {
+    /* Centered, balanced card — deliberately different from the hero's
+       full-width + page-margin approach, since this is a standalone page
+       section rather than something that needs to line up under the nav. */
+    max-width: 760px;
+    margin: 0 auto;
+    padding-inline: 1.5rem;
+  }
+
+  .contact-b2b__intro {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .contact-b2b__heading {
+    margin: 0 0 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #161616;
+  }
+
+  .contact-b2b__subheading {
+    margin: 0 auto;
+    max-width: 52ch;
+    color: #54544f;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .contact-b2b__form-wrap {
+    background: #ffffff;
+    border: 1px solid rgba(22, 22, 22, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(22, 22, 22, 0.06);
+    padding: 40px;
+  }
+
+  .contact-b2b__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .contact-b2b__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .contact-b2b__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .contact-b2b__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .contact-b2b__field label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #161616;
+  }
+
+  .contact-b2b__field label span {
+    color: var(--contact-b2b-accent, #3cc3b2);
+  }
+
+  .contact-b2b__field input,
+  .contact-b2b__field select,
+  .contact-b2b__field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: #161616;
+    background-color: #ffffff;
+    border: 1px solid rgba(22, 22, 22, 0.16);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-b2b__field textarea {
+    resize: vertical;
+    min-height: 140px;
+  }
+
+  .contact-b2b__field input:focus,
+  .contact-b2b__field select:focus,
+  .contact-b2b__field textarea:focus {
+    outline: none;
+    border-color: var(--contact-b2b-accent, #3cc3b2);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--contact-b2b-accent, #3cc3b2) 20%, transparent);
+  }
+
+  .contact-b2b__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 14px 32px;
+    border: 1px solid var(--contact-b2b-accent, #3cc3b2);
+    border-radius: 10px;
+    background-color: var(--contact-b2b-accent, #3cc3b2);
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+  }
+
+  .contact-b2b__submit:hover {
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+  }
+
+  .contact-b2b__submit:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--contact-b2b-accent, #3cc3b2) 35%, transparent);
+  }
+
+  .contact-b2b__message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+  }
+
+  .contact-b2b__message--error {
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;
+  }
+
+  .contact-b2b__message--success {
+    background: color-mix(in srgb, var(--contact-b2b-accent, #3cc3b2) 12%, transparent);
+    color: #1f6e63;
+  }
+
+  @media screen and (max-width: 749px) {
+    .contact-b2b__row {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-b2b__form-wrap {
+      padding: 24px;
+    }
+
+    .contact-b2b__heading {
+      font-size: 1.75rem;
+    }
+
+    .contact-b2b__submit {
+      align-self: stretch;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact form (B2B)",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Parliamone"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Raccontaci il tuo progetto: il nostro ufficio tecnico ti risponderà entro 24-48 ore lavorative."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#3cc3b2"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form (B2B)"
+    }
+  ]
+}
+{% endschema %}

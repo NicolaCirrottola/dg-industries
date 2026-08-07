@@ -66,15 +66,16 @@
 
 {% stylesheet %}
   .header-search-bar {
-    /* flex-basis 440px is the bar's actual rendered width — .header__actions-
+    /* flex-basis 560px is the bar's actual rendered width — .header__actions-
        right sizes itself to its content rather than stretching to fill the
        row, so a plain "grow to fill available space" rule would have
-       nothing to grow into. flex-shrink: 1 (rather than the old fixed
-       width's implicit 0) lets it give way instead of overflowing/
-       overlapping the Contattaci button and icons on narrower widths. */
-    flex: 0 1 440px;
+       nothing to grow into. flex-shrink: 1 (rather than a fixed width's
+       implicit 0) lets it give way instead of overflowing/overlapping the
+       Contattaci button and icons on narrower widths — max-width caps it at
+       580px so shrinking never produces something wider than the basis. */
+    flex: 0 1 560px;
     min-width: 0;
-    max-width: 100%;
+    max-width: 580px;
   }
 
   .header-search-bar__inner {
