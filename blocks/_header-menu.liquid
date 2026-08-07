@@ -218,7 +218,7 @@
       {{ block.shopify_attributes }}
       data-hydration-key="header-menu"
     >
-      <div class="header-menu__inner">
+      <div class="header-menu__inner{% if block_settings.menu_style == 'custom_columns' %} header-menu__inner--with-search{% endif %}">
         <nav
           class="menu-list"
           aria-label="{{ 'accessibility.header_navigation_label' | t }}"
@@ -234,6 +234,10 @@
             attributes: 'data-skip-node-update'
           %}
         </nav>
+
+        {% if block_settings.menu_style == 'custom_columns' %}
+          {% render 'header-search-bar' %}
+        {% endif %}
       </div>
 
       <script
@@ -536,6 +540,17 @@
     height: 100%;
   }
 
+  .header-menu__inner--with-search {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .header-menu__inner--with-search .menu-list {
+    flex: none;
+  }
+
   .menu-list__submenu-inner {
     position: relative;
     display: flex;
@@ -750,6 +765,69 @@
     display: none;
   }
 {% endstylesheet %}
+
+{% javascript %}
+  // Typewriter placeholder for the persistent header search bar (custom_columns
+  // nav only). Scoped entirely inside this custom element — it never touches
+  // globals or other search inputs (predictive search, /search page, etc.),
+  // so it can't conflict with the theme's own search components.
+  if (!customElements.get('header-search-typewriter')) {
+    customElements.define(
+      'header-search-typewriter',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.input = this.querySelector('.header-search-bar__input');
+          this.phrases = this.input?.dataset.typewriterPhrases
+            ? this.input.dataset.typewriterPhrases.split('|')
+            : [];
+          this.phraseIndex = 0;
+          this.charIndex = 0;
+          this.deleting = false;
+
+          if (this.input && this.phrases.length > 1) {
+            this.tick();
+          }
+        }
+
+        disconnectedCallback() {
+          clearTimeout(this.timer);
+        }
+
+        tick() {
+          if (!this.isConnected) return;
+
+          if (document.activeElement === this.input || this.input.value) {
+            this.timer = setTimeout(() => this.tick(), 400);
+            return;
+          }
+
+          const phrase = this.phrases[this.phraseIndex];
+          let delay = this.deleting ? 35 : 55;
+
+          if (!this.deleting) {
+            this.charIndex += 1;
+            this.input.placeholder = phrase.slice(0, this.charIndex);
+
+            if (this.charIndex === phrase.length) {
+              this.deleting = true;
+              delay = 1800;
+            }
+          } else {
+            this.charIndex -= 1;
+            this.input.placeholder = phrase.slice(0, this.charIndex);
+
+            if (this.charIndex === 0) {
+              this.deleting = false;
+              this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+            }
+          }
+
+          this.timer = setTimeout(() => this.tick(), delay);
+        }
+      }
+    );
+  }
+{% endjavascript %}
 
 {% schema %}
 {

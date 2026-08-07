@@ -1,0 +1,114 @@
+{%- doc -%}
+  Persistent inline search bar for the custom black-bar nav (dg-homepage
+  reference design). Uses Shopify's native search route/params directly
+  (routes.search_url, name="q") instead of the theme's icon-triggered
+  search-modal, per explicit request to keep the bar always visible and
+  significantly wider than a standard header search action.
+{%- enddoc -%}
+
+<form
+  action="{{ routes.search_url }}"
+  method="get"
+  role="search"
+  class="header-search-bar"
+>
+  <header-search-typewriter class="header-search-bar__inner">
+    <svg
+      class="header-search-bar__icon"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle
+        cx="11"
+        cy="11"
+        r="7"
+        stroke="currentColor"
+        stroke-width="1.8"
+      ></circle>
+      <line
+        x1="21"
+        y1="21"
+        x2="16.65"
+        y2="16.65"
+        stroke="currentColor"
+        stroke-width="1.8"
+      ></line>
+    </svg>
+
+    <label
+      for="HeaderSearchInput"
+      class="visually-hidden"
+    >
+      {{ 'content.search_input_label' | t }}
+    </label>
+    <input
+      type="search"
+      name="q"
+      id="HeaderSearchInput"
+      class="header-search-bar__input"
+      value="{{ search.terms | escape }}"
+      autocomplete="off"
+      data-typewriter-phrases="Cerca prodotti, categorie, SKU...|Cerca valvole a farfalla...|Cerca sistemi di aspirazione...|Cerca ricambi e accessori..."
+    >
+    <input
+      type="hidden"
+      name="type"
+      value="product"
+    >
+  </header-search-typewriter>
+</form>
+
+{% stylesheet %}
+  .header-search-bar {
+    flex: 1 1 650px !important;
+    max-width: 800px !important;
+    min-width: 0;
+  }
+
+  .header-search-bar__inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .header-search-bar__inner:focus-within {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #3cc3b2;
+  }
+
+  .header-search-bar__icon {
+    flex: none;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .header-search-bar__input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  .header-search-bar__input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media screen and (max-width: 989px) {
+    .header-search-bar {
+      display: none;
+    }
+  }
+{% endstylesheet %}

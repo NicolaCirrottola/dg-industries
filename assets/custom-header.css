@@ -103,11 +103,11 @@ header-component .menu-list__link[aria-expanded='true']::after {
 }
 
 /* ==========================================================================
-   4. Action icons (search/account/cart) + mobile hamburger — white by
-   default, teal on hover. Native modal-triggered search (this theme has
-   no "always-visible inline search bar" style) rather than the mockup's
-   persistent input box, to avoid fighting the working search-modal
-   component with a bespoke inline input.
+   4. Action icons (account/cart) + mobile hamburger — white by default,
+   teal on hover. The persistent inline search bar itself (native
+   routes.search_url form) lives in blocks/_header-menu.liquid +
+   snippets/header-search-bar.liquid, alongside the nav it shares a row
+   with; its own styling is scoped there instead of here.
    ========================================================================== */
 header-component .header-actions__action,
 header-component .action__cart,

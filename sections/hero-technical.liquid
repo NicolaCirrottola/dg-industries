@@ -1,8 +1,14 @@
 {% liquid
   assign s = section.settings
 %}
+{% capture newline %}
+{% endcapture %}
+{% assign heading_lines = s.heading | split: newline %}
 
-<div class="hero-technical">
+<div
+  class="hero-technical"
+  style="--hero-accent: {{ s.accent_color | default: '#3cc3b2' }}; --hero-heading-color: {{ s.heading_color | default: '#161616' }};"
+>
   <img
     src="{{ 'dg-placeholder.png' | asset_url }}"
     alt=""
@@ -17,7 +23,15 @@
       <div class="hero-technical__eyebrow">{{ s.eyebrow | escape }}</div>
     {% endif %}
 
-    <h1 class="hero-technical__heading">{{ s.heading }}</h1>
+    {% if heading_lines.size > 1 %}
+      <h1 class="hero-technical__heading hero-technical__heading--rotating">
+        {%- for line in heading_lines -%}
+          <span class="hero-technical__heading-line" style="--i: {{ forloop.index0 }};">{{ line }}</span>
+        {%- endfor -%}
+      </h1>
+    {% else %}
+      <h1 class="hero-technical__heading">{{ s.heading }}</h1>
+    {% endif %}
 
     {% if s.subtext != blank %}
       <p class="hero-technical__subtext">{{ s.subtext }}</p>
@@ -82,7 +96,7 @@
     padding: 6px 14px;
     border: 1px solid rgba(22, 22, 22, 0.14);
     border-radius: 999px;
-    color: #2e7f76;
+    color: var(--hero-accent, #3cc3b2);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -97,8 +111,40 @@
     font-size: clamp(2rem, 1.5rem + 2.2vw, 2.875rem);
     line-height: 1.15;
     letter-spacing: -0.01em;
-    color: #161616;
+    color: var(--hero-heading-color, #161616);
     margin: 0 0 20px;
+  }
+
+  .hero-technical__heading--rotating {
+    position: relative;
+    min-height: 165px;
+  }
+
+  .hero-technical__heading-line {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: hero-heading-fade 20s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -4s);
+  }
+
+  @keyframes hero-heading-fade {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    1% {
+      opacity: 0;
+    }
+    4% {
+      opacity: 1;
+    }
+    16% {
+      opacity: 1;
+    }
+    19% {
+      opacity: 0;
+    }
   }
 
   .hero-technical__subtext {
@@ -138,8 +184,8 @@
   }
 
   .hero-technical__button--primary:hover {
-    background: #3cc3b2;
-    border-color: #3cc3b2;
+    background: var(--hero-accent, #3cc3b2);
+    border-color: var(--hero-accent, #3cc3b2);
     color: #000000;
   }
 
@@ -151,7 +197,7 @@
   }
 
   .hero-technical__button--secondary:hover {
-    border-color: #3cc3b2;
+    border-color: var(--hero-accent, #3cc3b2);
     color: #2e7f76;
   }
 
@@ -180,6 +226,10 @@
     .hero-technical__content > * {
       max-width: none;
     }
+
+    .hero-technical__heading--rotating {
+      min-height: 210px;
+    }
   }
 {% endstylesheet %}
 
@@ -195,16 +245,33 @@
       "default": "Dal 1963 — Industria Agroalimentare"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi"
+      "info": "One phrase per line. With 2+ lines, the heading rotates through them (4s each, fading in/out).",
+      "default": "Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi\nValvole e tubazioni su misura per l'industria molitoria\nSistemi di aspirazione ad alta efficienza\nComponenti certificati per il contatto alimentare\nAssistenza tecnica e ricambi in tutta Italia"
     },
     {
       "type": "textarea",
       "id": "subtext",
       "label": "Subtext",
       "default": "Progettiamo e produciamo valvole, tubazioni e sistemi di aspirazione per impianti molitori, cerealicoli e di trasporto pneumatico — su misura per ogni linea di produzione."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#161616"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#3cc3b2"
     },
     {
       "type": "header",
