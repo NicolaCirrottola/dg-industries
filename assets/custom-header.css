@@ -131,6 +131,17 @@ header-component .account-button:hover .account-button__icon {
   color: #3cc3b2;
 }
 
+/* Wherever the persistent inline search bar is visible (desktop,
+   custom_columns nav only — it's display:none below 990px so mobile still
+   needs the native icon), the theme's native icon-triggered search
+   button/search-modal trigger becomes a duplicate entry point — hide it
+   so there's exactly one search affordance in the header. */
+@media screen and (min-width: 990px) {
+  header-component:has(.header-search-bar) .search-action {
+    display: none;
+  }
+}
+
 /* ==========================================================================
    5. Mobile drawer — scoped to the <header-drawer> element specifically
    (not the shared settings.drawer_* colors, which the cart drawer also
