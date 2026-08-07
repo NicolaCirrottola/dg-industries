@@ -51,7 +51,7 @@
       class="header-search-bar__input"
       value="{{ search.terms | escape }}"
       autocomplete="off"
-      data-typewriter-phrase="Cerca prodotti, categorie, SKU..."
+      data-typewriter-phrase="Cerca prodotti, Categorie, SKU..."
     >
     <input
       type="hidden"
@@ -93,13 +93,16 @@
   .header-search-bar__input {
     width: 100%;
     min-width: 0;
-    background: transparent;
-    border: none;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
     outline: none;
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     font-size: 12.5px;
     font-weight: 400;
+    text-align: left;
+    padding-left: 16px;
+    line-height: normal;
   }
 
   .header-search-bar__input::placeholder {

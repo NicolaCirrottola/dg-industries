@@ -236,8 +236,10 @@
         </nav>
 
         {% if block_settings.menu_style == 'custom_columns' %}
-          {% render 'header-search-bar' %}
-          {% render 'header-contact-button', link: block_settings.contact_link %}
+          <div class="header-menu__actions">
+            {% render 'header-search-bar' %}
+            {% render 'header-contact-button', link: block_settings.contact_link %}
+          </div>
         {% endif %}
       </div>
 
@@ -544,6 +546,7 @@
   .header-menu__inner--with-search {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 24px;
     width: 100%;
   }
@@ -552,13 +555,26 @@
     flex: none;
   }
 
+  .header-menu__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    min-width: 0;
+  }
+
   /* Thin vertical divider between the custom black-bar nav's macro-category
      items only — scoped via the dedicated modifier class so native menu
      instances elsewhere (different menu_style, the overflow "more" item)
      are untouched. */
+  .menu-list__list {
+    align-items: center;
+  }
+
   .menu-list__list-item--custom-nav:not(:last-child)::after {
     content: '';
     display: inline-block;
+    align-self: center;
     width: 1px;
     height: 16px;
     background-color: rgba(255, 255, 255, 0.4);
