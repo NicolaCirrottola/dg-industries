@@ -78,6 +78,13 @@ header-component .menu-list__link {
   transition: color 0.2s ease;
 }
 
+/* Tighter spacing between the black-bar nav's macro-categories specifically
+   (Aspirazione / Caduta Pesante / Catene Trasportatori / Macchine) — scoped
+   so other potential menu_style usages keep the theme's default padding. */
+header-component .menu-list__list-item--custom-nav .menu-list__link {
+  padding: 10px 10px;
+}
+
 header-component .menu-list__link:hover,
 header-component .menu-list__link[aria-expanded='true'] {
   color: #3cc3b2;
@@ -89,17 +96,18 @@ header-component .menu-list__link::after {
   left: 18px;
   right: 18px;
   bottom: 2px;
-  height: 2px;
+  height: 3px;
   border-radius: 2px;
   background: #3cc3b2;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
+  transform-origin: bottom right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 header-component .menu-list__link:hover::after,
 header-component .menu-list__link[aria-expanded='true']::after {
   transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 /* ==========================================================================
