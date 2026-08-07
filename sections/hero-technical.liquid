@@ -75,7 +75,11 @@
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
-    padding: 0 48px;
+    /* var(--page-margin) is the same variable the header row uses for its
+       own inline padding (set on <body class="page-width-...">), so the
+       hero content's left edge lines up exactly with the first nav
+       category button instead of a separately-guessed pixel value. */
+    padding: 0 var(--page-margin, 48px);
   }
 
   .hero-technical__content > * {
@@ -287,7 +291,7 @@
 
     .hero-technical__content {
       margin-top: -70px;
-      padding: 0 24px;
+      padding: 0 var(--page-margin, 24px);
     }
 
     .hero-technical__content > * {

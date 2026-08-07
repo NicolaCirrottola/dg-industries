@@ -571,14 +571,22 @@
     align-items: center;
   }
 
+  /* .menu-list__list-item:not([slot='overflow']) sets flex-direction: column
+     natively (for the "more" overflow menu's own layout needs), which also
+     stacks our custom-nav items' <a> and divider ::after vertically instead
+     of side by side. Override back to row for the custom-nav items only. */
+  .menu-list__list-item.menu-list__list-item--custom-nav {
+    flex-direction: row;
+  }
+
   .menu-list__list-item--custom-nav:not(:last-child)::after {
     content: '';
     display: inline-block;
     align-self: center;
     width: 1px;
     height: 16px;
-    background-color: rgba(255, 255, 255, 0.4);
-    margin-inline: 8px;
+    background-color: rgba(255, 255, 255, 0.35);
+    margin: 0 16px;
   }
 
   .menu-list__submenu-inner {

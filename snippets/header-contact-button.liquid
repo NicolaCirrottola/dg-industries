@@ -52,6 +52,14 @@
   .header-contact-btn__icon {
     color: #3cc3b2;
     flex: none;
+    transition: color 0.2s ease;
+  }
+
+  /* Without this, the icon (color: #3cc3b2) becomes invisible against the
+     hover background, which turns that same teal — swap it to match the
+     label text color instead. */
+  .header-contact-btn:hover .header-contact-btn__icon {
+    color: #000000;
   }
 
   @media screen and (max-width: 1099px) {
