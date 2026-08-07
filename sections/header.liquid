@@ -96,10 +96,6 @@
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
   endcapture
 
-  capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
-  endcapture
-
   if shop.customer_accounts_enabled
     assign search_class = 'search-action--hidden-on-drawer'
   endif
@@ -215,6 +211,25 @@
     assign background_transparent_color_value = 'bottom'
   endif
 %}
+
+{%- comment -%}
+  Right-hand actions cluster: search bar + Contattaci + account/cart icons,
+  glued together on the right side of the header, to the left of nothing —
+  they're the last things in the row. Kept as its own capture (rather than
+  folded into the concise {% liquid %} block above) because it needs to
+  emit the wrapping <div> as literal markup around three separate renders.
+  margin-left: auto on .header__actions-right (below) is what explicitly
+  pushes this cluster to the right; it doesn't depend on the grid's
+  --header-left/--header-right auto-sizing at all (see the
+  header__row--bottom override further down this stylesheet).
+{%- endcomment -%}
+{% capture actions %}
+  <div class="header__actions-right">
+    {% render 'header-search-bar' %}
+    {% render 'header-contact-button', link: section.settings.contact_link %}
+    {% render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section %}
+  </div>
+{% endcapture %}
 
 {% capture localization_markup %}
   {% liquid
@@ -804,6 +819,47 @@
 
     .overflow-menu::part(list) {
       justify-content: flex-end;
+    }
+  }
+
+  /* Right-hand actions cluster: search bar + Contattaci button + account/
+     cart icons, glued together against the header's right edge. This is a
+     plain flex row with an explicit margin-left: auto — not the grid's
+     --header-left/--header-right auto-sizing — so the push to the right is
+     self-evident from this rule alone instead of depending on which
+     content happens to live in which grid column. See the
+     header__row--bottom override right below .header__columns for the
+     matching switch from grid to flex on the row itself. */
+  .header__actions-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    min-width: 0;
+  }
+
+  /* The native .header__columns layout (right below) is a CSS grid whose
+     --header-left/--header-right track widths are computed from which
+     content lives in which column. For this theme's custom bottom row
+     (macro-category nav + the actions cluster above) that computed
+     grid-column split turned out to be an unreliable way to guarantee the
+     actions cluster sits flush right, so it's overridden here with a
+     plain flex row instead: the nav column keeps its natural width and
+     margin-left: auto on .header__actions-right (its sibling column) does
+     the actual pushing — simple and independent of any :has()-driven
+     custom property math. Scoped to the bottom row specifically (the only
+     row that has both a menu and an actions column; the top row is just
+     the centered logo) and to desktop widths, since .header__column
+     switches to display: contents on mobile to feed a different,
+     hamburger-drawer-oriented grid template instead. */
+  @media screen and (min-width: 750px) {
+    header-component .header__row--bottom .header__columns {
+      display: flex;
+      align-items: center;
+    }
+
+    header-component .header__row--bottom .header__column--right {
+      margin-left: auto;
     }
   }
 
@@ -1545,6 +1601,12 @@
     {
       "type": "header",
       "content": "t:content.utilities"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact button link",
+      "info": "Powers the \"Contattaci\" button in the header's right-hand actions cluster."
     },
     {
       "type": "select",

@@ -1,9 +1,12 @@
 {%- doc -%}
-  Persistent inline search bar for the custom black-bar nav (dg-homepage
-  reference design). Uses Shopify's native search route/params directly
-  (routes.search_url, name="q") instead of the theme's icon-triggered
-  search-modal, per explicit request to keep the bar always visible and
-  significantly wider than a standard header search action.
+  Persistent inline search bar for the header's right-hand actions cluster
+  (dg-homepage reference design) — rendered directly by sections/header.liquid
+  inside .header__actions-right, immediately to the left of the Contattaci
+  button and the account/cart icons. Uses Shopify's native search
+  route/params directly (routes.search_url, name="q") instead of the
+  theme's icon-triggered search-modal, per explicit request to keep the bar
+  always visible and significantly wider than a standard header search
+  action.
 {%- enddoc -%}
 
 <form
@@ -63,8 +66,14 @@
 
 {% stylesheet %}
   .header-search-bar {
-    flex: 0 0 auto;
-    width: 380px;
+    /* flex-basis 440px is the bar's actual rendered width — .header__actions-
+       right sizes itself to its content rather than stretching to fill the
+       row, so a plain "grow to fill available space" rule would have
+       nothing to grow into. flex-shrink: 1 (rather than the old fixed
+       width's implicit 0) lets it give way instead of overflowing/
+       overlapping the Contattaci button and icons on narrower widths. */
+    flex: 0 1 440px;
+    min-width: 0;
     max-width: 100%;
   }
 
@@ -115,3 +124,55 @@
     }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  // Typewriter placeholder for the persistent header search bar. Scoped
+  // entirely inside this custom element — it never touches globals or other
+  // search inputs (predictive search, /search page, etc.), so it can't
+  // conflict with the theme's own search components.
+  if (!customElements.get('header-search-typewriter')) {
+    customElements.define(
+      'header-search-typewriter',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.input = this.querySelector('.header-search-bar__input');
+          this.phrase = this.input?.dataset.typewriterPhrase || '';
+          this.charIndex = 0;
+          this.deleting = false;
+          this.pauseUntil = 0;
+
+          if (this.input && this.phrase) {
+            this.timer = setInterval(() => this.tick(), 70);
+          }
+        }
+
+        disconnectedCallback() {
+          clearInterval(this.timer);
+        }
+
+        tick() {
+          if (document.activeElement === this.input || this.input.value) return;
+          if (this.pauseUntil && Date.now() < this.pauseUntil) return;
+
+          if (!this.deleting) {
+            this.charIndex += 1;
+            this.input.placeholder = this.phrase.slice(0, this.charIndex);
+
+            if (this.charIndex >= this.phrase.length) {
+              this.deleting = true;
+              this.pauseUntil = Date.now() + 1400;
+            }
+          } else {
+            this.charIndex -= 1;
+            this.input.placeholder = this.phrase.slice(0, this.charIndex);
+
+            if (this.charIndex <= 0) {
+              this.deleting = false;
+              this.pauseUntil = Date.now() + 500;
+            }
+          }
+        }
+      }
+    );
+  }
+{% endjavascript %}

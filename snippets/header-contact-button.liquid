@@ -1,14 +1,17 @@
 {%- doc -%}
-  "Contattaci" pill button for the custom black-bar nav (dg-homepage
-  reference design). Link is a block setting since there's no native
-  Shopify route for a contact page — falls back to the Contact page URL
-  if the theme's [contact] policy/page handle exists, otherwise "#contattaci".
+  "Contattaci" pill button, rendered by sections/header.liquid inside
+  .header__actions-right, right before the account/cart icons. Link
+  resolution order: the header section's explicit contact_link setting (if
+  a merchant sets it in the theme editor) → the store's actual /pages/contatti
+  page → /pages/contact → a hardcoded /pages/contatti as a last resort, so
+  the button always points at a real contact page instead of the "#contattaci"
+  no-op anchor it used to fall back to.
 
   @param {string} link - The URL the button should point to.
 {%- enddoc -%}
 
 <a
-  href="{{ link | default: '#contattaci' }}"
+  href="{{ link | default: pages.contatti.url | default: pages.contact.url | default: '/pages/contatti' }}"
   class="header-contact-btn"
 >
   <svg

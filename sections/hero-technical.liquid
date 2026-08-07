@@ -22,11 +22,21 @@
 
     <div class="hero-title-container">
       <h1 class="hero-animated-h1">
-        <span class="slide slide-1 style-tailor">&#8220;I sarti che vestono il vostro mulino.&#8221;</span>
-        <span class="slide slide-2 style-quote"><span class="teal-mark">&#8220;</span>Ora a un click dai nostri prodotti.<span class="teal-mark">&#8221;</span></span>
-        <span class="slide slide-3 style-italian">Standard italiani, <span class="teal-text">qualità in ogni dettaglio</span>.</span>
-        <span class="slide slide-4 style-bold">Spedizioni rapide e prodotti <span class="teal-text">pronti alla consegna</span>.</span>
-        <span class="slide slide-5 style-service">Assistenza tecnica diretta e ricambi <span class="teal-text">sempre disponibili</span>.</span>
+        {% if s.slide_1_text != blank %}
+          <span class="slide slide-1 style-tailor">{{ s.slide_1_text }}</span>
+        {% endif %}
+        {% if s.slide_2_text != blank %}
+          <span class="slide slide-2 style-quote">{{ s.slide_2_text }}</span>
+        {% endif %}
+        {% if s.slide_3_text != blank %}
+          <span class="slide slide-3 style-italian">{{ s.slide_3_text }}</span>
+        {% endif %}
+        {% if s.slide_4_text != blank %}
+          <span class="slide slide-4 style-bold">{{ s.slide_4_text }}</span>
+        {% endif %}
+        {% if s.slide_5_text != blank %}
+          <span class="slide slide-5 style-service">{{ s.slide_5_text }}</span>
+        {% endif %}
       </h1>
     </div>
 
@@ -56,7 +66,11 @@
   }
 
   .hero-technical__image {
+    /* Background layer: absolutely positioned so it stacks under
+       .hero-technical__content regardless of DOM order, per the explicit
+       z-index below rather than relying only on paint order. */
     position: absolute;
+    z-index: 1;
     right: 0;
     top: 0;
     height: 100%;
@@ -71,15 +85,32 @@
   }
 
   .hero-technical__content {
+    /* Text layer: sits above .hero-technical__image (z-index: 1) and is
+       explicitly anchored left — flex column + align-items/text-align
+       rather than relying on default block-flow behavior — so the whole
+       badge/title/paragraph/buttons stack reads as one deliberately
+       left-aligned block instead of an accident of markup order.
+
+       Deliberately NOT a `max-width: Npx; margin: 0 auto;` centered box —
+       a max-width box centered via margin:auto sits (viewport - max-width)
+       / 2 away from the true left edge instead of a fixed offset, which is
+       what made the block drift right on wide screens. Full width +
+       padding-only inset avoids that regardless of the padding value below. */
     position: relative;
-    max-width: 1240px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
     width: 100%;
-    margin: 0 auto;
-    /* var(--page-margin) is the same variable the header row uses for its
-       own inline padding (set on <body class="page-width-...">), so the
-       hero content's left edge lines up exactly with the first nav
-       category button instead of a separately-guessed pixel value. */
-    padding: 0 var(--page-margin, 48px);
+    /* padding-left is a fixed 1.5rem, deliberately bypassing var(--page-margin)
+       (40px desktop / 16px mobile) so the text sits closer to the true edge
+       than the header's own inset — by request, at the cost of no longer
+       lining up exactly under "Aspirazione" the way it did when both sides
+       shared the same --page-margin value. padding-right is untouched
+       (still --page-margin) since only the left side was asked to shrink. */
+    padding-left: 1.5rem;
+    padding-right: var(--page-margin, 48px);
   }
 
   .hero-technical__content > * {
@@ -131,6 +162,14 @@
     color: var(--hero-heading-color, #161616);
     pointer-events: none;
     animation: cssHeroFastWhiteFade 20s infinite ease-in-out;
+  }
+
+  /* Each phrase now comes from a schema richtext field, which always wraps
+     its output in a <p> — neutralize that so it keeps behaving like the
+     plain inline text the absolute-positioned .slide layout expects. */
+  .hero-animated-h1 .slide p {
+    margin: 0;
+    display: inline;
   }
 
   .hero-animated-h1 .slide-1 {
@@ -187,19 +226,19 @@
     font-weight: 700;
   }
 
-  .hero-animated-h1 .teal-mark {
-    color: var(--hero-accent, #3cc3b2);
-    font-size: 1.15em;
-  }
-
   /* Frase 3: standard italiani */
   .hero-animated-h1 .style-italian {
     font-weight: 600;
     letter-spacing: -0.01em;
   }
 
-  .hero-animated-h1 .teal-text {
+  /* Merchants highlight a fragment of any phrase in teal by bolding it in
+     the schema's rich text editor — bold is remapped to color here instead
+     of a heavier weight, matching how the old hardcoded .teal-text/
+     .teal-mark spans looked (color only, no extra weight). */
+  .hero-animated-h1 .slide strong {
     color: var(--hero-accent, #3cc3b2);
+    font-weight: inherit;
   }
 
   /* Frase 4: spedizioni rapide */
@@ -291,7 +330,8 @@
 
     .hero-technical__content {
       margin-top: -70px;
-      padding: 0 var(--page-margin, 24px);
+      padding-left: 1.5rem;
+      padding-right: var(--page-margin, 24px);
     }
 
     .hero-technical__content > * {
@@ -324,6 +364,44 @@
       "id": "subtext",
       "label": "Subtext",
       "default": "Progettiamo e produciamo dal 1965 impianti, sistemi, macchinari per l'industria molitoria. Oggi con oltre 90 dipendenti ed uno stabilimento di 20.000 mq portiamo i nostri prodotti ad un click da voi."
+    },
+    {
+      "type": "header",
+      "content": "Animated headline"
+    },
+    {
+      "type": "paragraph",
+      "content": "5 phrases that rotate in the headline. Bold a word or phrase in the editor to highlight it in teal. Leave a field blank to drop that phrase from the rotation."
+    },
+    {
+      "type": "richtext",
+      "id": "slide_1_text",
+      "label": "Phrase 1",
+      "default": "<p>“I sarti che vestono il vostro mulino.”</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_2_text",
+      "label": "Phrase 2",
+      "default": "<p>“Ora a un click dai nostri prodotti.”</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_3_text",
+      "label": "Phrase 3",
+      "default": "<p>Standard italiani, <strong>qualità in ogni dettaglio</strong>.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_4_text",
+      "label": "Phrase 4",
+      "default": "<p>Spedizioni rapide e prodotti <strong>pronti alla consegna</strong>.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "slide_5_text",
+      "label": "Phrase 5",
+      "default": "<p>Assistenza tecnica diretta e ricambi <strong>sempre disponibili</strong>.</p>"
     },
     {
       "type": "header",

@@ -80,9 +80,16 @@ header-component .menu-list__link {
 
 /* Tighter spacing between the black-bar nav's macro-categories specifically
    (Aspirazione / Caduta Pesante / Catene Trasportatori / Macchine) — scoped
-   so other potential menu_style usages keep the theme's default padding. */
+   so other potential menu_style usages keep the theme's default padding.
+   .menu-list__link-title carries its own padding-inline (half of the
+   theme's --gap-xl, ~10px/side) on top of this link padding, so both need
+   trimming — otherwise the visible gap is roughly double what's set here. */
 header-component .menu-list__list-item--custom-nav .menu-list__link {
-  padding: 10px 10px;
+  padding: 10px 6px;
+}
+
+header-component .menu-list__list-item--custom-nav .menu-list__link-title {
+  padding-inline: 4px;
 }
 
 header-component .menu-list__link:hover,
@@ -93,11 +100,11 @@ header-component .menu-list__link[aria-expanded='true'] {
 header-component .menu-list__link::after {
   content: '';
   position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
   height: 3px;
-  border-radius: 2px;
+  border-radius: 2px 2px 0 0;
   background: #3cc3b2;
   transform: scaleX(0);
   transform-origin: bottom right;
@@ -112,10 +119,12 @@ header-component .menu-list__link[aria-expanded='true']::after {
 
 /* ==========================================================================
    4. Action icons (account/cart) + mobile hamburger — white by default,
-   teal on hover. The persistent inline search bar itself (native
-   routes.search_url form) lives in blocks/_header-menu.liquid +
-   snippets/header-search-bar.liquid, alongside the nav it shares a row
-   with; its own styling is scoped there instead of here.
+   teal on hover. They share the header's right-hand actions cluster
+   (sections/header.liquid's .header__actions-right) with the persistent
+   inline search bar and the Contattaci button, which sit to their left in
+   that same wrapper (rendered from snippets/header-search-bar.liquid +
+   snippets/header-contact-button.liquid); their own styling is scoped in
+   those files instead of here.
    ========================================================================== */
 header-component .header-actions__action,
 header-component .action__cart,
@@ -139,11 +148,11 @@ header-component .account-button:hover .account-button__icon {
   color: #3cc3b2;
 }
 
-/* Wherever the persistent inline search bar is visible (desktop,
-   custom_columns nav only — it's display:none below 900px so mobile still
-   needs the native icon), the theme's native icon-triggered search
-   button/search-modal trigger becomes a duplicate entry point — hide it
-   so there's exactly one search affordance in the header. */
+/* Wherever the persistent inline search bar is visible (desktop — it's
+   display:none below 900px so mobile still needs the native icon), the
+   theme's native icon-triggered search button/search-modal trigger becomes
+   a duplicate entry point — hide it so there's exactly one search
+   affordance in the header. */
 @media screen and (min-width: 900px) {
   header-component:has(.header-search-bar) .search-action {
     display: none;
