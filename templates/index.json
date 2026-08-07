@@ -375,7 +375,6 @@
         "card_aspirazione": {
           "type": "category-card",
           "settings": {
-            "size": "big",
             "title": "Sistemi di Aspirazione",
             "description": "Ventilatori, filtri e cicloni per la captazione polveri e il deumidificamento impianti.",
             "link": ""
@@ -384,17 +383,15 @@
         "card_caduta": {
           "type": "category-card",
           "settings": {
-            "size": "small",
             "title": "Caduta Pesante",
             "description": "Tubi, settori, segmenti e valvole per il trasporto per caduta di prodotti sfusi.",
             "link": ""
           }
         },
-        "card_movimentazione": {
+        "card_catene": {
           "type": "category-card",
           "settings": {
-            "size": "small",
-            "title": "Movimentazione Pesante",
+            "title": "Catene Trasportatori",
             "description": "Catene, coclee e trasportatori heavy-duty.",
             "link": ""
           }
@@ -402,16 +399,14 @@
         "card_macchine": {
           "type": "category-card",
           "settings": {
-            "size": "small",
             "title": "Macchine",
             "description": "Filtri, valvole, dosatori, trasportatori, decorticatrici.",
             "link": ""
           }
         },
         "card_servizi": {
-          "type": "category-card",
+          "type": "services-card",
           "settings": {
-            "size": "small",
             "title": "Servizi",
             "description": "Consulenza tecnica e assistenza post-vendita.",
             "link": ""
@@ -421,7 +416,7 @@
       "block_order": [
         "card_aspirazione",
         "card_caduta",
-        "card_movimentazione",
+        "card_catene",
         "card_macchine",
         "card_servizi"
       ]
@@ -430,8 +425,7 @@
       "type": "hero-technical",
       "settings": {
         "eyebrow": "Dal 1963 — Industria Agroalimentare",
-        "heading": "Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi\nValvole e tubazioni su misura per l'industria molitoria\nSistemi di aspirazione ad alta efficienza\nComponenti certificati per il contatto alimentare\nAssistenza tecnica e ricambi in tutta Italia",
-        "subtext": "Progettiamo e produciamo valvole, tubazioni e sistemi di aspirazione per impianti molitori, cerealicoli e di trasporto pneumatico — su misura per ogni linea di produzione.",
+        "subtext": "Progettiamo e produciamo dal 1965 impianti, sistemi, macchinari per l'industria molitoria. Oggi con oltre 90 dipendenti ed uno stabilimento di 20.000 mq portiamo i nostri prodotti ad un click da voi.",
         "heading_color": "#161616",
         "accent_color": "#3cc3b2",
         "button_1_label": "Esplora il catalogo",

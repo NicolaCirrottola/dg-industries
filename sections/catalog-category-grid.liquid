@@ -1,5 +1,7 @@
 {% liquid
   assign section_settings = section.settings
+  assign category_blocks = section.blocks | where: 'type', 'category-card'
+  assign service_blocks = section.blocks | where: 'type', 'services-card'
 %}
 
 <div class="catalog-category-grid" style="{% render 'spacing-style', settings: section_settings %}">
@@ -13,43 +15,59 @@
     </div>
 
     <div class="catalog-category-grid__grid">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign is_big = false
-          if block.settings.size == 'big'
-            assign is_big = true
-          endif
-        -%}
+      {%- for block in category_blocks -%}
         <a
           href="{{ block.settings.link }}"
-          class="catalog-category-grid__card{% if is_big %} catalog-category-grid__card--big{% endif %}"
+          class="catalog-category-grid__card"
           {{ block.shopify_attributes }}
         >
-          <div class="catalog-category-grid__icon-wrap{% if is_big %} catalog-category-grid__icon-wrap--big{% endif %}">
+          <div class="catalog-category-grid__icon-wrap">
             {%- case forloop.index -%}
               {%- when 1 -%}
-                <svg width="{% if is_big %}30{% else %}24{% endif %}" height="{% if is_big %}30{% else %}24{% endif %}" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.2" stroke="#3cc3b2" stroke-width="1.6"></circle><path d="M12 9.8C12 6 10 3 7 3c0 3.5 2 5.6 5 6.8z" stroke="#3cc3b2" stroke-width="1.6"></path><path d="M14.2 12C18 12 21 10 21 7c-3.5 0-5.6 2-6.8 5z" stroke="#3cc3b2" stroke-width="1.6"></path><path d="M12 14.2c0 3.8 2 6.8 5 6.8 0-3.5-2-5.6-5-6.8z" stroke="#3cc3b2" stroke-width="1.6"></path><path d="M9.8 12C6 12 3 14 3 17c3.5 0 5.6-2 6.8-5z" stroke="#3cc3b2" stroke-width="1.6"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.6"></circle><path d="M12 9.8C12 6 10 3 7 3c0 3.5 2 5.6 5 6.8z" stroke="currentColor" stroke-width="1.6"></path><path d="M14.2 12C18 12 21 10 21 7c-3.5 0-5.6 2-6.8 5z" stroke="currentColor" stroke-width="1.6"></path><path d="M12 14.2c0 3.8 2 6.8 5 6.8 0-3.5-2-5.6-5-6.8z" stroke="currentColor" stroke-width="1.6"></path><path d="M9.8 12C6 12 3 14 3 17c3.5 0 5.6-2 6.8-5z" stroke="currentColor" stroke-width="1.6"></path></svg>
               {%- when 2 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 15V9a5 5 0 0 1 5-5h6" stroke="#3cc3b2" stroke-width="1.6" stroke-linecap="round"></path><path d="M20 9v6a5 5 0 0 1-5 5H9" stroke="#3cc3b2" stroke-width="1.6" stroke-linecap="round"></path><circle cx="4" cy="17" r="2" stroke="#3cc3b2" stroke-width="1.6"></circle><circle cx="20" cy="7" r="2" stroke="#3cc3b2" stroke-width="1.6"></circle></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 15V9a5 5 0 0 1 5-5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><path d="M20 9v6a5 5 0 0 1-5 5H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="4" cy="17" r="2" stroke="currentColor" stroke-width="1.6"></circle><circle cx="20" cy="7" r="2" stroke="currentColor" stroke-width="1.6"></circle></svg>
               {%- when 3 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="7" height="6" rx="3" stroke="#3cc3b2" stroke-width="1.6"></rect><rect x="14" y="9" width="7" height="6" rx="3" stroke="#3cc3b2" stroke-width="1.6"></rect><path d="M10 12h4" stroke="#3cc3b2" stroke-width="1.6"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="7" height="6" rx="3" stroke="currentColor" stroke-width="1.6"></rect><rect x="14" y="9" width="7" height="6" rx="3" stroke="currentColor" stroke-width="1.6"></rect><path d="M10 12h4" stroke="currentColor" stroke-width="1.6"></path></svg>
               {%- when 4 -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1.5" stroke="#3cc3b2" stroke-width="1.6"></rect><circle cx="9" cy="12" r="2.4" stroke="#3cc3b2" stroke-width="1.6"></circle><path d="M14 9h4M14 12h4M14 15h4" stroke="#3cc3b2" stroke-width="1.6" stroke-linecap="round"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"></rect><circle cx="9" cy="12" r="2.4" stroke="currentColor" stroke-width="1.6"></circle><path d="M14 9h4M14 12h4M14 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
               {%- else -%}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="#3cc3b2" stroke-width="1.6" stroke-linecap="round"></path><circle cx="12" cy="12" r="4.2" stroke="#3cc3b2" stroke-width="1.6"></circle></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"></circle></svg>
             {%- endcase -%}
           </div>
           <div>
-            <div class="catalog-category-grid__card-title{% if is_big %} catalog-category-grid__card-title--big{% endif %}">{{ block.settings.title | escape }}</div>
+            <div class="catalog-category-grid__card-title">{{ block.settings.title | escape }}</div>
             <div class="catalog-category-grid__card-desc">{{ block.settings.description | escape }}</div>
           </div>
-          <div class="catalog-category-grid__card-arrow-row{% if is_big %} catalog-category-grid__card-arrow-row--big{% endif %}">
-            {%- if is_big -%}<span>Scopri la categoria</span>{%- endif -%}
+          <div class="catalog-category-grid__card-arrow-row">
             <span class="catalog-category-grid__card-arrow">→</span>
           </div>
         </a>
       {%- endfor -%}
     </div>
+
+    {%- for block in service_blocks -%}
+      <a
+        href="{{ block.settings.link }}"
+        class="catalog-category-grid__services-card"
+        {{ block.shopify_attributes }}
+      >
+        <div class="catalog-category-grid__services-swipe"></div>
+        <div class="catalog-category-grid__services-content">
+          <div class="catalog-category-grid__services-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"></circle></svg>
+          </div>
+          <div>
+            <div class="catalog-category-grid__services-title">{{ block.settings.title | escape }}</div>
+            <div class="catalog-category-grid__services-desc">{{ block.settings.description | escape }}</div>
+          </div>
+        </div>
+        <div class="catalog-category-grid__services-arrow-row">
+          <span>Scopri di più</span>
+          <span class="catalog-category-grid__card-arrow">→</span>
+        </div>
+      </a>
+    {%- endfor -%}
   </div>
 </div>
 
@@ -100,9 +118,9 @@
 
   .catalog-category-grid__grid {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
+    margin-bottom: 22px;
   }
 
   .catalog-category-grid__card {
@@ -110,111 +128,190 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 14px;
-    padding: 26px 22px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(22, 22, 22, 0.07);
-    box-shadow: 0 8px 30px rgba(30, 60, 55, 0.06);
+    gap: 16px;
+    padding: 24px;
+    min-height: 230px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     text-decoration: none;
-    will-change: transform, opacity;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-      box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .catalog-category-grid__card--big {
-    grid-row: 1 / 3;
-    grid-column: 1;
-    padding: 34px 30px;
-    gap: 18px;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
   .catalog-category-grid__card:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(60, 195, 178, 0.55);
-    box-shadow: 0 16px 40px rgba(30, 60, 55, 0.12);
-    background: rgba(255, 255, 255, 0.72);
+    transform: translateY(-3px);
+    border-color: #3cc3b2;
+    background: rgba(60, 195, 178, 0.04);
+    box-shadow: 0 8px 20px rgba(60, 195, 178, 0.12);
   }
 
   .catalog-category-grid__icon-wrap {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
     background: rgba(60, 195, 178, 0.1);
-    border: 1px solid rgba(60, 195, 178, 0.28);
+    border: 1px solid rgba(60, 195, 178, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
     flex: none;
+    color: #2e7f76;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .catalog-category-grid__icon-wrap--big {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    background: rgba(60, 195, 178, 0.12);
-    border: 1px solid rgba(60, 195, 178, 0.3);
+  .catalog-category-grid__card:hover .catalog-category-grid__icon-wrap {
+    transform: scale(1.1);
+    background: rgba(60, 195, 178, 0.18);
+    color: #3cc3b2;
   }
 
   .catalog-category-grid__card-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 16.5px;
+    font-size: 18px;
     font-weight: 700;
     color: #161616;
-    margin-bottom: 6px;
-  }
-
-  .catalog-category-grid__card-title--big {
-    font-size: 22px;
     margin-bottom: 8px;
   }
 
   .catalog-category-grid__card-desc {
-    font-size: 12.5px;
+    font-size: 13px;
     color: #5c5f5d;
     line-height: 1.55;
-  }
-
-  .catalog-category-grid__card--big .catalog-category-grid__card-desc {
-    font-size: 13.5px;
-    line-height: 1.6;
-    max-width: 30ch;
   }
 
   .catalog-category-grid__card-arrow-row {
     display: flex;
     justify-content: flex-end;
     color: #2e7f76;
-    font-size: 14px;
-  }
-
-  .catalog-category-grid__card-arrow-row--big {
-    justify-content: space-between;
-    align-items: center;
     font-size: 13px;
     font-weight: 700;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .catalog-category-grid__card:hover .catalog-category-grid__card-arrow-row {
+    color: #3cc3b2;
   }
 
   .catalog-category-grid__card-arrow {
     display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .catalog-category-grid__card:hover .catalog-category-grid__card-arrow {
-    transform: translateX(4px);
+    transform: translateX(8px);
+  }
+
+  .catalog-category-grid__services-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 24px 32px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    flex-wrap: wrap;
+    overflow: hidden;
+    isolation: isolate;
+    transition: border-color 0.25s ease;
+  }
+
+  .catalog-category-grid__services-card:hover {
+    border-color: #3cc3b2;
+  }
+
+  .catalog-category-grid__services-swipe {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(60, 195, 178, 0.18) 0%, rgba(60, 195, 178, 0.04) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+
+  .catalog-category-grid__services-card:hover .catalog-category-grid__services-swipe {
+    transform: scaleX(1);
+  }
+
+  .catalog-category-grid__services-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .catalog-category-grid__services-icon-wrap {
+    position: relative;
+    z-index: 1;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: rgba(60, 195, 178, 0.1);
+    border: 1px solid rgba(60, 195, 178, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    color: #2e7f76;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .catalog-category-grid__services-card:hover .catalog-category-grid__services-icon-wrap {
+    transform: scale(1.1);
+    background: rgba(60, 195, 178, 0.18);
+    color: #3cc3b2;
+  }
+
+  .catalog-category-grid__services-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #161616;
+  }
+
+  .catalog-category-grid__services-desc {
+    font-size: 12.5px;
+    color: #5c5f5d;
+  }
+
+  .catalog-category-grid__services-arrow-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2e7f76;
+    font-size: 13px;
+    font-weight: 700;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .catalog-category-grid__services-card:hover .catalog-category-grid__services-arrow-row {
+    color: #3cc3b2;
+  }
+
+  @media screen and (max-width: 989px) {
+    .catalog-category-grid__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media screen and (max-width: 749px) {
     .catalog-category-grid__grid {
       grid-template-columns: 1fr;
-      grid-template-rows: none;
     }
 
-    .catalog-category-grid__card--big {
-      grid-row: auto;
-      grid-column: auto;
+    .catalog-category-grid__services-card {
+      padding: 20px 22px;
     }
   }
 {% endstylesheet %}
@@ -273,20 +370,32 @@
       "name": "Category card",
       "settings": [
         {
-          "type": "select",
-          "id": "size",
-          "label": "Size",
-          "options": [
-            { "value": "big", "label": "Big (first card only)" },
-            { "value": "small", "label": "Small" }
-          ],
-          "default": "small"
-        },
-        {
           "type": "text",
           "id": "title",
           "label": "Title",
           "default": "Categoria"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "services-card",
+      "name": "Services card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Servizi"
         },
         {
           "type": "textarea",
@@ -308,7 +417,6 @@
         {
           "type": "category-card",
           "settings": {
-            "size": "big",
             "title": "Sistemi di Aspirazione",
             "description": "Ventilatori, filtri e cicloni per la captazione polveri e il deumidificamento impianti."
           }
@@ -316,7 +424,6 @@
         {
           "type": "category-card",
           "settings": {
-            "size": "small",
             "title": "Caduta Pesante",
             "description": "Tubi, settori, segmenti e valvole per il trasporto per caduta di prodotti sfusi."
           }
@@ -324,23 +431,20 @@
         {
           "type": "category-card",
           "settings": {
-            "size": "small",
-            "title": "Movimentazione Pesante",
+            "title": "Catene Trasportatori",
             "description": "Catene, coclee e trasportatori heavy-duty."
           }
         },
         {
           "type": "category-card",
           "settings": {
-            "size": "small",
             "title": "Macchine",
             "description": "Filtri, valvole, dosatori, trasportatori, decorticatrici."
           }
         },
         {
-          "type": "category-card",
+          "type": "services-card",
           "settings": {
-            "size": "small",
             "title": "Servizi",
             "description": "Consulenza tecnica e assistenza post-vendita."
           }
