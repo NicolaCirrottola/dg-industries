@@ -385,8 +385,8 @@
           "type": "category-card",
           "settings": {
             "size": "small",
-            "title": "Tubazione di caduta",
-            "description": "Condotte, curve e raccordi per linee ad alta resistenza.",
+            "title": "Caduta Pesante",
+            "description": "Tubi, settori, segmenti e valvole per il trasporto per caduta di prodotti sfusi.",
             "link": ""
           }
         },
@@ -404,7 +404,7 @@
           "settings": {
             "size": "small",
             "title": "Macchine",
-            "description": "Valvole, dosatori, miscelatori, filtri etc.",
+            "description": "Filtri, valvole, dosatori, trasportatori, decorticatrici.",
             "link": ""
           }
         },
@@ -430,8 +430,10 @@
       "type": "hero-technical",
       "settings": {
         "eyebrow": "Dal 1963 — Industria Agroalimentare",
-        "heading": "Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi",
+        "heading": "Soluzioni tecniche per aspirazione, trasporto e movimentazione sfusi\nValvole e tubazioni su misura per l'industria molitoria\nSistemi di aspirazione ad alta efficienza\nComponenti certificati per il contatto alimentare\nAssistenza tecnica e ricambi in tutta Italia",
         "subtext": "Progettiamo e produciamo valvole, tubazioni e sistemi di aspirazione per impianti molitori, cerealicoli e di trasporto pneumatico — su misura per ogni linea di produzione.",
+        "heading_color": "#161616",
+        "accent_color": "#3cc3b2",
         "button_1_label": "Esplora il catalogo",
         "button_1_link": "",
         "button_2_label": "Richiedi consulenza",
