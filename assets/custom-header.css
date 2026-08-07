@@ -132,11 +132,11 @@ header-component .account-button:hover .account-button__icon {
 }
 
 /* Wherever the persistent inline search bar is visible (desktop,
-   custom_columns nav only — it's display:none below 990px so mobile still
+   custom_columns nav only — it's display:none below 900px so mobile still
    needs the native icon), the theme's native icon-triggered search
    button/search-modal trigger becomes a duplicate entry point — hide it
    so there's exactly one search affordance in the header. */
-@media screen and (min-width: 990px) {
+@media screen and (min-width: 900px) {
   header-component:has(.header-search-bar) .search-action {
     display: none;
   }

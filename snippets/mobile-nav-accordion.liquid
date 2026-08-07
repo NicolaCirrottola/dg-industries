@@ -1,0 +1,67 @@
+{%- doc -%}
+  Bespoke mobile drawer nav for the custom black-bar header's custom_columns
+  menu style (dg-homepage reference design). The real Admin Navigation menu
+  is never configured for this design (see blocks/_header-menu.liquid and
+  snippets/mega-menu-content.liquid), so header-drawer.liquid's default
+  linklist-driven <ul> would render completely empty on mobile — this
+  hardcodes the same 4 macro-categories/sub-categories instead, reusing the
+  native menu-drawer__* classes so it inherits the drawer's existing
+  open/close chrome, fonts, and animation for free.
+{%- enddoc -%}
+
+<ul
+  class="menu-drawer__menu has-submenu"
+  role="list"
+>
+  {%- assign custom_nav_titles = 'Aspirazione,Caduta Pesante,Catene Trasportatori,Macchine' | split: ',' -%}
+  {%- for nav_title in custom_nav_titles -%}
+    {%- liquid
+      case forloop.index
+        when 1
+          assign categories = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori'
+        when 2
+          assign categories = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria'
+        when 3
+          assign categories = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori'
+        else
+          assign categories = 'Vagli e Setacciatrici,Mulini e Macinatori,Miscelatori,Dosatori,Bilance e Sistemi di Pesatura,Linee Complete,Servizi e Assistenza'
+      endcase
+      assign category_list = categories | split: ','
+    -%}
+    <li
+      style="--menu-drawer-animation-index: {{ forloop.index }};"
+      class="menu-drawer__list-item--deep"
+    >
+      <details id="Details-menu-drawer-custom-{{ forloop.index }}">
+        <summary
+          id="HeaderDrawer-custom-{{ forloop.index }}"
+          class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
+        >
+          <span class="menu-drawer__menu-item-text wrap-text">{{ nav_title }}</span>
+          <span class="svg-wrapper icon-plus">
+            {{- 'icon-plus.svg' | inline_asset_content -}}
+          </span>
+        </summary>
+        <ul
+          class="menu-drawer__menu menu-drawer__menu--childlist menu-drawer__animated-element details-content"
+          role="list"
+          tabindex="-1"
+        >
+          {%- for cat in category_list -%}
+            <li
+              class="menu-drawer__list-item"
+              style="--menu-drawer-animation-index: {{ forloop.index }};"
+            >
+              <a
+                href="#"
+                class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset"
+              >
+                <span class="menu-drawer__menu-item-text wrap-text">{{ cat }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </details>
+    </li>
+  {%- endfor -%}
+</ul>
