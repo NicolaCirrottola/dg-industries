@@ -22,28 +22,32 @@
       class="footer-categories__trigger"
       data-target="aspirazione"
     >
-      Aspirazione
+      <span>Aspirazione</span>
+      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </button>
     <button
       type="button"
       class="footer-categories__trigger"
       data-target="caduta-pesante"
     >
-      Caduta Pesante
+      <span>Caduta Pesante</span>
+      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </button>
     <button
       type="button"
       class="footer-categories__trigger"
       data-target="catene-trasportatori"
     >
-      Catene e Trasportatori
+      <span>Catene e Trasportatori</span>
+      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </button>
     <button
       type="button"
       class="footer-categories__trigger"
       data-target="macchine"
     >
-      Macchine
+      <span>Macchine</span>
+      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </button>
   </div>
 
@@ -107,7 +111,10 @@
   }
 
   .footer-categories__trigger {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     width: 100%;
     text-align: left;
     background: none;
@@ -127,19 +134,45 @@
     color: #3cc3b2;
   }
 
+  .footer-categories__trigger-arrow {
+    flex: none;
+    transform: translateX(0);
+    opacity: 0.6;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+  }
+
+  .footer-categories__trigger:hover .footer-categories__trigger-arrow,
+  .footer-categories__trigger:focus-visible .footer-categories__trigger-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
   .footer-categories__panels {
+    display: grid;
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
+  /* All 4 panels stack in the same grid cell so swapping between them
+     crossfades in place instead of jumping — display:none can't be
+     transitioned, so this uses opacity/transform with a delayed
+     visibility instead (immediate on the way in, deferred on the way out,
+     so the outgoing panel keeps receiving pointer-events long enough to
+     not stutter mid-fade but the incoming one is interactive right away). */
   .footer-categories__panel {
-    display: none;
+    grid-area: 1 / 1;
+    display: flex;
     flex-direction: column;
     gap: 0;
     margin: 0;
     padding: 0;
     list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
   }
 
   .footer-categories__panel a {
@@ -155,40 +188,34 @@
     color: #3cc3b2;
   }
 
-  /* Aspirazione shown by default so the panel area isn't empty at rest —
-     as soon as any trigger is hovered/focused, this yields to whichever
-     specific rule below matches. */
+  /* Active-panel state shared by all 5 rules below: fades/slides in and
+     becomes interactive immediately (visibility switches with no delay
+     when appearing), fades/slides out on its way back to the inactive
+     state above (visibility stays 'visible' for the full 0.25s transition
+     so the crossfade with the incoming panel doesn't pop). */
   .footer-categories:not(:has(.footer-categories__trigger:hover, .footer-categories__trigger:focus-visible))
-    .footer-categories__panel[data-panel='aspirazione'] {
-    display: flex;
-  }
-
+    .footer-categories__panel[data-panel='aspirazione'],
   .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:hover)
     .footer-categories__panel[data-panel='aspirazione'],
   .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:focus-visible)
-    .footer-categories__panel[data-panel='aspirazione'] {
-    display: flex;
-  }
-
+    .footer-categories__panel[data-panel='aspirazione'],
   .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:hover)
     .footer-categories__panel[data-panel='caduta-pesante'],
   .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:focus-visible)
-    .footer-categories__panel[data-panel='caduta-pesante'] {
-    display: flex;
-  }
-
+    .footer-categories__panel[data-panel='caduta-pesante'],
   .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:hover)
     .footer-categories__panel[data-panel='catene-trasportatori'],
   .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:focus-visible)
-    .footer-categories__panel[data-panel='catene-trasportatori'] {
-    display: flex;
-  }
-
+    .footer-categories__panel[data-panel='catene-trasportatori'],
   .footer-categories:has(.footer-categories__trigger[data-target='macchine']:hover)
     .footer-categories__panel[data-panel='macchine'],
   .footer-categories:has(.footer-categories__trigger[data-target='macchine']:focus-visible)
     .footer-categories__panel[data-panel='macchine'] {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition: opacity 0.25s ease, transform 0.25s ease;
   }
 {% endstylesheet %}
 
