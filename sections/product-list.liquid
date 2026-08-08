@@ -95,6 +95,64 @@
   </div>
 </div>
 
+{% stylesheet %}
+  /* Carousel arrows + card hover motion — scoped to [data-testid="product-list"]
+     (this section's own root wrapper) rather than the shared .slideshow-control
+     class globally, so the hero slideshow and any other carousel elsewhere in
+     the theme are untouched.
+
+     Colors are adapted rather than copied 1:1 from the dark-background
+     reference design that was requested: a translucent *white* circle only
+     reads against a dark section, and these product rows sit on the theme's
+     light background, so the resting state uses a dark-tinted translucent
+     circle instead — same idea (subtle, low-contrast until hovered), just
+     legible here. The teal hover state is exactly as specified.
+
+     opacity: 1 is load-bearing, not decorative: slideshow-arrows .slideshow-control
+     (snippets/slideshow-arrows.liquid) ships opacity: 0 by default — that
+     component is built for arrows floating over a hero-style media slide,
+     invisible until some other affordance reveals them. Nothing in the
+     theme ever sets it back to 1, so without this override "molto più
+     evidenti" would in fact render as "invisible" here. */
+  [data-testid="product-list"] .slideshow-control.slideshow-control--shape-circle {
+    opacity: 1;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    background-color: rgba(22, 22, 22, 0.06);
+    border: 1px solid rgba(22, 22, 22, 0.16);
+    color: #161616;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  [data-testid="product-list"] .slideshow-control.slideshow-control--shape-circle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  [data-testid="product-list"] .slideshow-control.slideshow-control--shape-circle:hover {
+    background-color: #3cc3b2;
+    border-color: #3cc3b2;
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+
+  /* Smooth scrolling for mouse-wheel/drag and arrow-click navigation alike. */
+  [data-testid="product-list"] slideshow-slides {
+    scroll-behavior: smooth;
+  }
+
+  /* Product card lift on hover, carousel rows only. */
+  [data-testid="product-list"] .product-card {
+    transition: transform 0.3s ease;
+  }
+
+  [data-testid="product-list"] .product-card:hover {
+    transform: translateY(-4px);
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_list",
