@@ -216,31 +216,67 @@
         <dl class="contact-b2b__info-list">
           <div class="contact-b2b__info-row">
             <dt>Ragione Sociale</dt>
-            <dd>Defino &amp; Giancaspro S.r.l.</dd>
+            <dd>
+              <span data-copy-text>Defino &amp; Giancaspro S.r.l.</span>
+              {% render 'contact-copy-button', label: 'Ragione Sociale' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>Indirizzo sede</dt>
-            <dd>Via Archimede 27/33, Zona PIP<br>70024 Gravina in Puglia (BA), Italia</dd>
+            <dd>
+              <span data-copy-text>Via Archimede 27/33, Zona PIP, 70024 Gravina in Puglia (BA), Italia</span>
+              {% render 'contact-copy-button', label: 'indirizzo' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>Telefono</dt>
-            <dd><a href="tel:+390803266196">+39 080 326 61 96</a></dd>
+            <dd>
+              <a
+                href="tel:+390803266196"
+                data-copy-text
+              >
+                +39 080 326 61 96
+              </a>
+              {% render 'contact-copy-button', label: 'telefono' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>Email</dt>
-            <dd><a href="mailto:info@defino-giancaspro.com">info@defino-giancaspro.com</a></dd>
+            <dd>
+              <a
+                href="mailto:info@defino-giancaspro.com"
+                data-copy-text
+              >
+                info@defino-giancaspro.com
+              </a>
+              {% render 'contact-copy-button', label: 'email' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>PEC</dt>
-            <dd><a href="mailto:defino-giancaspro@pec.it">defino-giancaspro@pec.it</a></dd>
+            <dd>
+              <a
+                href="mailto:defino-giancaspro@pec.it"
+                data-copy-text
+              >
+                defino-giancaspro@pec.it
+              </a>
+              {% render 'contact-copy-button', label: 'PEC' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>P.IVA / Codice Fiscale</dt>
-            <dd>04027410721</dd>
+            <dd>
+              <span data-copy-text>04027410721</span>
+              {% render 'contact-copy-button', label: 'Partita IVA' %}
+            </dd>
           </div>
           <div class="contact-b2b__info-row">
             <dt>Orari di apertura</dt>
-            <dd>Lunedì – Venerdì, 08:30 – 18:30</dd>
+            <dd>
+              <span data-copy-text>Lunedì – Venerdì, 08:30 – 18:30</span>
+              {% render 'contact-copy-button', label: 'orari di apertura' %}
+            </dd>
           </div>
         </dl>
       </aside>

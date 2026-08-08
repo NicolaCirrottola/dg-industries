@@ -148,9 +148,20 @@
   }
 
   /* Rest state: only the trigger list. Hiding it is deliberately instant
-     (no transition) — only the incoming subcategory panel fades in. */
+     (no transition) — only the incoming subcategory panel fades in.
+
+     visibility: hidden here, NOT display: none — display: none on the
+     element the pointer is currently over (the trigger that was just
+     entered) yanks it out of the box tree mid-hover. Several browsers
+     respond to that by immediately recomputing hit-testing and firing a
+     pointerleave up the ancestor chain, which hit our own listener on
+     <footer-categories> and instantly cancelled the data-active state we'd
+     just set — the hover trigger never "stuck". visibility: hidden keeps
+     the trigger's box (and the ancestor chain under the cursor) intact, so
+     no spurious pointerleave fires. */
   .footer-categories[data-active] .footer-categories__triggers {
-    display: none;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .footer-categories__trigger {

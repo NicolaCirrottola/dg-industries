@@ -1,0 +1,126 @@
+{%- doc -%}
+  Click-to-copy button for a piece of contact info. Copies the text content
+  of its own previous sibling element — mark that sibling with the
+  data-copy-text attribute (works on any element: <span>, <a>, etc.).
+
+  @param {string} label - What this button copies, for the accessible label (e.g. "email")
+
+  @example
+  <dd>
+    <span data-copy-text>info@example.com</span>
+    {% render 'contact-copy-button', label: 'email' %}
+  </dd>
+{%- enddoc -%}
+
+<button
+  type="button"
+  class="contact-copy-btn"
+  data-copy-button
+  aria-label="Copia {{ label }}"
+>
+  <span
+    class="contact-copy-btn__icon contact-copy-btn__icon--copy"
+    aria-hidden="true"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.8"></path></svg>
+  </span>
+  <span
+    class="contact-copy-btn__icon contact-copy-btn__icon--check"
+    aria-hidden="true"
+  >
+    {{- 'icon-checkmark.svg' | inline_asset_content -}}
+  </span>
+  <span
+    class="contact-copy-btn__feedback"
+    role="status"
+  ></span>
+</button>
+
+{% stylesheet %}
+  .contact-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 26px;
+    height: 26px;
+    margin-inline-start: 6px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: rgba(22, 22, 22, 0.4);
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .contact-copy-btn:hover,
+  .contact-copy-btn:focus-visible {
+    background: rgba(60, 195, 178, 0.1);
+    color: #3cc3b2;
+  }
+
+  .contact-copy-btn__icon {
+    display: flex;
+  }
+
+  .contact-copy-btn__icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .contact-copy-btn__icon--check {
+    display: none;
+    color: #3cc3b2;
+  }
+
+  .contact-copy-btn--copied .contact-copy-btn__icon--copy {
+    display: none;
+  }
+
+  .contact-copy-btn--copied .contact-copy-btn__icon--check {
+    display: flex;
+  }
+
+  .contact-copy-btn__feedback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (window.__contactCopyButtonBound) return;
+    window.__contactCopyButtonBound = true;
+
+    document.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-copy-button]');
+      if (!button) return;
+
+      var valueEl = button.previousElementSibling;
+      while (valueEl && !valueEl.hasAttribute('data-copy-text')) {
+        valueEl = valueEl.previousElementSibling;
+      }
+      if (!valueEl || !navigator.clipboard) return;
+
+      var text = valueEl.textContent.trim();
+
+      navigator.clipboard.writeText(text).then(function () {
+        var feedback = button.querySelector('.contact-copy-btn__feedback');
+        button.classList.add('contact-copy-btn--copied');
+        if (feedback) feedback.textContent = 'Copiato';
+
+        clearTimeout(button.__copyResetTimer);
+        button.__copyResetTimer = setTimeout(function () {
+          button.classList.remove('contact-copy-btn--copied');
+          if (feedback) feedback.textContent = '';
+        }, 1500);
+      });
+    });
+  })();
+{% endjavascript %}
