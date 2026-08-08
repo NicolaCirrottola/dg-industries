@@ -129,7 +129,11 @@
 
 {% stylesheet %}
   .footer-categories {
+    position: relative;
+    z-index: 0;
     display: grid;
+    overflow: visible;
+    pointer-events: auto;
   }
 
   /* Triggers and panels share the same grid cell so the swap between them
@@ -253,40 +257,50 @@
       'footer-categories',
       class extends HTMLElement {
         connectedCallback() {
-          this.triggers = this.querySelectorAll('.footer-categories__trigger');
-          this.handleEnter = this.handleEnter.bind(this);
+          this.handlePointerOver = this.handlePointerOver.bind(this);
+          this.handleFocusIn = this.handleFocusIn.bind(this);
           this.handleLeave = this.handleLeave.bind(this);
+          this.handleFocusOut = this.handleFocusOut.bind(this);
 
-          this.triggers.forEach((trigger) => {
-            trigger.addEventListener('pointerenter', this.handleEnter);
-            trigger.addEventListener('focus', this.handleEnter);
-          });
-
-          // Leaving the whole component (not each trigger individually) is
-          // what should instantly restore the rest state — matches the
-          // spec's "mouse out from the area" behavior rather than
-          // re-showing the trigger list every time the cursor crosses
-          // between two adjacent items.
+          // Delegated on <footer-categories> itself (which never changes
+          // visibility/pointer-events) rather than bound directly on each
+          // trigger button. Binding pointerenter straight onto a trigger
+          // that becomes visibility: hidden / pointer-events: none the
+          // instant that same handler runs is exactly the kind of setup
+          // some browsers can flush a stray pointerleave/pointerout for —
+          // delegating on the stable ancestor with bubbling pointerover/
+          // focusin sidesteps that whole class of problem, since the event
+          // that decides which panel to show has already finished before
+          // any style changes happen.
+          this.addEventListener('pointerover', this.handlePointerOver);
+          this.addEventListener('focusin', this.handleFocusIn);
           this.addEventListener('pointerleave', this.handleLeave);
-          this.addEventListener('focusout', (event) => {
-            if (!this.contains(event.relatedTarget)) this.handleLeave();
-          });
+          this.addEventListener('focusout', this.handleFocusOut);
         }
 
         disconnectedCallback() {
-          this.triggers.forEach((trigger) => {
-            trigger.removeEventListener('pointerenter', this.handleEnter);
-            trigger.removeEventListener('focus', this.handleEnter);
-          });
+          this.removeEventListener('pointerover', this.handlePointerOver);
+          this.removeEventListener('focusin', this.handleFocusIn);
           this.removeEventListener('pointerleave', this.handleLeave);
+          this.removeEventListener('focusout', this.handleFocusOut);
         }
 
-        handleEnter(event) {
-          this.setAttribute('data-active', event.currentTarget.dataset.target);
+        handlePointerOver(event) {
+          const trigger = event.target.closest('.footer-categories__trigger');
+          if (trigger) this.setAttribute('data-active', trigger.dataset.target);
+        }
+
+        handleFocusIn(event) {
+          const trigger = event.target.closest('.footer-categories__trigger');
+          if (trigger) this.setAttribute('data-active', trigger.dataset.target);
         }
 
         handleLeave() {
           this.removeAttribute('data-active');
+        }
+
+        handleFocusOut(event) {
+          if (!this.contains(event.relatedTarget)) this.handleLeave();
         }
       }
     );

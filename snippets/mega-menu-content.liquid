@@ -297,12 +297,20 @@
 
   .mega-menu-content__cta {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
   }
 
+  /* Edge-to-edge, not centered in a max-width column: text at the far
+     left, "Richiedi consulenza" at the far right of the screen — the old
+     max-width: 1280px; margin: 0 auto; kept it centered in a column
+     instead, only reaching the true screen edges at exactly 1280px
+     viewport width. */
   .mega-menu-content__cta-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 12px 40px;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 12px 3rem;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
