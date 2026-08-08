@@ -201,7 +201,13 @@
 
   .footer-categories__trigger:hover .footer-categories__trigger-arrow,
   .footer-categories__trigger:focus-visible .footer-categories__trigger-arrow {
-    transform: translateX(4px);
+    /* color was already inherited as teal here (the parent .footer-
+       categories__trigger:hover rule below sets color: #3cc3b2, and this
+       span never overrode it) — declared explicitly anyway so it doesn't
+       depend on that inheritance chain staying intact if either rule
+       changes later. scale() is new: only translateX was here before. */
+    color: #3cc3b2;
+    transform: translateX(4px) scale(1.15);
     opacity: 1;
   }
 
