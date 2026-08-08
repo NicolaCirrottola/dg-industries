@@ -237,7 +237,7 @@
             "link_preventivo": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"#\">Richiedi Preventivo Su Misura</a></p>",
+                "text": "<p><a href=\"/pages/parliamone\">Richiedi Preventivo Su Misura</a></p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "custom",
@@ -258,7 +258,7 @@
             "link_assistenza": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"#\">Assistenza Tecnica</a></p>",
+                "text": "<p><a href=\"/pages/parliamone\">Assistenza Tecnica</a></p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "custom",
@@ -279,7 +279,7 @@
             "link_contatti": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"#\">Contatti</a></p>",
+                "text": "<p><a href=\"/pages/parliamone\">Contatti</a></p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "custom",
