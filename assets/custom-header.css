@@ -35,6 +35,32 @@ header-component .menu-list__list-item:has(.menu-list__link[aria-expanded='true'
   transform: translateY(0);
 }
 
+/* Full-bleed (100vw) dropdown for our custom mega-menu content specifically
+   — the standard viewport-breakout technique, forced regardless of
+   whatever ancestor the native width: 100%; left: 0; rule above actually
+   resolves its containing block against. Scoped via :has(.mega-menu-content)
+   (same scoping already used below for the submenu's max-height override)
+   so any other menu_style's native mega menu keeps its own page-relative
+   width — this only touches our custom_columns nav's dropdown.
+
+   translateX(-50%) is merged into one transform value with the open/close
+   slide-down animation above rather than declared separately: two
+   transform declarations on the same element don't combine, the second
+   just overwrites the first, so each state below carries both the
+   horizontal centering and that state's vertical slide offset together. */
+header-component .menu-list__submenu:has(.mega-menu-content) {
+  width: 100vw;
+  left: 50%;
+  box-sizing: border-box;
+  transform: translate(-50%, -8px);
+}
+
+header-component
+  .menu-list__list-item:has(.menu-list__link[aria-expanded='true'])
+  .menu-list__submenu:has(.mega-menu-content) {
+  transform: translate(-50%, 0);
+}
+
 /* menu-list__submenu-inner is shared with the nav's "more" overflow menu,
    which legitimately needs max-height + overflow-y:auto (a long overflowed
    link list should scroll). Scope the no-scroll override to submenus that
