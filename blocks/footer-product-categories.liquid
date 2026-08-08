@@ -1,8 +1,16 @@
 {%- doc -%}
-  Interactive "Prodotti" footer column: 4 macro-category triggers, hover/
-  focus on one reveals its subcategories in a shared panel area below —
-  CSS-only (:has()), no JS. Aspirazione defaults visible at rest so the
-  panel area is never empty.
+  Interactive "Prodotti" footer column. Rest state shows ONLY the 4 macro-
+  category triggers (each with a '>' marker). Hovering one instantly hides
+  that whole list and fades in only its own subcategories; moving the
+  mouse off the component instantly restores the rest state.
+
+  This needs actual JS (footer-categories custom element below), not a
+  pure :has()-driven swap: the moment a hovered trigger has to disappear so
+  the newly-revealed subcategory links can be clicked in that same spot, it
+  loses pointer-events and therefore its own :hover — which is exactly the
+  condition a CSS-only :has() rule would depend on, so it self-cancels and
+  flickers. JS sets an explicit data-active attribute instead, which does
+  not have that problem.
 
   Category/URL data mirrors snippets/mega-menu-content.liquid and
   snippets/mobile-nav-accordion.liquid — this theme has no shared data
@@ -15,7 +23,7 @@
   them, since an unmatched tag just renders an empty (not broken) grid.
 {%- enddoc -%}
 
-<div class="footer-categories">
+<footer-categories class="footer-categories">
   <div class="footer-categories__triggers">
     <button
       type="button"
@@ -23,7 +31,11 @@
       data-target="aspirazione"
     >
       <span>Aspirazione</span>
-      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span
+        class="footer-categories__trigger-arrow"
+        aria-hidden="true"
+        >&gt;</span
+      >
     </button>
     <button
       type="button"
@@ -31,7 +43,11 @@
       data-target="caduta-pesante"
     >
       <span>Caduta Pesante</span>
-      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span
+        class="footer-categories__trigger-arrow"
+        aria-hidden="true"
+        >&gt;</span
+      >
     </button>
     <button
       type="button"
@@ -39,7 +55,11 @@
       data-target="catene-trasportatori"
     >
       <span>Catene e Trasportatori</span>
-      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span
+        class="footer-categories__trigger-arrow"
+        aria-hidden="true"
+        >&gt;</span
+      >
     </button>
     <button
       type="button"
@@ -47,7 +67,11 @@
       data-target="macchine"
     >
       <span>Macchine</span>
-      <svg class="footer-categories__trigger-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span
+        class="footer-categories__trigger-arrow"
+        aria-hidden="true"
+        >&gt;</span
+      >
     </button>
   </div>
 
@@ -101,13 +125,32 @@
       {%- endfor -%}
     </ul>
   </div>
-</div>
+</footer-categories>
 
 {% stylesheet %}
+  .footer-categories {
+    display: grid;
+  }
+
+  /* Triggers and panels share the same grid cell so the swap between them
+     never changes the component's own box size — which is what keeps
+     pointerleave on <footer-categories> itself from firing prematurely
+     mid-swap, and avoids any layout jump/overlap while doing it. */
+  .footer-categories__triggers,
+  .footer-categories__panels {
+    grid-area: 1 / 1;
+  }
+
   .footer-categories__triggers {
     display: flex;
     flex-direction: column;
     gap: 0;
+  }
+
+  /* Rest state: only the trigger list. Hiding it is deliberately instant
+     (no transition) — only the incoming subcategory panel fades in. */
+  .footer-categories[data-active] .footer-categories__triggers {
+    display: none;
   }
 
   .footer-categories__trigger {
@@ -149,17 +192,12 @@
 
   .footer-categories__panels {
     display: grid;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  /* All 4 panels stack in the same grid cell so swapping between them
-     crossfades in place instead of jumping — display:none can't be
-     transitioned, so this uses opacity/transform with a delayed
-     visibility instead (immediate on the way in, deferred on the way out,
-     so the outgoing panel keeps receiving pointer-events long enough to
-     not stutter mid-fade but the incoming one is interactive right away). */
+  /* All 4 panels also stack in the same grid cell as their shared parent.
+     Hidden (and non-interactive) by default; no transition here either —
+     it lives only on the [data-active] rule below, so hiding stays
+     instant while showing fades in. */
   .footer-categories__panel {
     grid-area: 1 / 1;
     display: flex;
@@ -171,8 +209,6 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(-4px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
   }
 
   .footer-categories__panel a {
@@ -188,36 +224,63 @@
     color: #3cc3b2;
   }
 
-  /* Active-panel state shared by all 5 rules below: fades/slides in and
-     becomes interactive immediately (visibility switches with no delay
-     when appearing), fades/slides out on its way back to the inactive
-     state above (visibility stays 'visible' for the full 0.25s transition
-     so the crossfade with the incoming panel doesn't pop). */
-  .footer-categories:not(:has(.footer-categories__trigger:hover, .footer-categories__trigger:focus-visible))
-    .footer-categories__panel[data-panel='aspirazione'],
-  .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:hover)
-    .footer-categories__panel[data-panel='aspirazione'],
-  .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:focus-visible)
-    .footer-categories__panel[data-panel='aspirazione'],
-  .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:hover)
-    .footer-categories__panel[data-panel='caduta-pesante'],
-  .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:focus-visible)
-    .footer-categories__panel[data-panel='caduta-pesante'],
-  .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:hover)
+  .footer-categories[data-active='aspirazione'] .footer-categories__panel[data-panel='aspirazione'],
+  .footer-categories[data-active='caduta-pesante'] .footer-categories__panel[data-panel='caduta-pesante'],
+  .footer-categories[data-active='catene-trasportatori']
     .footer-categories__panel[data-panel='catene-trasportatori'],
-  .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:focus-visible)
-    .footer-categories__panel[data-panel='catene-trasportatori'],
-  .footer-categories:has(.footer-categories__trigger[data-target='macchine']:hover)
-    .footer-categories__panel[data-panel='macchine'],
-  .footer-categories:has(.footer-categories__trigger[data-target='macchine']:focus-visible)
-    .footer-categories__panel[data-panel='macchine'] {
+  .footer-categories[data-active='macchine'] .footer-categories__panel[data-panel='macchine'] {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateY(0);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity 0.25s ease;
   }
 {% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('footer-categories')) {
+    customElements.define(
+      'footer-categories',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.triggers = this.querySelectorAll('.footer-categories__trigger');
+          this.handleEnter = this.handleEnter.bind(this);
+          this.handleLeave = this.handleLeave.bind(this);
+
+          this.triggers.forEach((trigger) => {
+            trigger.addEventListener('pointerenter', this.handleEnter);
+            trigger.addEventListener('focus', this.handleEnter);
+          });
+
+          // Leaving the whole component (not each trigger individually) is
+          // what should instantly restore the rest state — matches the
+          // spec's "mouse out from the area" behavior rather than
+          // re-showing the trigger list every time the cursor crosses
+          // between two adjacent items.
+          this.addEventListener('pointerleave', this.handleLeave);
+          this.addEventListener('focusout', (event) => {
+            if (!this.contains(event.relatedTarget)) this.handleLeave();
+          });
+        }
+
+        disconnectedCallback() {
+          this.triggers.forEach((trigger) => {
+            trigger.removeEventListener('pointerenter', this.handleEnter);
+            trigger.removeEventListener('focus', this.handleEnter);
+          });
+          this.removeEventListener('pointerleave', this.handleLeave);
+        }
+
+        handleEnter(event) {
+          this.setAttribute('data-active', event.currentTarget.dataset.target);
+        }
+
+        handleLeave() {
+          this.removeAttribute('data-active');
+        }
+      }
+    );
+  }
+{% endjavascript %}
 
 {% schema %}
 {
