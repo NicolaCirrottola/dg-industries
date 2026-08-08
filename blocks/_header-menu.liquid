@@ -102,7 +102,17 @@
           than depending on that manual setup step.
         {%- endcomment -%}
         {% assign custom_nav_titles = 'Aspirazione,Caduta Pesante,Catene Trasportatori,Macchine' | split: ',' %}
+        {% assign custom_nav_handles = 'aspirazione,caduta-pesante,catene-trasportatori,macchine' | split: ',' %}
         {% for nav_title in custom_nav_titles %}
+          {% liquid
+            assign nav_handle = custom_nav_handles[forloop.index0]
+            assign nav_collection = collections[nav_handle]
+            if nav_collection != blank
+              assign nav_url = nav_collection.url
+            else
+              assign nav_url = '/collections/' | append: nav_handle
+            endif
+          %}
           <li
             role="presentation"
             class="menu-list__list-item menu-list__list-item--custom-nav"
@@ -112,7 +122,7 @@
             on:pointerleave="/deactivate"
           >
             <a
-              href="#"
+              href="{{ nav_url }}"
               data-skip-node-update="true"
               class="menu-list__link"
               aria-controls="submenu-{{ forloop.index }}"

@@ -1,0 +1,42 @@
+{%- doc -%}
+  Renders the "Richiedi un preventivo" CTA that replaces the normal add-to-
+  cart / buy button whenever a product is tagged 'richiedi-preventivo' or
+  belongs to the 'macchine' collection — see blocks/buy-buttons.liquid (PDP)
+  and snippets/quick-add.liquid (product cards), the two places a buy
+  button can render, for the tag/collection check that decides whether to
+  render this instead.
+
+  @param {object} product - The product object
+  @param {string} [class] - Extra classes so this can inherit the sizing of
+    whichever button context it replaces (PDP buy-buttons vs. card quick-add)
+{%- enddoc -%}
+
+<a
+  href="/pages/parliamone?prodotto={{ product.title | url_encode }}"
+  class="quote-request-button {{ class }}"
+>
+  Richiedi un preventivo
+</a>
+
+{% stylesheet %}
+  .quote-request-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3cc3b2;
+    border: 1px solid #3cc3b2;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .quote-request-button:hover {
+    background-color: #34b3a3;
+    border-color: #34b3a3;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+{% endstylesheet %}

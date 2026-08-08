@@ -34,6 +34,20 @@
       assign add_to_cart_text = 'products.product.unavailable' | t
     endif
   endif
+
+  # Machinery quote-on-request: tagged products, or anything in the
+  # 'macchine' collection, skip the cart entirely in favor of a
+  # "Richiedi un preventivo" CTA (see snippets/quote-request-button.liquid).
+  # snippets/quick-add.liquid runs the same check for product cards.
+  assign needs_quote_request = false
+  if product.tags contains 'richiedi-preventivo'
+    assign needs_quote_request = true
+  endif
+  for product_collection in product.collections
+    if product_collection.handle == 'macchine'
+      assign needs_quote_request = true
+    endif
+  endfor
 %}
 
 <span
@@ -43,7 +57,9 @@
   {% endif %}
   {{ block.shopify_attributes }}
 >
-  {%- if product != blank -%}
+  {%- if product != blank and needs_quote_request -%}
+    {% render 'quote-request-button', product: product, class: 'button add-to-cart-button' %}
+  {%- elsif product != blank -%}
     {%- assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id -%}
     <product-form-component
       data-section-id="{{ section.id }}"
