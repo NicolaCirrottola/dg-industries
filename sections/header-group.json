@@ -11,30 +11,6 @@
   "type": "header",
   "name": "t:names.header",
   "sections": {
-    "header_announcements_main": {
-      "type": "header-announcements",
-      "blocks": {
-        "announcement_1": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Spedizioni rapide e assistenza tecnica diretta — dal 1963 al fianco dell'industria molitoria.",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem"
-          }
-        }
-      },
-      "block_order": [
-        "announcement_1"
-      ],
-      "settings": {
-        "speed": 5,
-        "section_width": "full-width",
-        "background_color": "#000000",
-        "divider_width": 0,
-        "padding-block-start": 10,
-        "padding-block-end": 10
-      }
-    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -116,7 +92,6 @@
     }
   },
   "order": [
-    "header_announcements_main",
     "header_section"
   ]
 }
