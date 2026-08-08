@@ -30,7 +30,16 @@
   </div>
 
   {% capture list_items %}
-    {% if section.settings.collection != blank and shop.products_count != 0 %}
+    {%- comment -%}
+      Checking the assigned collection's own product count (rather than
+      shop.products_count) matters once a store has several product-list
+      sections each pointed at a different collection: shop.products_count
+      only ever tells you the store as a whole isn't empty, so a specific
+      collection that's still empty (not yet stocked in admin) would fall
+      into this branch anyway and render zero cards — an empty-looking gap
+      instead of the placeholder row below.
+    {%- endcomment -%}
+    {% if section.settings.collection != blank and section.settings.collection.products_count != 0 %}
       {% paginate section.settings.collection.products by max_items %}
         {% for product in section.settings.collection.products limit: max_items %}
         <div
