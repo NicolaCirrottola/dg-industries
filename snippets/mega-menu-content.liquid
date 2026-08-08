@@ -66,7 +66,18 @@
       <div class="mega-menu-content__label">Categorie</div>
       <div class="mega-menu-content__list">
         {%- for cat in category_list -%}
-          <a href="#" class="mega-menu-content__cat-link">
+          {%- liquid
+            # Aspirazione's 9 subcategories map onto Shopify's native
+            # collection + tag filter route (/collections/<handle>/<tag>) —
+            # handleize matches how Shopify itself turns a tag into that URL
+            # segment. Other nav positions aren't wired up to a specific
+            # collection's tag set yet, so they keep the '#' placeholder.
+            assign cat_href = '#'
+            if index == 1
+              assign cat_href = cat | handleize | prepend: '/collections/aspirazione/'
+            endif
+          -%}
+          <a href="{{ cat_href }}" class="mega-menu-content__cat-link">
             <span>{{ cat }}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </a>
