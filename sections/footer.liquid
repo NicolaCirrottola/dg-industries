@@ -13,7 +13,11 @@
   class="section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 >
   {% liquid
-    assign total_blocks = section.blocks.size
+    # +1 accounts for the hardcoded "Prodotti" macro-category column
+    # injected directly below (not a real Shopify block, so it isn't part
+    # of section.blocks.size) — kept in the same grid-column math as the
+    # real blocks so the footer-content grid still lays out correctly.
+    assign total_blocks = section.blocks.size | plus: 1
 
     # Grid layout calculations
     assign grid_columns = total_blocks | at_most: 4
@@ -50,6 +54,255 @@
       --tablet-last-row-count: {{ tablet_last_row_count }};
     "
   >
+    {%- comment -%}
+      Hardcoded "Prodotti" macro-category column, placed as the first
+      footer column (ahead of the real Shopify blocks rendered via
+      content_for 'blocks' below — content_for 'block' called per-item with
+      only an id and no type isn't a pattern used anywhere else in this
+      theme, every other call site always pairs id: with type:, so looping
+      section.blocks to splice this in between two specific blocks wasn't
+      safe to rely on). Deliberately NOT a Shopify block/snippet: rewritten
+      directly inline here (markup + <style> + <script>, no
+      {% stylesheet %}/{% javascript %} tags) per explicit request, so none
+      of it depends on Shopify's asset bundling/CDN caching of block-level
+      {% stylesheet %}/{% javascript %} output — this renders as plain
+      literal HTML/CSS/JS on every page load.
+
+      Category/URL data mirrors snippets/mega-menu-content.liquid and
+      snippets/mobile-nav-accordion.liquid — this theme has no shared data
+      source for these lists, so all three are kept in sync by hand.
+      Aspirazione and Macchine use real tag-filtered collection URLs
+      (matching the header nav exactly); Caduta Pesante and Catene
+      Trasportatori apply the same handleize convention even though no
+      explicit tag mapping was given for them.
+    {%- endcomment -%}
+    <div
+          class="footer-categories-inline"
+          data-footer-categories
+        >
+          <div class="footer-categories-inline__heading">Prodotti</div>
+
+          <div
+            class="footer-categories-inline__triggers"
+            data-triggers
+          >
+            <button
+              type="button"
+              class="footer-categories-inline__trigger"
+              data-target="aspirazione"
+            >
+              <span>Aspirazione</span>
+              <span
+                class="footer-categories-inline__arrow"
+                aria-hidden="true"
+                >&gt;</span
+              >
+            </button>
+            <button
+              type="button"
+              class="footer-categories-inline__trigger"
+              data-target="caduta-pesante"
+            >
+              <span>Caduta Pesante</span>
+              <span
+                class="footer-categories-inline__arrow"
+                aria-hidden="true"
+                >&gt;</span
+              >
+            </button>
+            <button
+              type="button"
+              class="footer-categories-inline__trigger"
+              data-target="catene-trasportatori"
+            >
+              <span>Catene e Trasportatori</span>
+              <span
+                class="footer-categories-inline__arrow"
+                aria-hidden="true"
+                >&gt;</span
+              >
+            </button>
+            <button
+              type="button"
+              class="footer-categories-inline__trigger"
+              data-target="macchine"
+            >
+              <span>Macchine</span>
+              <span
+                class="footer-categories-inline__arrow"
+                aria-hidden="true"
+                >&gt;</span
+              >
+            </button>
+          </div>
+
+          <div class="footer-categories-inline__panels">
+            <ul
+              class="footer-categories-inline__panel"
+              data-panel="aspirazione"
+            >
+              {%- assign sub_list = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori' | split: ',' -%}
+              {%- for sub in sub_list -%}
+                <li>
+                  <a href="{{ sub | handleize | prepend: '/collections/aspirazione/' }}">{{ sub }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            <ul
+              class="footer-categories-inline__panel"
+              data-panel="caduta-pesante"
+            >
+              {%- assign sub_list = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria' | split: ',' -%}
+              {%- for sub in sub_list -%}
+                <li>
+                  <a href="{{ sub | handleize | prepend: '/collections/caduta-pesante/' }}">{{ sub }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            <ul
+              class="footer-categories-inline__panel"
+              data-panel="catene-trasportatori"
+            >
+              {%- assign sub_list = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori' | split: ',' -%}
+              {%- for sub in sub_list -%}
+                <li>
+                  <a href="{{ sub | handleize | prepend: '/collections/catene-trasportatori/' }}">{{ sub }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            <ul
+              class="footer-categories-inline__panel"
+              data-panel="macchine"
+            >
+              {%- assign sub_titles = 'Accettazione e Prepulitura,Pulitura,Decorticazione,Condizionamento,Macinazione e Setacciatura,Miscelazione e Prodotti Finiti,Stoccaggio' | split: ',' -%}
+              {%- assign sub_slugs = 'accettazione-prepulitura,pulitura,decorticazione,condizionamento,macinazione-setacciatura,miscelazione-prodotti-finiti,stoccaggio' | split: ',' -%}
+              {%- for sub in sub_titles -%}
+                <li>
+                  <a href="{{ sub_slugs[forloop.index0] | prepend: '/collections/macchine/' }}">{{ sub }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+
+        <style>
+          .footer-categories-inline {
+            position: relative;
+            display: grid;
+            overflow: visible;
+            pointer-events: auto;
+          }
+
+          .footer-categories-inline__heading {
+            font-family: var(--font-body--family);
+            font-size: 0.78125rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+          }
+
+          .footer-categories-inline__triggers {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .footer-categories-inline__trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 4px 0;
+            margin: 0;
+            font-family: inherit;
+            font-size: 0.84375rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: color 0.15s ease;
+          }
+
+          .footer-categories-inline__trigger:hover,
+          .footer-categories-inline__trigger:focus-visible {
+            color: #3cc3b2;
+          }
+
+          .footer-categories-inline__arrow {
+            flex: none;
+            display: inline-block;
+            opacity: 0.6;
+            transform: translateX(0);
+            transition: color 0.15s ease, transform 0.3s ease, opacity 0.3s ease;
+          }
+
+          .footer-categories-inline__trigger:hover .footer-categories-inline__arrow,
+          .footer-categories-inline__trigger:focus-visible .footer-categories-inline__arrow {
+            color: #3cc3b2;
+            transform: translateX(4px);
+            opacity: 1;
+          }
+
+          /* Rest state: only the trigger list. Panels sit in the same grid
+             cell as the triggers (grid-area: 1 / 1 below) so the box never
+             changes size when triggers hide / a panel fades in — that's
+             what keeps mouseleave on .footer-categories-inline itself from
+             firing early mid-swap. */
+          .footer-categories-inline__triggers,
+          .footer-categories-inline__panels {
+            grid-area: 1 / 1;
+          }
+
+          .footer-categories-inline.is-active .footer-categories-inline__triggers {
+            display: none;
+          }
+
+          .footer-categories-inline__panels {
+            display: grid;
+          }
+
+          .footer-categories-inline__panel {
+            grid-area: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+          }
+
+          .footer-categories-inline__panel.is-active {
+            opacity: 1;
+            max-height: 40rem;
+            overflow: visible;
+            pointer-events: auto;
+          }
+
+          .footer-categories-inline__panel a {
+            display: block;
+            padding: 3px 0;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.8125rem;
+            text-decoration: none;
+            transition: color 0.15s ease;
+          }
+
+          .footer-categories-inline__panel a:hover {
+            color: #3cc3b2;
+          }
+        </style>
+
     {% content_for 'blocks' %}
   </div>
 </div>
@@ -101,6 +354,47 @@
 {% endstylesheet %}
 
 {{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+
+<script>
+  (function () {
+    var footerCategories = document.querySelector('[data-footer-categories]');
+    if (!footerCategories) return;
+
+    var triggers = footerCategories.querySelectorAll('.footer-categories-inline__trigger');
+    var panels = footerCategories.querySelectorAll('.footer-categories-inline__panel');
+
+    function showPanel(target) {
+      footerCategories.classList.add('is-active');
+      panels.forEach(function (panel) {
+        panel.classList.toggle('is-active', panel.getAttribute('data-panel') === target);
+      });
+    }
+
+    function resetPanels() {
+      footerCategories.classList.remove('is-active');
+      panels.forEach(function (panel) {
+        panel.classList.remove('is-active');
+      });
+    }
+
+    triggers.forEach(function (trigger) {
+      // mouseenter (not mouseover) deliberately: mouseover re-fires on every
+      // pixel of mouse movement within the button, and showPanel() is
+      // idempotent, so a mouseover listener here would just call it
+      // redundantly hundreds of times per hover instead of once on entry.
+      trigger.addEventListener('mouseenter', function () {
+        showPanel(trigger.getAttribute('data-target'));
+      });
+    });
+
+    // Leaving the whole footer-categories area (not each trigger
+    // individually) is what restores the rest state — matches "ripristina
+    // al mouseleave dall'area principale del footer" rather than
+    // re-showing the trigger list every time the cursor crosses between
+    // two adjacent macro-categories.
+    footerCategories.addEventListener('mouseleave', resetPanels);
+  })();
+</script>
 
 {% schema %}
 {
