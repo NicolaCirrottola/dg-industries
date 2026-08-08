@@ -117,6 +117,36 @@ header-component .menu-list__link[aria-expanded='true']::after {
   transform-origin: bottom left;
 }
 
+/* Mega-menu hover bridge — fixes the flicker that happens when the cursor
+   moves diagonally from a macro-category trigger down into its submenu
+   panel. The submenu is a separate absolutely-positioned box starting at
+   the row's bottom edge; if the mouse crosses even a couple of dead pixels
+   that belong to neither the trigger <li> nor the submenu itself (e.g. the
+   row's background) before reaching the panel, the browser fires
+   pointerleave on the trigger and header-menu.js closes the submenu before
+   the cursor ever arrives — that's the flicker.
+   ::before (::after is already the underline, above) extends the trigger
+   link's own hoverable box 20px past the row's bottom edge, invisibly
+   bridging that gap. pointer-events stays off at rest so this never
+   intercepts clicks on whatever sits directly below the header when no
+   menu is open; it only turns on once the trigger itself is already
+   hovered/focused, at the exact moment it's needed to carry the cursor the
+   rest of the way into the submenu. */
+header-component .menu-list__list-item--custom-nav .menu-list__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+header-component .menu-list__list-item--custom-nav:hover .menu-list__link::before,
+header-component .menu-list__list-item--custom-nav:focus-within .menu-list__link::before {
+  pointer-events: auto;
+}
+
 /* ==========================================================================
    4. Action icons (account/cart) + mobile hamburger — white by default,
    teal on hover. They share the header's right-hand actions cluster

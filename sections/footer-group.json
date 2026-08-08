@@ -139,119 +139,15 @@
               },
               "blocks": {}
             },
-            "link_valvole_farfalla": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"#\">Valvole a Farfalla</a></p>",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.84375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "link_valvole_deviatrici": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"#\">Valvole Deviatrici</a></p>",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.84375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "link_tubazioni": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"#\">Tubazioni e Curve di Condotta</a></p>",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.84375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "link_aspirazione": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"#\">Sistemi di Aspirazione</a></p>",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.84375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "link_filtri": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"#\">Filtri e Cicloni per Farina/Grano</a></p>",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.84375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
+            "footer_product_categories": {
+              "type": "footer-product-categories",
+              "settings": {},
               "blocks": {}
             }
           },
           "block_order": [
             "heading_prodotti",
-            "link_valvole_farfalla",
-            "link_valvole_deviatrici",
-            "link_tubazioni",
-            "link_aspirazione",
-            "link_filtri"
+            "footer_product_categories"
           ]
         },
         "group_azienda": {

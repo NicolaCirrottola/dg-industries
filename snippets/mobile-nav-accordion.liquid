@@ -24,7 +24,12 @@
         when 3
           assign categories = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori'
         else
-          assign categories = 'Vagli e Setacciatrici,Mulini e Macinatori,Miscelatori,Dosatori,Bilance e Sistemi di Pesatura,Linee Complete,Servizi e Assistenza'
+          # Mirrors snippets/mega-menu-content.liquid's Macchine (index 4)
+          # branch — mill processing phases with an explicit slug list,
+          # since handleize would keep the "e" in titles like "Accettazione
+          # e Prepulitura" that the requested slugs drop.
+          assign categories = 'Accettazione e Prepulitura,Pulitura,Decorticazione,Condizionamento,Macinazione e Setacciatura,Miscelazione e Prodotti Finiti,Stoccaggio'
+          assign category_slugs = 'accettazione-prepulitura,pulitura,decorticazione,condizionamento,macinazione-setacciatura,miscelazione-prodotti-finiti,stoccaggio'
       endcase
       assign category_list = categories | split: ','
     -%}
@@ -51,12 +56,16 @@
             {%- liquid
               # Same rule as snippets/mega-menu-content.liquid: Aspirazione's
               # subcategories map onto Shopify's native collection + tag
-              # filter route (/collections/<handle>/<tag>). Other macro-
-              # categories aren't wired up to a specific collection's tag
-              # set yet, so they keep the '#' placeholder.
+              # filter route (/collections/<handle>/<tag>); Macchine uses the
+              # explicit category_slugs list assigned above. Caduta Pesante/
+              # Catene Trasportatori aren't wired up to a specific
+              # collection's tag set yet, so they keep the '#' placeholder.
               assign cat_href = '#'
               if forloop.parentloop.index == 1
                 assign cat_href = cat | handleize | prepend: '/collections/aspirazione/'
+              elsif forloop.parentloop.index == 4
+                assign slug_list = category_slugs | split: ','
+                assign cat_href = slug_list[forloop.index0] | prepend: '/collections/macchine/'
               endif
             -%}
             <li

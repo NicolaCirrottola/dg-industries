@@ -1,0 +1,200 @@
+{%- doc -%}
+  Interactive "Prodotti" footer column: 4 macro-category triggers, hover/
+  focus on one reveals its subcategories in a shared panel area below —
+  CSS-only (:has()), no JS. Aspirazione defaults visible at rest so the
+  panel area is never empty.
+
+  Category/URL data mirrors snippets/mega-menu-content.liquid and
+  snippets/mobile-nav-accordion.liquid — this theme has no shared data
+  source for these lists, so all three are kept in sync by hand. Aspirazione
+  and Macchine use real tag-filtered collection URLs (matching the header
+  nav exactly); Caduta Pesante and Catene Trasportatori apply the same
+  handleize convention as Aspirazione even though no explicit tag mapping
+  was given for them, so all 4 columns behave consistently — verify those
+  two collections' products are actually tagged to match before relying on
+  them, since an unmatched tag just renders an empty (not broken) grid.
+{%- enddoc -%}
+
+<div class="footer-categories">
+  <div class="footer-categories__triggers">
+    <button
+      type="button"
+      class="footer-categories__trigger"
+      data-target="aspirazione"
+    >
+      Aspirazione
+    </button>
+    <button
+      type="button"
+      class="footer-categories__trigger"
+      data-target="caduta-pesante"
+    >
+      Caduta Pesante
+    </button>
+    <button
+      type="button"
+      class="footer-categories__trigger"
+      data-target="catene-trasportatori"
+    >
+      Catene e Trasportatori
+    </button>
+    <button
+      type="button"
+      class="footer-categories__trigger"
+      data-target="macchine"
+    >
+      Macchine
+    </button>
+  </div>
+
+  <div class="footer-categories__panels">
+    <ul
+      class="footer-categories__panel"
+      data-panel="aspirazione"
+    >
+      {%- assign sub_list = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori' | split: ',' -%}
+      {%- for sub in sub_list -%}
+        <li>
+          <a href="{{ sub | handleize | prepend: '/collections/aspirazione/' }}">{{ sub }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <ul
+      class="footer-categories__panel"
+      data-panel="caduta-pesante"
+    >
+      {%- assign sub_list = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria' | split: ',' -%}
+      {%- for sub in sub_list -%}
+        <li>
+          <a href="{{ sub | handleize | prepend: '/collections/caduta-pesante/' }}">{{ sub }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <ul
+      class="footer-categories__panel"
+      data-panel="catene-trasportatori"
+    >
+      {%- assign sub_list = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori' | split: ',' -%}
+      {%- for sub in sub_list -%}
+        <li>
+          <a href="{{ sub | handleize | prepend: '/collections/catene-trasportatori/' }}">{{ sub }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <ul
+      class="footer-categories__panel"
+      data-panel="macchine"
+    >
+      {%- assign sub_titles = 'Accettazione e Prepulitura,Pulitura,Decorticazione,Condizionamento,Macinazione e Setacciatura,Miscelazione e Prodotti Finiti,Stoccaggio' | split: ',' -%}
+      {%- assign sub_slugs = 'accettazione-prepulitura,pulitura,decorticazione,condizionamento,macinazione-setacciatura,miscelazione-prodotti-finiti,stoccaggio' | split: ',' -%}
+      {%- for sub in sub_titles -%}
+        <li>
+          <a href="{{ sub_slugs[forloop.index0] | prepend: '/collections/macchine/' }}">{{ sub }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% stylesheet %}
+  .footer-categories__triggers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .footer-categories__trigger {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 0.84375rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .footer-categories__trigger:hover,
+  .footer-categories__trigger:focus-visible {
+    color: #3cc3b2;
+  }
+
+  .footer-categories__panels {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .footer-categories__panel {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-categories__panel a {
+    display: block;
+    padding: 3px 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.8125rem;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-categories__panel a:hover {
+    color: #3cc3b2;
+  }
+
+  /* Aspirazione shown by default so the panel area isn't empty at rest —
+     as soon as any trigger is hovered/focused, this yields to whichever
+     specific rule below matches. */
+  .footer-categories:not(:has(.footer-categories__trigger:hover, .footer-categories__trigger:focus-visible))
+    .footer-categories__panel[data-panel='aspirazione'] {
+    display: flex;
+  }
+
+  .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:hover)
+    .footer-categories__panel[data-panel='aspirazione'],
+  .footer-categories:has(.footer-categories__trigger[data-target='aspirazione']:focus-visible)
+    .footer-categories__panel[data-panel='aspirazione'] {
+    display: flex;
+  }
+
+  .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:hover)
+    .footer-categories__panel[data-panel='caduta-pesante'],
+  .footer-categories:has(.footer-categories__trigger[data-target='caduta-pesante']:focus-visible)
+    .footer-categories__panel[data-panel='caduta-pesante'] {
+    display: flex;
+  }
+
+  .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:hover)
+    .footer-categories__panel[data-panel='catene-trasportatori'],
+  .footer-categories:has(.footer-categories__trigger[data-target='catene-trasportatori']:focus-visible)
+    .footer-categories__panel[data-panel='catene-trasportatori'] {
+    display: flex;
+  }
+
+  .footer-categories:has(.footer-categories__trigger[data-target='macchine']:hover)
+    .footer-categories__panel[data-panel='macchine'],
+  .footer-categories:has(.footer-categories__trigger[data-target='macchine']:focus-visible)
+    .footer-categories__panel[data-panel='macchine'] {
+    display: flex;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer product categories",
+  "tag": null
+}
+{% endschema %}
