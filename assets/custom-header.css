@@ -123,14 +123,28 @@ header-component .menu-list__link[aria-expanded='true'] {
   color: #3cc3b2;
 }
 
+/* Underline sits strictly below the link's own text — bottom: -4px (not 0)
+   pulls it fully clear of the row's bottom edge/border so it reads as its
+   own separate mark rather than touching the header's border. Bound only to
+   .menu-list__link itself (:hover / [aria-expanded='true'] on that exact
+   element) — .menu-list__submenu is a sibling of this <a>, not a
+   descendant (see the native `[aria-expanded='true'] + .menu-list__submenu`
+   adjacent-sibling rule further down), so hovering the submenu/mega-menu
+   panel can never trigger CSS :hover on this link and re-animate the line.
+   Once the mega-menu opens, header-menu.js sets aria-expanded="true" on
+   this same <a>, which is what keeps the line lit while browsing the
+   submenu (intentional — the indicator should stay on while its menu is
+   open) and what makes it retract cleanly (aria-expanded goes back to
+   false) the one time the trigger's own pointerleave finally fires, with no
+   separate retrigger path to flicker through. */
 header-component .menu-list__link::after {
   content: '';
   position: absolute;
   left: 12px;
   right: 12px;
-  bottom: 0;
+  bottom: -4px;
   height: 3px;
-  border-radius: 2px 2px 0 0;
+  border-radius: 0 0 2px 2px;
   background: #3cc3b2;
   transform: scaleX(0);
   transform-origin: bottom right;
