@@ -60,6 +60,23 @@
         {% assign products_per_page = section.settings.products_per_page %}
       {% endif %}
 
+      {%- comment -%}
+        Subcategory routes (/collections/<handle>/<tag>) make Shopify scope
+        collection.products to tag matches only, server-side, before this
+        Liquid runs — there's no way to read an "unfiltered" version of the
+        current `collection` object itself. To also include products that
+        belong to the subcategory only via product.type (no matching tag),
+        we separately look the same collection up by handle through the
+        global `collections` object, which — unlike the URL-scoped
+        `collection` object — is unaffected by the URL's tag segment and
+        returns the collection's full product list. That lookup is only
+        accurate for the collection's first 50 products (Shopify's default
+        unpaginated Liquid limit), which is fine for these niche
+        subcategory-sized collections but worth knowing if a macro-category
+        collection ever grows past that.
+      {%- endcomment -%}
+      {% assign current_subcat_tag = collection.current_tags | first %}
+
       {% paginate collection.products by products_per_page %}
         {% capture children %}
           {% for product in collection.products %}
@@ -78,6 +95,35 @@
               %}
             </li>
           {% endfor %}
+
+          {%- comment -%}
+            Type-matched fallback (rendered on page 1 only, so infinite-scroll
+            doesn't re-append the same extras on every subsequent page load).
+            Deduplicated against the tag-matched set above by product.id.
+          {%- endcomment -%}
+          {% if current_subcat_tag != blank and paginate.current_page == 1 %}
+            {% assign tag_matched_ids = collection.products | map: 'id' %}
+            {% for product in collections[collection.handle].products %}
+              {% unless tag_matched_ids contains product.id %}
+                {% if product.type != blank and product.type | downcase == current_subcat_tag | downcase %}
+                  <li
+                    id="{{ section.id }}-{{ product.id }}"
+                    class="product-grid__item product-grid__item--type-match-{{ forloop.index0 }}"
+                    data-page="{{ paginate.current_page }}"
+                    data-product-id="{{ product.id }}"
+                    ref="cards[]"
+                  >
+                    {% content_for 'block',
+                      type: '_product-card',
+                      id: 'product-card',
+                      closest.product: product,
+                      product_view_context: 'collection'
+                    %}
+                  </li>
+                {% endif %}
+              {% endunless %}
+            {% endfor %}
+          {% endif %}
         {% endcapture %}
 
         {% render 'product-grid',
