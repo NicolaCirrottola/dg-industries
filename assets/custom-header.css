@@ -90,9 +90,9 @@ header-component .header-logo__image {
 }
 
 /* ==========================================================================
-   3. Nav links — white by default, teal on hover/open, with an animated
-   underline driven by the existing aria-expanded attribute (already set
-   by header-menu.js on open/close, no extra JS needed here).
+   3. Nav links — white by default, teal on hover/open. Underline animation
+   was fully reset and rebuilt here (see note below) — no older ::before /
+   ::after rule from any previous iteration survives past this block.
    ========================================================================== */
 header-component .menu-list__link {
   font-family: 'Inter', sans-serif;
@@ -123,38 +123,43 @@ header-component .menu-list__link[aria-expanded='true'] {
   color: #3cc3b2;
 }
 
-/* Underline sits strictly below the link's own text — bottom: -4px (not 0)
-   pulls it fully clear of the row's bottom edge/border so it reads as its
-   own separate mark rather than touching the header's border. Bound only to
-   .menu-list__link itself (:hover / [aria-expanded='true'] on that exact
-   element) — .menu-list__submenu is a sibling of this <a>, not a
-   descendant (see the native `[aria-expanded='true'] + .menu-list__submenu`
-   adjacent-sibling rule further down), so hovering the submenu/mega-menu
-   panel can never trigger CSS :hover on this link and re-animate the line.
-   Once the mega-menu opens, header-menu.js sets aria-expanded="true" on
-   this same <a>, which is what keeps the line lit while browsing the
-   submenu (intentional — the indicator should stay on while its menu is
-   open) and what makes it retract cleanly (aria-expanded goes back to
-   false) the one time the trigger's own pointerleave finally fires, with no
-   separate retrigger path to flicker through. */
-header-component .menu-list__link::after {
-  content: '';
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: -4px;
-  height: 3px;
-  border-radius: 0 0 2px 2px;
-  background: #3cc3b2;
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* --- Underline: full reset + rebuild ---------------------------------
+   This theme has no .header__menu-item / .list-menu__item anywhere (that
+   markup belongs to a different reference design) — the real nav link is
+   the <a class="menu-list__link"> rendered by blocks/_header-menu.liquid,
+   wrapping a single <span class="menu-list__link-title"> as its only
+   child. The line now lives on that span (so its width tracks the text
+   exactly, growing 0 -> 100% instead of the previous fixed-inset scaleX
+   wipe) and activates ONLY on :hover of the outer .menu-list__link — no
+   [aria-expanded='true'] fallback anymore, so the line now retracts the
+   instant the pointer leaves the word itself, even while the mega-menu
+   stays open underneath (a deliberate behavior change from the previous
+   "stays lit while its submenu is open" version).
+   Isolation from the submenu is structural, not just a matter of which
+   selector is used: .menu-list__submenu is a sibling <div> of this <a>
+   (see the `+ .menu-list__submenu` rule further down), never a descendant,
+   so CSS :hover on .menu-list__link — and therefore this span's ::after —
+   cannot be triggered by the pointer being anywhere inside the mega-menu
+   panel, mega-menu-content, or any dropdown/child dropdown. */
+header-component .menu-list__link-title {
+  position: relative;
+  display: inline-block;
 }
 
-header-component .menu-list__link:hover::after,
-header-component .menu-list__link[aria-expanded='true']::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+header-component .menu-list__link-title::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3cc3b2;
+  transition: width 0.25s ease-in-out;
+}
+
+header-component .menu-list__link:hover > .menu-list__link-title::after {
+  width: 100%;
 }
 
 /* Mega-menu hover bridge — fixes the flicker that happens when the cursor
@@ -165,13 +170,17 @@ header-component .menu-list__link[aria-expanded='true']::after {
    row's background) before reaching the panel, the browser fires
    pointerleave on the trigger and header-menu.js closes the submenu before
    the cursor ever arrives — that's the flicker.
-   ::before (::after is already the underline, above) extends the trigger
-   link's own hoverable box 20px past the row's bottom edge, invisibly
-   bridging that gap. pointer-events stays off at rest so this never
-   intercepts clicks on whatever sits directly below the header when no
-   menu is open; it only turns on once the trigger itself is already
-   hovered/focused, at the exact moment it's needed to carry the cursor the
-   rest of the way into the submenu. */
+   This is unrelated to the underline above (that now lives on
+   .menu-list__link-title, leaving ::before free on .menu-list__link
+   itself) — this bridge is purely about keeping header-menu.js from
+   closing the submenu early; the underline retracting as soon as the
+   pointer leaves the word is expected and independent of this. ::before
+   extends the trigger link's own hoverable box 20px past the row's bottom
+   edge, invisibly bridging that gap. pointer-events stays off at rest so
+   this never intercepts clicks on whatever sits directly below the header
+   when no menu is open; it only turns on once the trigger itself is
+   already hovered/focused, at the exact moment it's needed to carry the
+   cursor the rest of the way into the submenu. */
 header-component .menu-list__list-item--custom-nav .menu-list__link::before {
   content: '';
   position: absolute;
