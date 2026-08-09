@@ -48,6 +48,17 @@
       assign needs_quote_request = true
     endif
   endfor
+
+  # Tramogge (hoppers): custom-fabricated to size, so the buy form needs 3
+  # required dimension fields before checkout can happen at all. Only
+  # rendered here (PDP), not in snippets/quick-add.liquid's card context —
+  # a 3-field required form has no sensible place in a single-click
+  # quick-add flow, so those products just fall through to the normal
+  # "Choose options" card button, which sends the shopper to the full PDP.
+  assign needs_dimension_inputs = false
+  if product.type == 'Tramogge' or product.tags contains 'tramogge'
+    assign needs_dimension_inputs = true
+  endif
 %}
 
 <span
@@ -83,6 +94,43 @@
           ref="variantId"
           value="{{ product.selected_or_first_available_variant.id }}"
         >
+        {%- if needs_dimension_inputs -%}
+          <div class="buy-buttons-block__dimensions">
+            <div class="buy-buttons-block__dimensions-field">
+              <label for="{{ product_form_id }}-misura-a">Misura A (mm)</label>
+              <input
+                type="number"
+                id="{{ product_form_id }}-misura-a"
+                name="properties[Misura A (mm)]"
+                min="1"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="buy-buttons-block__dimensions-field">
+              <label for="{{ product_form_id }}-misura-b">Misura B (mm)</label>
+              <input
+                type="number"
+                id="{{ product_form_id }}-misura-b"
+                name="properties[Misura B (mm)]"
+                min="1"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="buy-buttons-block__dimensions-field">
+              <label for="{{ product_form_id }}-misura-c">Misura C (mm)</label>
+              <input
+                type="number"
+                id="{{ product_form_id }}-misura-c"
+                name="properties[Misura C (mm)]"
+                min="1"
+                required
+                aria-required="true"
+              >
+            </div>
+          </div>
+        {%- endif -%}
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section, block: block -%}
           <span class="buy-buttons-block__bar">
@@ -431,6 +479,54 @@
   .buy-buttons-block .add-to-cart-button:hover {
     background: #33a697 !important;
     border-color: #33a697 !important;
+  }
+
+  /* Tramogge custom dimension fields — reuses the theme's own input
+     styling variables (same ones blocks/contact-form.liquid's inputs use)
+     rather than hardcoded colors, so these match whatever input style the
+     merchant has set theme-wide instead of drifting from it. */
+  .buy-buttons-block__dimensions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .buy-buttons-block__dimensions-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .buy-buttons-block__dimensions-field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+  }
+
+  .buy-buttons-block__dimensions-field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--style-border-radius-inputs, 10px);
+    border: var(--style-border-width-inputs, 1px) solid var(--color-input-border, rgba(0, 0, 0, 0.2));
+    background-color: var(--color-input-background, #fff);
+    color: var(--color-input-text, #161616);
+    font-family: inherit;
+    font-size: 0.9375rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .buy-buttons-block__dimensions-field input:focus {
+    outline: none;
+    border-color: #3cc3b2;
+    box-shadow: 0 0 0 3px rgba(60, 195, 178, 0.2);
+  }
+
+  @media screen and (max-width: 480px) {
+    .buy-buttons-block__dimensions {
+      grid-template-columns: 1fr;
+    }
   }
 {% endstylesheet %}
 
