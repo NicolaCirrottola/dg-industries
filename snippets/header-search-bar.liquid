@@ -141,18 +141,50 @@
           this.charIndex = 0;
           this.deleting = false;
           this.pauseUntil = 0;
+          this.timer = null;
 
           if (this.input && this.phrase) {
-            this.timer = setInterval(() => this.tick(), 70);
+            this.startTyping();
+
+            // Focus/blur — rather than a per-tick activeElement check — so
+            // the interval is actually torn down (not just skipping its
+            // work) the moment the field is focused. Without this, a tick
+            // landing mid-animation right as focus happens leaves whatever
+            // partial string it last wrote (e.g. "cerca p r") stuck as the
+            // placeholder for as long as the field stays focused-and-empty,
+            // since focus alone doesn't clear a placeholder attribute.
+            this.input.addEventListener('focus', () => this.stopTyping());
+            this.input.addEventListener('blur', () => {
+              if (this.input.value.trim() === '') {
+                this.startTyping();
+              }
+            });
           }
         }
 
         disconnectedCallback() {
+          this.stopTyping();
+        }
+
+        startTyping() {
           clearInterval(this.timer);
+          this.charIndex = 0;
+          this.deleting = false;
+          this.pauseUntil = 0;
+          this.input.placeholder = '';
+          this.timer = setInterval(() => this.tick(), 70);
+        }
+
+        stopTyping() {
+          clearInterval(this.timer);
+          this.timer = null;
+          this.input.placeholder = '';
         }
 
         tick() {
-          if (document.activeElement === this.input || this.input.value) return;
+          // Defensive fallback (autofill, programmatic value changes, etc.)
+          // — focus/blur above is the primary mechanism now.
+          if (this.input.value) return;
           if (this.pauseUntil && Date.now() < this.pauseUntil) return;
 
           if (!this.deleting) {
