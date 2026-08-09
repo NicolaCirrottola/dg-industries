@@ -1,378 +1,390 @@
+{%- doc -%}
+  Fully hardcoded footer — surgical rewrite per explicit request. NOT block-
+  driven: unlike the rest of this theme, nothing here is editable from the
+  Shopify theme editor (no content_for 'blocks' call, no schema settings).
+  That's a deliberate tradeoff of this rewrite, not an oversight — flagged
+  here so a future editor doesn't go looking for a "why won't this show up
+  in the customizer" bug that isn't one.
 
+  Category/URL data for the macro-category panel mirrors
+  snippets/mega-menu-content.liquid and snippets/mobile-nav-accordion.liquid
+  — this theme has no shared data source for these lists, so all three are
+  kept in sync by hand. Aspirazione and Macchine use real tag-filtered
+  collection URLs (matching the header nav exactly); Caduta Pesante and
+  Catene Trasportatori apply the same handleize convention even though no
+  explicit tag mapping was given for them.
+{%- enddoc -%}
 
-{% liquid
-  if section.settings.background_color != blank
-    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
-  endif
-%}
-
-<div
-  class="section-background footer-full-bleed{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
-></div>
-<div
-  class="section section--{{ section.settings.section_width }} footer-full-bleed{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
->
-  {% liquid
-    # +1 accounts for the hardcoded "Prodotti" macro-category column
-    # injected directly below (not a real Shopify block, so it isn't part
-    # of section.blocks.size) — kept in the same grid-column math as the
-    # real blocks so the footer-content grid still lays out correctly.
-    assign total_blocks = section.blocks.size | plus: 1
-
-    # Grid layout calculations
-    assign grid_columns = total_blocks | at_most: 4
-
-    # Calculate last row counts using modulo arithmetic
-    # last_row_count = (total_blocks - 1) % N + 1
-    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
-
-    # Check if there are orphaned elements (single item in last row)
-    assign has_isolated_grid_item_desktop = false
-    assign has_isolated_grid_item_tablet = false
-
-    if total_blocks > 4 and last_row_count == 1
-      assign has_isolated_grid_item_desktop = true
-    endif
-
-    if total_blocks == 5
-      assign has_isolated_grid_item_tablet = true
-    endif
-  %}
-  <div
-    class="
-      footer-content
-      spacing-style
-      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-    "
-    style="
-      {%  render 'spacing-style', settings: section.settings %}
-      --footer-gap: {{ section.settings.gap }}px;
-      --grid-columns: {{ grid_columns }};
-      --last-row-count: {{ last_row_count }};
-      --tablet-last-row-count: {{ tablet_last_row_count }};
-    "
-  >
-    {%- comment -%}
-      Hardcoded "Prodotti" macro-category column, placed as the first
-      footer column (ahead of the real Shopify blocks rendered via
-      content_for 'blocks' below — content_for 'block' called per-item with
-      only an id and no type isn't a pattern used anywhere else in this
-      theme, every other call site always pairs id: with type:, so looping
-      section.blocks to splice this in between two specific blocks wasn't
-      safe to rely on). Deliberately NOT a Shopify block/snippet: rewritten
-      directly inline here (markup + <style> + <script>, no
-      {% stylesheet %}/{% javascript %} tags) per explicit request, so none
-      of it depends on Shopify's asset bundling/CDN caching of block-level
-      {% stylesheet %}/{% javascript %} output — this renders as plain
-      literal HTML/CSS/JS on every page load.
-
-      Category/URL data mirrors snippets/mega-menu-content.liquid and
-      snippets/mobile-nav-accordion.liquid — this theme has no shared data
-      source for these lists, so all three are kept in sync by hand.
-      Aspirazione and Macchine use real tag-filtered collection URLs
-      (matching the header nav exactly); Caduta Pesante and Catene
-      Trasportatori apply the same handleize convention even though no
-      explicit tag mapping was given for them.
-    {%- endcomment -%}
-    <div
-          class="footer-categories-inline"
-          data-footer-categories
-        >
-          <div
-            class="footer-categories-inline__triggers"
-            data-triggers
-          >
-            <button
-              type="button"
-              class="footer-categories-inline__trigger"
-              data-target="aspirazione"
-            >
-              <span>Aspirazione</span>
-              <span
-                class="footer-categories-inline__arrow"
-                aria-hidden="true"
-                >&gt;</span
-              >
-            </button>
-            <button
-              type="button"
-              class="footer-categories-inline__trigger"
-              data-target="caduta-pesante"
-            >
-              <span>Caduta Pesante</span>
-              <span
-                class="footer-categories-inline__arrow"
-                aria-hidden="true"
-                >&gt;</span
-              >
-            </button>
-            <button
-              type="button"
-              class="footer-categories-inline__trigger"
-              data-target="catene-trasportatori"
-            >
-              <span>Catene e Trasportatori</span>
-              <span
-                class="footer-categories-inline__arrow"
-                aria-hidden="true"
-                >&gt;</span
-              >
-            </button>
-            <button
-              type="button"
-              class="footer-categories-inline__trigger"
-              data-target="macchine"
-            >
-              <span>Macchine</span>
-              <span
-                class="footer-categories-inline__arrow"
-                aria-hidden="true"
-                >&gt;</span
-              >
-            </button>
-          </div>
-
-          <div class="footer-categories-inline__panels">
-            <ul
-              class="footer-categories-inline__panel"
-              data-panel="aspirazione"
-            >
-              {%- assign sub_list = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori' | split: ',' -%}
-              {%- for sub in sub_list -%}
-                <li>
-                  <a href="{{ sub | handleize | prepend: '/collections/aspirazione/' }}">{{ sub }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-
-            <ul
-              class="footer-categories-inline__panel"
-              data-panel="caduta-pesante"
-            >
-              {%- assign sub_list = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria' | split: ',' -%}
-              {%- for sub in sub_list -%}
-                <li>
-                  <a href="{{ sub | handleize | prepend: '/collections/caduta-pesante/' }}">{{ sub }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-
-            <ul
-              class="footer-categories-inline__panel"
-              data-panel="catene-trasportatori"
-            >
-              {%- assign sub_list = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori' | split: ',' -%}
-              {%- for sub in sub_list -%}
-                <li>
-                  <a href="{{ sub | handleize | prepend: '/collections/catene-trasportatori/' }}">{{ sub }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-
-            <ul
-              class="footer-categories-inline__panel"
-              data-panel="macchine"
-            >
-              {%- assign sub_titles = 'Accettazione e Prepulitura,Pulitura,Decorticazione,Condizionamento,Macinazione e Setacciatura,Miscelazione e Prodotti Finiti,Stoccaggio' | split: ',' -%}
-              {%- assign sub_slugs = 'accettazione-prepulitura,pulitura,decorticazione,condizionamento,macinazione-setacciatura,miscelazione-prodotti-finiti,stoccaggio' | split: ',' -%}
-              {%- for sub in sub_titles -%}
-                <li>
-                  <a href="{{ sub_slugs[forloop.index0] | prepend: '/collections/macchine/' }}">{{ sub }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        </div>
-
-        <style>
-          .footer-categories-inline {
-            position: relative;
-            display: grid;
-            overflow: visible;
-            pointer-events: auto;
-          }
-
-          .footer-categories-inline__triggers {
-            display: flex;
-            flex-direction: column;
-          }
-
-          .footer-categories-inline__trigger {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 4px 0;
-            margin: 0;
-            font-family: inherit;
-            font-size: 0.84375rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            cursor: pointer;
-            transition: color 0.15s ease;
-          }
-
-          .footer-categories-inline__trigger:hover,
-          .footer-categories-inline__trigger:focus-visible {
-            color: #3cc3b2;
-          }
-
-          .footer-categories-inline__arrow {
-            flex: none;
-            display: inline-block;
-            opacity: 0.6;
-            transform: translateX(0);
-            transition: color 0.15s ease, transform 0.3s ease, opacity 0.3s ease;
-          }
-
-          .footer-categories-inline__trigger:hover .footer-categories-inline__arrow,
-          .footer-categories-inline__trigger:focus-visible .footer-categories-inline__arrow {
-            color: #3cc3b2;
-            transform: translateX(4px);
-            opacity: 1;
-          }
-
-          /* Rest state: only the trigger list. Panels sit in the same grid
-             cell as the triggers (grid-area: 1 / 1 below) so the box never
-             changes size when triggers hide / a panel fades in — that's
-             what keeps mouseleave on .footer-categories-inline itself from
-             firing early mid-swap. */
-          .footer-categories-inline__triggers,
-          .footer-categories-inline__panels {
-            grid-area: 1 / 1;
-          }
-
-          .footer-categories-inline.is-active .footer-categories-inline__triggers {
-            display: none;
-          }
-
-          .footer-categories-inline__panels {
-            display: grid;
-          }
-
-          .footer-categories-inline__panel {
-            grid-area: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            pointer-events: none;
-            transition: opacity 0.3s ease, max-height 0.3s ease;
-          }
-
-          .footer-categories-inline__panel.is-active {
-            opacity: 1;
-            max-height: 40rem;
-            overflow: visible;
-            pointer-events: auto;
-          }
-
-          .footer-categories-inline__panel a {
-            display: block;
-            padding: 3px 0;
-            color: rgba(255, 255, 255, 0.68);
-            font-size: 0.8125rem;
-            text-decoration: none;
-            transition: color 0.15s ease;
-          }
-
-          .footer-categories-inline__panel a:hover {
-            color: #3cc3b2;
-          }
-        </style>
-
-    {% content_for 'blocks' %}
-  </div>
-</div>
-
-{% stylesheet %}
-  /* Full-bleed background — section_width is now "full-width" in
-     sections/footer-group.json (the actual root cause of the white
-     margin: "page-width" centers the section in a max-width column with
-     the page background showing on either side), but forced explicitly
-     here too as a guaranteed backstop regardless of that setting.
-     padding-inline uses the same --page-margin variable the rest of the
-     theme insets full-width sections with (header, hero), so the black
-     background reaches the true edges while the 4 columns inside still
-     get comfortable side spacing instead of touching the viewport edge. */
-  .footer-full-bleed {
+<footer
+  style="
     width: 100%;
     max-width: 100vw;
+    background-color: #000;
+    color: #fff;
+    padding: 3rem 4rem;
     box-sizing: border-box;
     overflow: hidden;
+  "
+>
+  <div
+    class="footer-grid"
+    style="
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      width: 100%;
+    "
+  >
+    {%- comment -%} COLONNA 1 — Macrocategorie / sottocategorie {%- endcomment -%}
+    <div
+      class="footer-categories-inline"
+      data-footer-categories
+    >
+      <div
+        class="footer-categories-inline__triggers"
+        data-triggers
+      >
+        <button
+          type="button"
+          class="footer-categories-inline__trigger"
+          data-target="aspirazione"
+        >
+          <span>Aspirazione</span>
+          <span
+            class="footer-arrow"
+            style="transition: all 0.2s ease; display: inline-block;"
+            aria-hidden="true"
+            >&gt;</span
+          >
+        </button>
+        <button
+          type="button"
+          class="footer-categories-inline__trigger"
+          data-target="caduta-pesante"
+        >
+          <span>Caduta Pesante</span>
+          <span
+            class="footer-arrow"
+            style="transition: all 0.2s ease; display: inline-block;"
+            aria-hidden="true"
+            >&gt;</span
+          >
+        </button>
+        <button
+          type="button"
+          class="footer-categories-inline__trigger"
+          data-target="catene-trasportatori"
+        >
+          <span>Catene e Trasportatori</span>
+          <span
+            class="footer-arrow"
+            style="transition: all 0.2s ease; display: inline-block;"
+            aria-hidden="true"
+            >&gt;</span
+          >
+        </button>
+        <button
+          type="button"
+          class="footer-categories-inline__trigger"
+          data-target="macchine"
+        >
+          <span>Macchine</span>
+          <span
+            class="footer-arrow"
+            style="transition: all 0.2s ease; display: inline-block;"
+            aria-hidden="true"
+            >&gt;</span
+          >
+        </button>
+      </div>
+
+      <div class="footer-categories-inline__panels">
+        {%- comment -%}
+          "Deviazioni" (both here and in Caduta Pesante's list below) stays
+          on the same tag-filtered pattern as its 7-8 sibling links in the
+          same dropdown — /collections/aspirazione/deviazioni, via the same
+          handleize logic — rather than switching just this one entry to a
+          bare /collections/deviazioni, which would be a different (and
+          almost certainly non-existent) top-level collection and would
+          make this one link behave inconsistently with the rest of its own
+          list for no clear reason.
+        {%- endcomment -%}
+        <ul
+          class="footer-categories-inline__panel"
+          data-panel="aspirazione"
+        >
+          {%- assign sub_list = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Riduzioni,Silenziatori,Terminali,Accessori' | split: ',' -%}
+          {%- for sub in sub_list -%}
+            <li>
+              <a href="{{ sub | handleize | prepend: '/collections/aspirazione/' }}">{{ sub }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <ul
+          class="footer-categories-inline__panel"
+          data-panel="caduta-pesante"
+        >
+          {%- assign sub_list = 'Tubi,Settori,Segmenti,Deviazioni,Ispezione,Valvole,Accessori,Falsa aria' | split: ',' -%}
+          {%- for sub in sub_list -%}
+            <li>
+              <a href="{{ sub | handleize | prepend: '/collections/caduta-pesante/' }}">{{ sub }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <ul
+          class="footer-categories-inline__panel"
+          data-panel="catene-trasportatori"
+        >
+          {%- assign sub_list = 'Catene di trasporto,Ruote e rulli,Supporti e guide,Tenditori,Accessori' | split: ',' -%}
+          {%- for sub in sub_list -%}
+            <li>
+              <a href="{{ sub | handleize | prepend: '/collections/catene-trasportatori/' }}">{{ sub }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <ul
+          class="footer-categories-inline__panel"
+          data-panel="macchine"
+        >
+          {%- assign sub_titles = 'Accettazione e Prepulitura,Pulitura,Decorticazione,Condizionamento,Macinazione e Setacciatura,Miscelazione e Prodotti Finiti,Stoccaggio' | split: ',' -%}
+          {%- assign sub_slugs = 'accettazione-prepulitura,pulitura,decorticazione,condizionamento,macinazione-setacciatura,miscelazione-prodotti-finiti,stoccaggio' | split: ',' -%}
+          {%- for sub in sub_titles -%}
+            <li>
+              <a href="{{ sub_slugs[forloop.index0] | prepend: '/collections/macchine/' }}">{{ sub }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+
+    {%- comment -%} COLONNA 2 — Logo, descrizione, recapiti {%- endcomment -%}
+    <div class="footer-col">
+      <img
+        src="{{ 'dg-logo.png' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        width="66"
+        height="57"
+        loading="lazy"
+        style="height: 34px; width: auto; object-fit: contain; display: block; margin-bottom: 18px;"
+      >
+      <p style="margin: 0 0 14px; font-size: 0.8125rem; line-height: 1.7; color: rgba(255, 255, 255, 0.75);">
+        Specialisti da oltre 60 anni nella realizzazione di soluzioni avanzate per l'industria agroalimentare.
+      </p>
+      <p style="margin: 0; font-size: 0.8125rem; line-height: 1.7; color: rgba(255, 255, 255, 0.75);">
+        Via Archimede, 27/33 – zona PIP<br>
+        70024 – Gravina in Puglia (BA)<br>
+        Tel.: +39 080.326.61.96<br>
+        <a
+          href="mailto:info@defino-giancaspro.com"
+          style="color: inherit;"
+          >info@defino-giancaspro.com</a
+        ><br>
+        <a
+          href="mailto:defino-giancaspro@pec.it"
+          style="color: inherit;"
+          >defino-giancaspro@pec.it</a
+        >
+      </p>
+    </div>
+
+    {%- comment -%} COLONNA 3 — Azienda & Supporto {%- endcomment -%}
+    <div class="footer-col">
+      <div
+        style="font-size: 0.78125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; margin-bottom: 12px;"
+      >
+        Azienda &amp; Supporto
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a
+          href="#"
+          style="color: rgba(255, 255, 255, 0.75); font-size: 0.84375rem; text-decoration: none;"
+          >Chi Siamo</a
+        >
+        <a
+          href="#"
+          style="color: rgba(255, 255, 255, 0.75); font-size: 0.84375rem; text-decoration: none;"
+          >Catalogo B2B (PDF)</a
+        >
+        <a
+          href="/pages/parliamone"
+          style="color: rgba(255, 255, 255, 0.75); font-size: 0.84375rem; text-decoration: none;"
+          >Richiedi Preventivo Su Misura</a
+        >
+        <a
+          href="/pages/parliamone"
+          style="color: rgba(255, 255, 255, 0.75); font-size: 0.84375rem; text-decoration: none;"
+          >Assistenza Tecnica</a
+        >
+        <a
+          href="/pages/parliamone"
+          style="color: rgba(255, 255, 255, 0.75); font-size: 0.84375rem; text-decoration: none;"
+          >Contatti</a
+        >
+      </div>
+    </div>
+
+    {%- comment -%} COLONNA 4 — Certificazioni {%- endcomment -%}
+    <div class="footer-col">
+      <div
+        style="font-size: 0.78125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; margin-bottom: 12px;"
+      >
+        Certificazioni
+      </div>
+      <p style="margin: 0 0 18px; font-size: 0.78125rem; line-height: 1.6; color: rgba(255, 255, 255, 0.62);">
+        La DG Industries investe ogni giorno in qualità e ambiente attraverso le certificazioni del sistema di gestione.
+      </p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+          <img
+            src="{{ 'dg-certification-logo-tuv-sud.svg' | asset_url }}"
+            alt="TÜV SÜD"
+            width="40"
+            height="40"
+            loading="lazy"
+            style="max-height: 40px; width: auto; display: block;"
+          >
+          <span style="font-size: 9px; line-height: 1.4; color: rgba(255, 255, 255, 0.55);">Certified Company<br>UNI EN ISO 9001<br>UNI EN ISO 14001</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+          <img
+            src="{{ 'dg-certification-logo-dekra.svg' | asset_url }}"
+            alt="DEKRA"
+            width="96"
+            height="26"
+            loading="lazy"
+            style="max-height: 26px; width: auto; display: block; filter: brightness(0) invert(1);"
+          >
+          <span style="font-size: 9px; line-height: 1.4; color: rgba(255, 255, 255, 0.55);">Certified Company<br>UNI EN ISO 1090-1<br>UNI EN ISO 3834-2</span>
+        </div>
+        <div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+          <img
+            src="{{ 'dg-certification-logo-moca.png' | asset_url }}"
+            alt="ICIM M.O.C.A."
+            width="69"
+            height="52"
+            loading="lazy"
+            style="max-height: 52px; width: auto; display: block;"
+          >
+          <span style="font-size: 9px; line-height: 1.4; color: rgba(255, 255, 255, 0.55);">Materiali a contatto con alimenti</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media screen and (max-width: 989px) {
+    .footer-grid {
+      grid-template-columns: 1fr !important;
+    }
   }
 
-  .section-background.footer-full-bleed {
-    background-color: #000;
-  }
-
-  .section.footer-full-bleed {
-    padding-inline: var(--page-margin, 3rem);
-  }
-
-  .footer-content {
-    contain: content;
-    content-visibility: auto;
+  .footer-categories-inline {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--footer-gap);
-    align-items: start;
+    overflow: visible;
+    pointer-events: auto;
   }
 
-  .footer-content .menu__heading__default {
-    font-weight: var(--font-heading--weight);
+  .footer-categories-inline__triggers,
+  .footer-categories-inline__panels {
+    grid-area: 1 / 1;
   }
 
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .footer-content {
-      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
-      grid-auto-flow: row;
-    }
-
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-content--isolated-grid-item-tablet > :last-child {
-      grid-column: 1 / -1;
-    }
+  .footer-categories-inline__triggers {
+    display: flex;
+    flex-direction: column;
   }
 
-  @media screen and (min-width: 990px) {
-    /* Explicit 4-column grid, gap: 2rem — pinned directly rather than left
-       fully dependent on --grid-columns/--footer-gap (which currently
-       compute to the same 4 / would otherwise be 48px, but this was
-       requested as a fixed layout for this specific column count, not a
-       derived one). --grid-columns/var(--footer-gap) still drive the
-       tablet/mobile breakpoints below unchanged. */
-    .footer-content {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-    }
-
-    /* Single item centered */
-    .footer-content[style*='--grid-columns: 1'] {
-      justify-items: center;
-    }
-
-    .footer-content--isolated-grid-item-desktop > :last-child {
-      grid-column: 1 / -1;
-    }
+  .footer-categories-inline.is-active .footer-categories-inline__triggers {
+    display: none;
   }
 
-{% endstylesheet %}
+  .footer-categories-inline__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 0.84375rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
 
-{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+  .footer-categories-inline__trigger:hover,
+  .footer-categories-inline__trigger:focus-visible {
+    color: #3cc3b2;
+  }
+
+  .footer-arrow {
+    opacity: 0.6;
+    transform: translateX(0);
+  }
+
+  .footer-categories-inline__trigger:hover .footer-arrow,
+  .footer-categories-inline__trigger:focus-visible .footer-arrow {
+    color: #3cc3b2;
+    transform: translateX(5px);
+    opacity: 1;
+  }
+
+  .footer-categories-inline__panels {
+    display: grid;
+  }
+
+  .footer-categories-inline__panel {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, max-height 0.3s ease, visibility 0s linear 0.3s;
+  }
+
+  .footer-categories-inline__panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    max-height: 40rem;
+    overflow: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s ease, max-height 0.3s ease, visibility 0s linear 0s;
+  }
+
+  .footer-categories-inline__panel a {
+    display: block;
+    padding: 3px 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.8125rem;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-categories-inline__panel a:hover {
+    color: #3cc3b2;
+  }
+
+  .footer-col a:hover {
+    color: #3cc3b2 !important;
+  }
+</style>
 
 <script>
   (function () {
@@ -397,20 +409,17 @@
     }
 
     triggers.forEach(function (trigger) {
-      // mouseenter (not mouseover) deliberately: mouseover re-fires on every
-      // pixel of mouse movement within the button, and showPanel() is
-      // idempotent, so a mouseover listener here would just call it
-      // redundantly hundreds of times per hover instead of once on entry.
+      // mouseenter (not mouseover): mouseover re-fires on every pixel of
+      // mouse movement within the button, and showPanel() is idempotent,
+      // so a mouseover listener here would just call it redundantly
+      // hundreds of times per hover instead of once on entry.
       trigger.addEventListener('mouseenter', function () {
         showPanel(trigger.getAttribute('data-target'));
       });
     });
 
     // Leaving the whole footer-categories area (not each trigger
-    // individually) is what restores the rest state — matches "ripristina
-    // al mouseleave dall'area principale del footer" rather than
-    // re-showing the trigger list every time the cursor crosses between
-    // two adjacent macro-categories.
+    // individually) is what restores the rest state.
     footerCategories.addEventListener('mouseleave', resetPanels);
   })();
 </script>
@@ -419,120 +428,15 @@
 {
   "name": "t:names.footer",
   "class": "section-wrapper",
-  "blocks": [
-    {
-      "type": "_divider"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "follow-on-shop"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "menu"
-    },
-    {
-      "type": "payment-icons"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "jumbo-text"
-    },
-    {
-      "type": "social-links"
-    },
-    {
-      "type": "email-signup"
-    }
-  ],
+  "tag": "div",
   "enabled_on": {
     "groups": ["footer"]
   },
-  "settings": [
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "default": "{{ settings.color_palette.foreground }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "t:names.footer",
-      "category": "t:categories.footer",
-      "settings": {
-        "gap": 20,
-        "padding-block-start": 36,
-        "padding-block-end": 36
-      }
+      "category": "t:categories.footer"
     }
   ]
 }
