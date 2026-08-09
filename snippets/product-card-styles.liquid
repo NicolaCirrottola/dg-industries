@@ -55,4 +55,75 @@
       display: none;
     }
   }
+
+  /* ==========================================================================
+     B2B card redesign — sharp/squared aesthetic, forced with !important
+     regardless of any per-instance border_radius setting drifting in the
+     admin later (design brief: "border-radius: 0px !important su immagini,
+     card, badge e bottoni"). The per-block border_radius settings across
+     every template are already 0 (see collection.json, index.json,
+     product.json, cart.json, 404.json, list-collections.json, search.json)
+     — this is a defensive second layer, not the primary mechanism. Scoped
+     to the card/gallery/badge context only; it never touches the sitewide
+     --style-border-radius-buttons variable, which also drives buttons well
+     outside product cards (cart, filters, forms, etc.) and squaring those
+     off wasn't part of this redesign's scope.
+     ========================================================================== */
+  .product-card,
+  .product-card__content,
+  .card-gallery,
+  .card-gallery img,
+  .card-gallery video,
+  .product-badges__badge {
+    border-radius: 0 !important;
+  }
+
+  .card-gallery .quick-add__button {
+    border-radius: 0 !important;
+  }
+
+  /* Micro-text SKU line above the title — muted so it reads as secondary
+     metadata rather than competing with the title/price for attention. */
+  .product-sku-component {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-50));
+  }
+
+  /* Micro-carousel pagination bars ("barrette") — restyled from the native
+     round dots to thin squared bars, scoped to .card-gallery only so the
+     main PDP gallery and other slideshow-controls usages elsewhere in the
+     theme keep their normal round dots. */
+  .card-gallery .slideshow-controls__dots {
+    --color-active: #3cc3b2;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 0;
+  }
+
+  .card-gallery .slideshow-controls__dots button {
+    width: 16px;
+    height: 12px;
+    margin: 0;
+    border-radius: 0 !important;
+  }
+
+  .card-gallery .slideshow-controls__dots button::after {
+    width: 16px;
+    height: 3px;
+    border-radius: 0 !important;
+    box-shadow: none;
+  }
+
+  /* Dots stay hidden until the card is actually hovered/focused, matching
+     the native arrows (see base.css's "Slideshow Arrow Hover Animation",
+     which already reveals slideshow-arrows the same way — dots are new
+     here, so the same reveal trigger is added explicitly for them). */
+  .card-gallery slideshow-controls {
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+
+  .card-gallery slideshow-component:hover slideshow-controls,
+  .card-gallery slideshow-component:focus-within slideshow-controls {
+    opacity: 1;
+  }
 {% endstylesheet %}
