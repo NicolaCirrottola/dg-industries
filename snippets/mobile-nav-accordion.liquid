@@ -54,15 +54,20 @@
         >
           {%- for cat in category_list -%}
             {%- liquid
-              # Same rule as snippets/mega-menu-content.liquid: Aspirazione's
-              # subcategories map onto Shopify's native collection + tag
-              # filter route (/collections/<handle>/<tag>); Macchine uses the
-              # explicit category_slugs list assigned above. Caduta Pesante/
-              # Catene Trasportatori aren't wired up to a specific
-              # collection's tag set yet, so they keep the '#' placeholder.
+              # Same rule as snippets/mega-menu-content.liquid: Aspirazione
+              # and Caduta Pesante's subcategories (including "Deviazioni",
+              # present in both lists) map onto Shopify's native collection
+              # + tag filter route, each scoped to its own macro-category
+              # collection so every item stays consistent with its siblings
+              # in the same dropdown. Macchine uses the explicit
+              # category_slugs list assigned above. Catene Trasportatori
+              # isn't wired up to a specific collection's tag set yet, so
+              # it keeps the '#' placeholder.
               assign cat_href = '#'
               if forloop.parentloop.index == 1
                 assign cat_href = cat | handleize | prepend: '/collections/aspirazione/'
+              elsif forloop.parentloop.index == 2
+                assign cat_href = cat | handleize | prepend: '/collections/caduta-pesante/'
               elsif forloop.parentloop.index == 4
                 assign slug_list = category_slugs | split: ','
                 assign cat_href = slug_list[forloop.index0] | prepend: '/collections/macchine/'
