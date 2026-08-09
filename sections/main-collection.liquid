@@ -97,15 +97,37 @@
           {% endfor %}
 
           {%- comment -%}
-            Type-matched fallback (rendered on page 1 only, so infinite-scroll
-            doesn't re-append the same extras on every subsequent page load).
-            Deduplicated against the tag-matched set above by product.id.
+            Type/title-matched fallback (rendered on page 1 only, so
+            infinite-scroll doesn't re-append the same extras on every
+            subsequent page load). Deduplicated against the tag-matched set
+            above by product.id. A product qualifies if either its
+            product.type equals the subcategory (case-insensitive) or its
+            title contains the subcategory keyword (case-insensitive) — no
+            Italian singular/plural stemming (e.g. "tubi" vs "tubo") is
+            attempted here, since a reliable word-form map would need one
+            hardcoded entry per subcategory and would silently go stale as
+            categories change; the title-contains check already covers most
+            of that gap in practice (e.g. a product titled "Tubo di
+            aspirazione" won't match type == 'tubi', but would match a title
+            check against 'tubo' if that were ever the active subcategory
+            tag itself).
           {%- endcomment -%}
           {% if current_subcat_tag != blank and paginate.current_page == 1 %}
+            {% assign subcat_keyword = current_subcat_tag | downcase %}
             {% assign tag_matched_ids = collection.products | map: 'id' %}
             {% for product in collections[collection.handle].products %}
               {% unless tag_matched_ids contains product.id %}
-                {% if product.type != blank and product.type | downcase == current_subcat_tag | downcase %}
+                {% assign product_type_downcase = product.type | downcase %}
+                {% assign product_title_downcase = product.title | downcase %}
+                {% assign is_type_match = false %}
+                {% assign is_title_match = false %}
+                {% if product.type != blank and product_type_downcase == subcat_keyword %}
+                  {% assign is_type_match = true %}
+                {% endif %}
+                {% if product_title_downcase contains subcat_keyword %}
+                  {% assign is_title_match = true %}
+                {% endif %}
+                {% if is_type_match or is_title_match %}
                   <li
                     id="{{ section.id }}-{{ product.id }}"
                     class="product-grid__item product-grid__item--type-match-{{ forloop.index0 }}"
