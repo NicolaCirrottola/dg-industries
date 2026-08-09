@@ -18,7 +18,7 @@
     {%- liquid
       case forloop.index
         when 1
-          assign categories = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Serrande,Silenziatori,Terminali,Accessori'
+          assign categories = 'Tubi,Curve,Innesti,Deviazioni,Serrande,Ispezioni,Accessori'
         when 2
           assign categories = 'Tubi,Settori,Segmenti,Deviazioni,Ispezioni,Valvole,Accessori,Tramogge'
         when 3
@@ -54,20 +54,21 @@
         >
           {%- for cat in category_list -%}
             {%- liquid
-              # Same rule as snippets/mega-menu-content.liquid: Aspirazione
-              # and Caduta Pesante's subcategories (including "Deviazioni",
-              # present in both lists) map onto Shopify's native collection
-              # + tag filter route, each scoped to its own macro-category
-              # collection so every item stays consistent with its siblings
-              # in the same dropdown. Macchine uses the explicit
-              # category_slugs list assigned above. Catene Trasportatori
-              # isn't wired up to a specific collection's tag set yet, so
-              # it keeps the '#' placeholder.
+              # Same rule as snippets/mega-menu-content.liquid: all 4
+              # macro-categories' subcategories map onto Shopify's native
+              # collection + tag filter route, each scoped to its own
+              # macro-category collection so every item stays consistent
+              # with its siblings in the same dropdown. Macchine uses the
+              # explicit category_slugs list assigned above (several of
+              # its titles contain "e" that handleize would keep as a
+              # literal "-e-" segment, not matching the requested slugs).
               assign cat_href = '#'
               if forloop.parentloop.index == 1
                 assign cat_href = cat | handleize | prepend: '/collections/aspirazione/'
               elsif forloop.parentloop.index == 2
                 assign cat_href = cat | handleize | prepend: '/collections/caduta-pesante/'
+              elsif forloop.parentloop.index == 3
+                assign cat_href = cat | handleize | prepend: '/collections/catene-trasportatori/'
               elsif forloop.parentloop.index == 4
                 assign slug_list = category_slugs | split: ','
                 assign cat_href = slug_list[forloop.index0] | prepend: '/collections/macchine/'

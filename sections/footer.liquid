@@ -63,15 +63,10 @@
     {%- comment -%}
       COLONNA 2 — Macrocategorie: plain direct links, no dropdown/JS.
 
-      catene-trasportatori (no "e") is used here rather than the literally
-      requested catene-e-trasportatori — every other "Catene Trasportatori"
-      link in the theme (header nav in blocks/_header-menu.liquid, the
-      mega-menu, the mobile drawer) resolves to that same handle, so this
-      matches them and points at the collection that's actually likely to
-      exist. Using a different handle here specifically would silently
-      break just this one link (404 or empty collection) while every other
-      "Catene Trasportatori" link on the site keeps working — check
-      Shopify admin for the collection's real handle if that's wrong.
+      catene-trasportatori (no "e") confirmed as the real collection
+      handle — matches every other "Catene Trasportatori" link in the
+      theme (header nav in blocks/_header-menu.liquid, the mega-menu, the
+      mobile drawer).
     {%- endcomment -%}
     <div>
       <div

@@ -19,7 +19,7 @@
 
   case index
     when 1
-      assign categories = 'Tubi,Curve,Deviazioni,Innesti,Tramogge,Serrande,Silenziatori,Terminali,Accessori'
+      assign categories = 'Tubi,Curve,Innesti,Deviazioni,Serrande,Ispezioni,Accessori'
       assign families = 'Acciaio al carbonio,Acciaio inox 304,Acciaio inox 316,Alluminio,PVC industriale,Gomma antiabrasione,Rivestimenti speciali'
       assign h1_title = 'Materiali certificati'
       assign h1_desc = 'Qualità garantita per ogni applicazione industriale.'
@@ -75,24 +75,24 @@
       <div class="mega-menu-content__list">
         {%- for cat in category_list -%}
           {%- liquid
-            # Aspirazione and Caduta Pesante's subcategories (including
-            # "Deviazioni", present in both lists) map onto Shopify's
+            # All 4 macro-categories' subcategories map onto Shopify's
             # native collection + tag filter route
             # (/collections/<handle>/<tag>) — handleize matches how
             # Shopify itself turns a tag into that URL segment, kept
             # scoped to each item's own macro-category collection rather
-            # than a generic /collections/all/<tag> route, so "Deviazioni"
-            # (and every other entry) stays consistent with its siblings
-            # in the same dropdown. Macchine (index 4) uses an explicit
-            # category_slugs list instead (see the else branch above —
-            # handleize wouldn't produce the requested slugs there).
-            # Catene Trasportatori isn't wired up to a specific
-            # collection's tag set yet, so it keeps the '#' placeholder.
+            # than a generic /collections/all/<tag> route, so every entry
+            # stays consistent with its siblings in the same dropdown.
+            # Macchine (index 4) uses an explicit category_slugs list
+            # instead (see the else branch above — several of its titles
+            # contain "e" that handleize would keep as a literal "-e-"
+            # segment, not matching the requested slugs).
             assign cat_href = '#'
             if index == 1
               assign cat_href = cat | handleize | prepend: '/collections/aspirazione/'
             elsif index == 2
               assign cat_href = cat | handleize | prepend: '/collections/caduta-pesante/'
+            elsif index == 3
+              assign cat_href = cat | handleize | prepend: '/collections/catene-trasportatori/'
             elsif index == 4
               assign slug_list = category_slugs | split: ','
               assign cat_href = slug_list[forloop.index0] | prepend: '/collections/macchine/'

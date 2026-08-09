@@ -23,7 +23,7 @@
           "settings": {
             "title": "Sistemi di Aspirazione",
             "description": "Ventilatori, filtri e cicloni per la captazione polveri e il deumidificamento impianti.",
-            "link": ""
+            "link": "/collections/aspirazione"
           }
         },
         "card_caduta": {
@@ -31,7 +31,7 @@
           "settings": {
             "title": "Caduta Pesante",
             "description": "Tubi, settori, segmenti e valvole per il trasporto per caduta di prodotti sfusi.",
-            "link": ""
+            "link": "/collections/caduta-pesante"
           }
         },
         "card_catene": {
@@ -39,7 +39,7 @@
           "settings": {
             "title": "Catene Trasportatori",
             "description": "Catene, coclee e trasportatori heavy-duty.",
-            "link": ""
+            "link": "/collections/catene-trasportatori"
           }
         },
         "card_macchine": {
@@ -47,7 +47,7 @@
           "settings": {
             "title": "Macchine",
             "description": "Filtri, valvole, dosatori, trasportatori, decorticatrici.",
-            "link": ""
+            "link": "/collections/macchine"
           }
         },
         "card_servizi": {
